@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+venv/
+.env.*
+.idea/
+.vscode/
+.DS_Store
+
+# Trained Spark model artifacts (large, binary, and regenerable) -
+# run training/winePrediction_model.py to produce these locally before
+# building the Docker image; see README "Getting Started".
+models/
+winePrediction_model_ensemble/
+*.tar

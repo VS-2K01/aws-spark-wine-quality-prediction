@@ -1,0 +1,1437 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ec2-user@3.238.123.111
+The authenticity of host '3.238.123.111 (3.238.123.111)' can't be established.
+ED25519 key fingerprint is SHA256:4oTzEb6y30P+hlx8m29ueggu/pVEl6R4bj+fKlIiBkE.
+This host key is known by the following other names/addresses:
+    C:\Users\vivek/.ssh/known_hosts:19: 34.204.203.100
+    C:\Users\vivek/.ssh/known_hosts:21: 3.229.130.16
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '3.238.123.111' (ED25519) to the list of known hosts.
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+Last login: Mon Nov 24 00:27:31 2025 from 172.59.213.62
+[ec2-user@ip-172-31-65-2 ~]$ rm -rf ~/.cache/pip
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum update -y
+sudo yum install -y java-1.8.0-openjdk awscli
+java -version
+Last metadata expiration check: 0:27:36 ago on Mon Nov 24 00:09:19 2025.
+Dependencies resolved.
+Nothing to do.
+Complete!
+Last metadata expiration check: 0:27:37 ago on Mon Nov 24 00:09:19 2025.
+Package java-1.8.0-amazon-corretto-1:1.8.0_472.b08-1.amzn2023.x86_64 is already installed.
+Package awscli-2-2.30.4-1.amzn2023.0.1.noarch is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+openjdk version "1.8.0_472"
+OpenJDK Runtime Environment Corretto-8.472.08.1 (build 1.8.0_472-b08)
+OpenJDK 64-Bit Server VM Corretto-8.472.08.1 (build 25.472-b08, mixed mode)
+[ec2-user@ip-172-31-65-2 ~]$ cd ~
+[ec2-user@ip-172-31-65-2 ~]$ wget https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz
+--2025-11-24 00:37:17--  https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz
+Resolving archive.apache.org (archive.apache.org)... 65.108.204.189, 2a01:4f9:1a:a084::2
+Connecting to archive.apache.org (archive.apache.org)|65.108.204.189|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 400395283 (382M) [application/x-gzip]
+Saving to: ‘spark-3.5.0-bin-hadoop3.tgz’
+
+spark-3.5.0-bin-hadoop3.tgz   100%[=================================================>] 381.85M  24.2MB/s    in 19s
+
+2025-11-24 00:37:36 (20.1 MB/s) - ‘spark-3.5.0-bin-hadoop3.tgz’ saved [400395283/400395283]
+
+[ec2-user@ip-172-31-65-2 ~]$ tar -xzf spark-3.5.0-bin-hadoop3.tgz
+[ec2-user@ip-172-31-65-2 ~]$ ls
+spark-3.5.0-bin-hadoop3  spark-3.5.0-bin-hadoop3.tgz
+[ec2-user@ip-172-31-65-2 ~]$ BUCKET=cs643-project2-wine-quality-prediction
+[ec2-user@ip-172-31-65-2 ~]$ aws s3 cp s3://$BUCKET/code/predict_wine.py .
+fatal error: Unable to locate credentials
+[ec2-user@ip-172-31-65-2 ~]$ aws s3 cp s3://$BUCKET/models/wine_rf_model_rf1 ./wine_rf_model_rf1 --recursive
+fatal error: Unable to locate credentials
+[ec2-user@ip-172-31-65-2 ~]$ mkdir -p ~/.aws
+[ec2-user@ip-172-31-65-2 ~]$ nano ~/.aws/credentials
+[ec2-user@ip-172-31-65-2 ~]$ aws s3 cp s3://$BUCKET/models/wine_rf_model_rf1 ./wine_rf_model_rf1 --recursive
+download: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/data/_SUCCESS to wine_rf_model_rf1/data/_SUCCESS
+download: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/metadata/_SUCCESS to wine_rf_model_rf1/metadata/_SUCCESS
+download: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/treesMetadata/_SUCCESS to wine_rf_model_rf1/treesMetadata/_SUCCESS
+download: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/treesMetadata/part-00000-86bde4a4-5da1-4ea7-9798-bac7c028f20a-c000.snappy.parquet to wine_rf_model_rf1/treesMetadata/part-00000-86bde4a4-5da1-4ea7-9798-bac7c028f20a-c000.snappy.parquet
+download: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/data/part-00000-308d931f-074c-4c8f-9f20-e510ac6778a2-c000.snappy.parquet to wine_rf_model_rf1/data/part-00000-308d931f-074c-4c8f-9f20-e510ac6778a2-c000.snappy.parquet
+download: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/metadata/part-00000 to wine_rf_model_rf1/metadata/part-00000
+[ec2-user@ip-172-31-65-2 ~]$ aws s3 cp s3://$BUCKET/code/predict_wine.py .
+download: s3://cs643-project2-wine-quality-prediction/code/predict_wine.py to ./predict_wine.py
+[ec2-user@ip-172-31-65-2 ~]$ aws s3 cp s3://$BUCKET/data/ValidationDataset.csv .
+download: s3://cs643-project2-wine-quality-prediction/data/ValidationDataset.csv to ./ValidationDataset.csv
+[ec2-user@ip-172-31-65-2 ~]$ ls
+ValidationDataset.csv  predict_wine.py  spark-3.5.0-bin-hadoop3  spark-3.5.0-bin-hadoop3.tgz  wine_rf_model_rf1
+[ec2-user@ip-172-31-65-2 ~]$ ~/spark-3.5.0-bin-hadoop3/bin/spark-submit \
+  --master local[*] \
+  predict_wine.py \
+  ./ValidationDataset.csv \
+  ./wine_rf_model_rf1
+Traceback (most recent call last):
+  File "/home/ec2-user/predict_wine.py", line 5, in <module>
+    from pyspark.ml.feature import VectorAssembler, StandardScaler
+  File "<frozen zipimport>", line 259, in load_module
+  File "/home/ec2-user/spark-3.5.0-bin-hadoop3/python/lib/pyspark.zip/pyspark/ml/__init__.py", line 22, in <module>
+  File "<frozen zipimport>", line 259, in load_module
+  File "/home/ec2-user/spark-3.5.0-bin-hadoop3/python/lib/pyspark.zip/pyspark/ml/base.py", line 40, in <module>
+  File "<frozen zipimport>", line 259, in load_module
+  File "/home/ec2-user/spark-3.5.0-bin-hadoop3/python/lib/pyspark.zip/pyspark/ml/param/__init__.py", line 32, in <module>
+ModuleNotFoundError: No module named 'numpy'
+25/11/24 00:46:46 INFO ShutdownHookManager: Shutdown hook called
+25/11/24 00:46:46 INFO ShutdownHookManager: Deleting directory /tmp/spark-8dd97fd3-15be-4296-b5e5-b93180f10d3f
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum update -y
+sudo yum install -y python3 python3-pip python3-devel
+sudo yum install -y gcc gcc-c++ make
+Last metadata expiration check: 0:38:44 ago on Mon Nov 24 00:09:19 2025.
+Dependencies resolved.
+Nothing to do.
+Complete!
+Last metadata expiration check: 0:38:44 ago on Mon Nov 24 00:09:19 2025.
+Package python3-3.9.24-1.amzn2023.0.4.x86_64 is already installed.
+Package python3-pip-21.3.1-2.amzn2023.0.14.noarch is already installed.
+Dependencies resolved.
+========================================================================================================================
+ Package                     Architecture         Version                               Repository                 Size
+========================================================================================================================
+Installing:
+ python3-devel               x86_64               3.9.24-1.amzn2023.0.4                 amazonlinux               206 k
+
+Transaction Summary
+========================================================================================================================
+Install  1 Package
+
+Total download size: 206 k
+Installed size: 765 k
+Downloading Packages:
+python3-devel-3.9.24-1.amzn2023.0.4.x86_64.rpm                                          5.0 MB/s | 206 kB     00:00
+------------------------------------------------------------------------------------------------------------------------
+Total                                                                                   2.9 MB/s | 206 kB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                1/1
+  Installing       : python3-devel-3.9.24-1.amzn2023.0.4.x86_64                                                     1/1
+  Running scriptlet: python3-devel-3.9.24-1.amzn2023.0.4.x86_64                                                     1/1
+  Verifying        : python3-devel-3.9.24-1.amzn2023.0.4.x86_64                                                     1/1
+
+Installed:
+  python3-devel-3.9.24-1.amzn2023.0.4.x86_64
+
+Complete!
+Last metadata expiration check: 0:38:46 ago on Mon Nov 24 00:09:19 2025.
+Dependencies resolved.
+========================================================================================================================
+ Package                        Architecture       Version                                Repository               Size
+========================================================================================================================
+Installing:
+ gcc                            x86_64             11.5.0-5.amzn2023.0.5                  amazonlinux              36 M
+ gcc-c++                        x86_64             11.5.0-5.amzn2023.0.5                  amazonlinux              15 M
+ make                           x86_64             1:4.3-5.amzn2023.0.2                   amazonlinux             534 k
+Installing dependencies:
+ annobin-docs                   noarch             12.69-1.amzn2023.0.1                   amazonlinux              93 k
+ annobin-plugin-gcc             x86_64             12.69-1.amzn2023.0.1                   amazonlinux             974 k
+ cpp                            x86_64             11.5.0-5.amzn2023.0.5                  amazonlinux              11 M
+ gc                             x86_64             8.0.4-5.amzn2023.0.2                   amazonlinux             105 k
+ gcc-plugin-annobin             x86_64             11.5.0-5.amzn2023.0.5                  amazonlinux              38 k
+ glibc-devel                    x86_64             2.34-231.amzn2023.0.1                  amazonlinux              38 k
+ glibc-headers-x86              noarch             2.34-231.amzn2023.0.1                  amazonlinux             444 k
+ guile22                        x86_64             2.2.7-2.amzn2023.0.3                   amazonlinux             6.4 M
+ kernel-headers                 x86_64             1:6.1.158-178.288.amzn2023             amazonlinux             1.4 M
+ libmpc                         x86_64             1.2.1-2.amzn2023.0.2                   amazonlinux              62 k
+ libstdc++-devel                x86_64             11.5.0-5.amzn2023.0.5                  amazonlinux             2.2 M
+ libxcrypt-devel                x86_64             4.4.33-7.amzn2023                      amazonlinux              32 k
+
+Transaction Summary
+========================================================================================================================
+Install  15 Packages
+
+Total download size: 74 M
+Installed size: 237 M
+Downloading Packages:
+(1/15): annobin-docs-12.69-1.amzn2023.0.1.noarch.rpm                                    2.2 MB/s |  93 kB     00:00
+(2/15): annobin-plugin-gcc-12.69-1.amzn2023.0.1.x86_64.rpm                               18 MB/s | 974 kB     00:00
+(3/15): gc-8.0.4-5.amzn2023.0.2.x86_64.rpm                                              3.1 MB/s | 105 kB     00:00
+(4/15): cpp-11.5.0-5.amzn2023.0.5.x86_64.rpm                                             60 MB/s |  11 MB     00:00
+(5/15): gcc-plugin-annobin-11.5.0-5.amzn2023.0.5.x86_64.rpm                             2.0 MB/s |  38 kB     00:00
+(6/15): glibc-devel-2.34-231.amzn2023.0.1.x86_64.rpm                                    1.7 MB/s |  38 kB     00:00
+(7/15): gcc-c++-11.5.0-5.amzn2023.0.5.x86_64.rpm                                         68 MB/s |  15 MB     00:00
+(8/15): glibc-headers-x86-2.34-231.amzn2023.0.1.noarch.rpm                              5.7 MB/s | 444 kB     00:00
+(9/15): kernel-headers-6.1.158-178.288.amzn2023.x86_64.rpm                               32 MB/s | 1.4 MB     00:00
+(10/15): libmpc-1.2.1-2.amzn2023.0.2.x86_64.rpm                                         2.9 MB/s |  62 kB     00:00
+(11/15): guile22-2.2.7-2.amzn2023.0.3.x86_64.rpm                                         64 MB/s | 6.4 MB     00:00
+(12/15): libstdc++-devel-11.5.0-5.amzn2023.0.5.x86_64.rpm                                44 MB/s | 2.2 MB     00:00
+(13/15): libxcrypt-devel-4.4.33-7.amzn2023.x86_64.rpm                                   1.3 MB/s |  32 kB     00:00
+(14/15): gcc-11.5.0-5.amzn2023.0.5.x86_64.rpm                                            70 MB/s |  36 MB     00:00
+(15/15): make-4.3-5.amzn2023.0.2.x86_64.rpm                                             3.3 MB/s | 534 kB     00:00
+------------------------------------------------------------------------------------------------------------------------
+Total                                                                                   122 MB/s |  74 MB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                1/1
+  Installing       : libmpc-1.2.1-2.amzn2023.0.2.x86_64                                                            1/15
+  Installing       : cpp-11.5.0-5.amzn2023.0.5.x86_64                                                              2/15
+  Installing       : libstdc++-devel-11.5.0-5.amzn2023.0.5.x86_64                                                  3/15
+  Installing       : kernel-headers-1:6.1.158-178.288.amzn2023.x86_64                                              4/15
+  Installing       : glibc-headers-x86-2.34-231.amzn2023.0.1.noarch                                                5/15
+  Installing       : libxcrypt-devel-4.4.33-7.amzn2023.x86_64                                                      6/15
+  Installing       : glibc-devel-2.34-231.amzn2023.0.1.x86_64                                                      7/15
+  Installing       : gc-8.0.4-5.amzn2023.0.2.x86_64                                                                8/15
+  Installing       : guile22-2.2.7-2.amzn2023.0.3.x86_64                                                           9/15
+  Installing       : make-1:4.3-5.amzn2023.0.2.x86_64                                                             10/15
+  Installing       : gcc-11.5.0-5.amzn2023.0.5.x86_64                                                             11/15
+  Running scriptlet: gcc-11.5.0-5.amzn2023.0.5.x86_64                                                             11/15
+  Installing       : annobin-docs-12.69-1.amzn2023.0.1.noarch                                                     12/15
+  Installing       : annobin-plugin-gcc-12.69-1.amzn2023.0.1.x86_64                                               13/15
+  Running scriptlet: annobin-plugin-gcc-12.69-1.amzn2023.0.1.x86_64                                               13/15
+  Installing       : gcc-c++-11.5.0-5.amzn2023.0.5.x86_64                                                         14/15
+  Installing       : gcc-plugin-annobin-11.5.0-5.amzn2023.0.5.x86_64                                              15/15
+  Running scriptlet: gcc-plugin-annobin-11.5.0-5.amzn2023.0.5.x86_64                                              15/15
+  Verifying        : annobin-docs-12.69-1.amzn2023.0.1.noarch                                                      1/15
+  Verifying        : annobin-plugin-gcc-12.69-1.amzn2023.0.1.x86_64                                                2/15
+  Verifying        : cpp-11.5.0-5.amzn2023.0.5.x86_64                                                              3/15
+  Verifying        : gc-8.0.4-5.amzn2023.0.2.x86_64                                                                4/15
+  Verifying        : gcc-11.5.0-5.amzn2023.0.5.x86_64                                                              5/15
+  Verifying        : gcc-c++-11.5.0-5.amzn2023.0.5.x86_64                                                          6/15
+  Verifying        : gcc-plugin-annobin-11.5.0-5.amzn2023.0.5.x86_64                                               7/15
+  Verifying        : glibc-devel-2.34-231.amzn2023.0.1.x86_64                                                      8/15
+  Verifying        : glibc-headers-x86-2.34-231.amzn2023.0.1.noarch                                                9/15
+  Verifying        : guile22-2.2.7-2.amzn2023.0.3.x86_64                                                          10/15
+  Verifying        : kernel-headers-1:6.1.158-178.288.amzn2023.x86_64                                             11/15
+  Verifying        : libmpc-1.2.1-2.amzn2023.0.2.x86_64                                                           12/15
+  Verifying        : libstdc++-devel-11.5.0-5.amzn2023.0.5.x86_64                                                 13/15
+  Verifying        : libxcrypt-devel-4.4.33-7.amzn2023.x86_64                                                     14/15
+  Verifying        : make-1:4.3-5.amzn2023.0.2.x86_64                                                             15/15
+
+Installed:
+  annobin-docs-12.69-1.amzn2023.0.1.noarch                    annobin-plugin-gcc-12.69-1.amzn2023.0.1.x86_64
+  cpp-11.5.0-5.amzn2023.0.5.x86_64                            gc-8.0.4-5.amzn2023.0.2.x86_64
+  gcc-11.5.0-5.amzn2023.0.5.x86_64                            gcc-c++-11.5.0-5.amzn2023.0.5.x86_64
+  gcc-plugin-annobin-11.5.0-5.amzn2023.0.5.x86_64             glibc-devel-2.34-231.amzn2023.0.1.x86_64
+  glibc-headers-x86-2.34-231.amzn2023.0.1.noarch              guile22-2.2.7-2.amzn2023.0.3.x86_64
+  kernel-headers-1:6.1.158-178.288.amzn2023.x86_64            libmpc-1.2.1-2.amzn2023.0.2.x86_64
+  libstdc++-devel-11.5.0-5.amzn2023.0.5.x86_64                libxcrypt-devel-4.4.33-7.amzn2023.x86_64
+  make-1:4.3-5.amzn2023.0.2.x86_64
+
+Complete!
+[ec2-user@ip-172-31-65-2 ~]$ pip3 install --no-cache-dir numpy
+Defaulting to user installation because normal site-packages is not writeable
+Collecting numpy
+  Downloading numpy-2.0.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (19.5 MB)
+     |████████████████████████████████| 19.5 MB 17.3 MB/s
+Installing collected packages: numpy
+Successfully installed numpy-2.0.2
+[ec2-user@ip-172-31-65-2 ~]$ pip3 install --no-cache-dir pandas
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pandas
+  Downloading pandas-2.3.3-cp39-cp39-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (12.8 MB)
+     |████████████████████████████████| 12.8 MB 18.6 MB/s
+Requirement already satisfied: numpy>=1.22.4 in ./.local/lib/python3.9/site-packages (from pandas) (2.0.2)
+Collecting tzdata>=2022.7
+  Downloading tzdata-2025.2-py2.py3-none-any.whl (347 kB)
+     |████████████████████████████████| 347 kB 129.9 MB/s
+Collecting python-dateutil>=2.8.2
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+     |████████████████████████████████| 229 kB 129.0 MB/s
+Requirement already satisfied: pytz>=2020.1 in /usr/lib/python3.9/site-packages (from pandas) (2022.7.1)
+Requirement already satisfied: six>=1.5 in /usr/lib/python3.9/site-packages (from python-dateutil>=2.8.2->pandas) (1.15.0)
+Installing collected packages: tzdata, python-dateutil, pandas
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+awscli 2.30.4 requires python-dateutil<=2.9.0,>=2.1, but you have python-dateutil 2.9.0.post0 which is incompatible.
+Successfully installed pandas-2.3.3 python-dateutil-2.9.0.post0 tzdata-2025.2
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum install -y atlas atlas-devel lapack-devel blas-devel
+pip3 install --no-cache-dir scipy
+Last metadata expiration check: 0:40:42 ago on Mon Nov 24 00:09:19 2025.
+Dependencies resolved.
+========================================================================================================================
+ Package                        Architecture        Version                              Repository                Size
+========================================================================================================================
+Installing:
+ atlas                          x86_64              3.10.3-18.amzn2023.0.2               amazonlinux              6.8 M
+ atlas-devel                    x86_64              3.10.3-18.amzn2023.0.2               amazonlinux              1.5 M
+ blas-devel                     x86_64              3.10.0-4.amzn2023.0.3                amazonlinux               21 k
+ lapack-devel                   x86_64              3.10.0-4.amzn2023.0.3                amazonlinux               81 k
+Installing dependencies:
+ blas                           x86_64              3.10.0-4.amzn2023.0.3                amazonlinux              362 k
+ blas64                         x86_64              3.10.0-4.amzn2023.0.3                amazonlinux              238 k
+ blas64_                        x86_64              3.10.0-4.amzn2023.0.3                amazonlinux              238 k
+ cmake-filesystem               x86_64              3.22.2-1.amzn2023.0.4                amazonlinux               16 k
+ gcc-gfortran                   x86_64              11.5.0-5.amzn2023.0.5                amazonlinux               15 M
+ lapack                         x86_64              3.10.0-4.amzn2023.0.3                amazonlinux              8.0 M
+ lapack64                       x86_64              3.10.0-4.amzn2023.0.3                amazonlinux              2.6 M
+ lapack64_                      x86_64              3.10.0-4.amzn2023.0.3                amazonlinux              2.6 M
+ libgfortran                    x86_64              14.2.1-7.amzn2023.0.2                amazonlinux              963 k
+ libquadmath                    x86_64              14.2.1-7.amzn2023.0.2                amazonlinux              210 k
+ libquadmath-devel              x86_64              11.5.0-5.amzn2023.0.5                amazonlinux              176 k
+
+Transaction Summary
+========================================================================================================================
+Install  15 Packages
+
+Total download size: 38 M
+Installed size: 109 M
+Downloading Packages:
+(1/15): blas-3.10.0-4.amzn2023.0.3.x86_64.rpm                                           6.6 MB/s | 362 kB     00:00
+(2/15): atlas-3.10.3-18.amzn2023.0.2.x86_64.rpm                                          51 MB/s | 6.8 MB     00:00
+(3/15): blas-devel-3.10.0-4.amzn2023.0.3.x86_64.rpm                                     263 kB/s |  21 kB     00:00
+(4/15): atlas-devel-3.10.3-18.amzn2023.0.2.x86_64.rpm                                   9.8 MB/s | 1.5 MB     00:00
+(5/15): blas64-3.10.0-4.amzn2023.0.3.x86_64.rpm                                         8.0 MB/s | 238 kB     00:00
+(6/15): cmake-filesystem-3.22.2-1.amzn2023.0.4.x86_64.rpm                               823 kB/s |  16 kB     00:00
+(7/15): blas64_-3.10.0-4.amzn2023.0.3.x86_64.rpm                                        3.8 MB/s | 238 kB     00:00
+(8/15): lapack-devel-3.10.0-4.amzn2023.0.3.x86_64.rpm                                   1.5 MB/s |  81 kB     00:00
+(9/15): lapack-3.10.0-4.amzn2023.0.3.x86_64.rpm                                          31 MB/s | 8.0 MB     00:00
+(10/15): lapack64-3.10.0-4.amzn2023.0.3.x86_64.rpm                                       13 MB/s | 2.6 MB     00:00
+(11/15): gcc-gfortran-11.5.0-5.amzn2023.0.5.x86_64.rpm                                   38 MB/s |  15 MB     00:00
+(12/15): libgfortran-14.2.1-7.amzn2023.0.2.x86_64.rpm                                   9.3 MB/s | 963 kB     00:00
+(13/15): lapack64_-3.10.0-4.amzn2023.0.3.x86_64.rpm                                      18 MB/s | 2.6 MB     00:00
+(14/15): libquadmath-14.2.1-7.amzn2023.0.2.x86_64.rpm                                   5.2 MB/s | 210 kB     00:00
+(15/15): libquadmath-devel-11.5.0-5.amzn2023.0.5.x86_64.rpm                             5.1 MB/s | 176 kB     00:00
+------------------------------------------------------------------------------------------------------------------------
+Total                                                                                    61 MB/s |  38 MB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                1/1
+  Installing       : libgfortran-14.2.1-7.amzn2023.0.2.x86_64                                                      1/15
+  Installing       : blas-3.10.0-4.amzn2023.0.3.x86_64                                                             2/15
+  Installing       : blas64-3.10.0-4.amzn2023.0.3.x86_64                                                           3/15
+  Installing       : blas64_-3.10.0-4.amzn2023.0.3.x86_64                                                          4/15
+  Installing       : libquadmath-14.2.1-7.amzn2023.0.2.x86_64                                                      5/15
+  Installing       : cmake-filesystem-3.22.2-1.amzn2023.0.4.x86_64                                                 6/15
+  Installing       : libquadmath-devel-11.5.0-5.amzn2023.0.5.x86_64                                                7/15
+  Installing       : gcc-gfortran-11.5.0-5.amzn2023.0.5.x86_64                                                     8/15
+  Installing       : blas-devel-3.10.0-4.amzn2023.0.3.x86_64                                                       9/15
+  Installing       : lapack64_-3.10.0-4.amzn2023.0.3.x86_64                                                       10/15
+  Installing       : lapack64-3.10.0-4.amzn2023.0.3.x86_64                                                        11/15
+  Installing       : lapack-3.10.0-4.amzn2023.0.3.x86_64                                                          12/15
+  Installing       : atlas-3.10.3-18.amzn2023.0.2.x86_64                                                          13/15
+  Running scriptlet: atlas-3.10.3-18.amzn2023.0.2.x86_64                                                          13/15
+  Installing       : atlas-devel-3.10.3-18.amzn2023.0.2.x86_64                                                    14/15
+  Installing       : lapack-devel-3.10.0-4.amzn2023.0.3.x86_64                                                    15/15
+  Running scriptlet: atlas-devel-3.10.3-18.amzn2023.0.2.x86_64                                                    15/15
+  Running scriptlet: lapack-devel-3.10.0-4.amzn2023.0.3.x86_64                                                    15/15
+  Verifying        : atlas-3.10.3-18.amzn2023.0.2.x86_64                                                           1/15
+  Verifying        : atlas-devel-3.10.3-18.amzn2023.0.2.x86_64                                                     2/15
+  Verifying        : blas-3.10.0-4.amzn2023.0.3.x86_64                                                             3/15
+  Verifying        : blas-devel-3.10.0-4.amzn2023.0.3.x86_64                                                       4/15
+  Verifying        : blas64-3.10.0-4.amzn2023.0.3.x86_64                                                           5/15
+  Verifying        : blas64_-3.10.0-4.amzn2023.0.3.x86_64                                                          6/15
+  Verifying        : cmake-filesystem-3.22.2-1.amzn2023.0.4.x86_64                                                 7/15
+  Verifying        : gcc-gfortran-11.5.0-5.amzn2023.0.5.x86_64                                                     8/15
+  Verifying        : lapack-3.10.0-4.amzn2023.0.3.x86_64                                                           9/15
+  Verifying        : lapack-devel-3.10.0-4.amzn2023.0.3.x86_64                                                    10/15
+  Verifying        : lapack64-3.10.0-4.amzn2023.0.3.x86_64                                                        11/15
+  Verifying        : lapack64_-3.10.0-4.amzn2023.0.3.x86_64                                                       12/15
+  Verifying        : libgfortran-14.2.1-7.amzn2023.0.2.x86_64                                                     13/15
+  Verifying        : libquadmath-14.2.1-7.amzn2023.0.2.x86_64                                                     14/15
+  Verifying        : libquadmath-devel-11.5.0-5.amzn2023.0.5.x86_64                                               15/15
+
+Installed:
+  atlas-3.10.3-18.amzn2023.0.2.x86_64                           atlas-devel-3.10.3-18.amzn2023.0.2.x86_64
+  blas-3.10.0-4.amzn2023.0.3.x86_64                             blas-devel-3.10.0-4.amzn2023.0.3.x86_64
+  blas64-3.10.0-4.amzn2023.0.3.x86_64                           blas64_-3.10.0-4.amzn2023.0.3.x86_64
+  cmake-filesystem-3.22.2-1.amzn2023.0.4.x86_64                 gcc-gfortran-11.5.0-5.amzn2023.0.5.x86_64
+  lapack-3.10.0-4.amzn2023.0.3.x86_64                           lapack-devel-3.10.0-4.amzn2023.0.3.x86_64
+  lapack64-3.10.0-4.amzn2023.0.3.x86_64                         lapack64_-3.10.0-4.amzn2023.0.3.x86_64
+  libgfortran-14.2.1-7.amzn2023.0.2.x86_64                      libquadmath-14.2.1-7.amzn2023.0.2.x86_64
+  libquadmath-devel-11.5.0-5.amzn2023.0.5.x86_64
+
+Complete!
+Defaulting to user installation because normal site-packages is not writeable
+Collecting scipy
+  Downloading scipy-1.13.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (38.6 MB)
+     |████████████████████████████████| 38.6 MB 12.8 MB/s
+Requirement already satisfied: numpy<2.3,>=1.22.4 in ./.local/lib/python3.9/site-packages (from scipy) (2.0.2)
+Installing collected packages: scipy
+Successfully installed scipy-1.13.1
+[ec2-user@ip-172-31-65-2 ~]$ ^C
+[ec2-user@ip-172-31-65-2 ~]$ ~/spark-3.5.0-bin-hadoop3/bin/spark-submit \
+  --master local[*] \
+  predict_wine.py \
+  ./ValidationDataset.csv \
+  ./wine_rf_model_rf1
+25/11/24 00:51:01 INFO SparkContext: Running Spark version 3.5.0
+25/11/24 00:51:01 INFO SparkContext: OS info Linux, 6.1.158-178.288.amzn2023.x86_64, amd64
+25/11/24 00:51:01 INFO SparkContext: Java version 1.8.0_472
+25/11/24 00:51:01 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/11/24 00:51:02 INFO ResourceUtils: ==============================================================
+25/11/24 00:51:02 INFO ResourceUtils: No custom resources configured for spark.driver.
+25/11/24 00:51:02 INFO ResourceUtils: ==============================================================
+25/11/24 00:51:02 INFO SparkContext: Submitted application: WineQuality_RF_Prediction
+25/11/24 00:51:02 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+25/11/24 00:51:02 INFO ResourceProfile: Limiting resource is cpu
+25/11/24 00:51:02 INFO ResourceProfileManager: Added ResourceProfile id: 0
+25/11/24 00:51:02 INFO SecurityManager: Changing view acls to: ec2-user
+25/11/24 00:51:02 INFO SecurityManager: Changing modify acls to: ec2-user
+25/11/24 00:51:02 INFO SecurityManager: Changing view acls groups to:
+25/11/24 00:51:02 INFO SecurityManager: Changing modify acls groups to:
+25/11/24 00:51:02 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: ec2-user; groups with view permissions: EMPTY; users with modify permissions: ec2-user; groups with modify permissions: EMPTY
+25/11/24 00:51:02 INFO Utils: Successfully started service 'sparkDriver' on port 36691.
+25/11/24 00:51:03 INFO SparkEnv: Registering MapOutputTracker
+25/11/24 00:51:03 INFO SparkEnv: Registering BlockManagerMaster
+25/11/24 00:51:03 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+25/11/24 00:51:03 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+25/11/24 00:51:03 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+25/11/24 00:51:03 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-7901da11-f7a3-47b6-ae3a-a35148eeed72
+25/11/24 00:51:03 INFO MemoryStore: MemoryStore started with capacity 413.9 MiB
+25/11/24 00:51:03 INFO SparkEnv: Registering OutputCommitCoordinator
+25/11/24 00:51:04 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+25/11/24 00:51:04 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+25/11/24 00:51:04 INFO Executor: Starting executor ID driver on host ip-172-31-65-2.ec2.internal
+25/11/24 00:51:04 INFO Executor: OS info Linux, 6.1.158-178.288.amzn2023.x86_64, amd64
+25/11/24 00:51:04 INFO Executor: Java version 1.8.0_472
+25/11/24 00:51:04 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+25/11/24 00:51:04 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@4d20f9fe for default.
+25/11/24 00:51:04 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 41985.
+25/11/24 00:51:04 INFO NettyBlockTransferService: Server created on ip-172-31-65-2.ec2.internal:41985
+25/11/24 00:51:04 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+25/11/24 00:51:04 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, ip-172-31-65-2.ec2.internal, 41985, None)
+25/11/24 00:51:04 INFO BlockManagerMasterEndpoint: Registering block manager ip-172-31-65-2.ec2.internal:41985 with 413.9 MiB RAM, BlockManagerId(driver, ip-172-31-65-2.ec2.internal, 41985, None)
+25/11/24 00:51:04 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, ip-172-31-65-2.ec2.internal, 41985, None)
+25/11/24 00:51:04 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, ip-172-31-65-2.ec2.internal, 41985, None)
+=== Loading and preprocessing test data ===
+=== Loading data from ./ValidationDataset.csv ===
+25/11/24 00:51:05 INFO SharedState: Setting hive.metastore.warehouse.dir ('null') to the value of spark.sql.warehouse.dir.
+25/11/24 00:51:05 INFO SharedState: Warehouse path is 'file:/home/ec2-user/spark-warehouse'.
+25/11/24 00:51:07 INFO InMemoryFileIndex: It took 66 ms to list leaf files for 1 paths.
+25/11/24 00:51:07 INFO InMemoryFileIndex: It took 2 ms to list leaf files for 1 paths.
+25/11/24 00:51:12 INFO FileSourceStrategy: Pushed Filters:
+25/11/24 00:51:12 INFO FileSourceStrategy: Post-Scan Filters: (length(trim(value#0, None)) > 0)
+25/11/24 00:51:13 INFO CodeGenerator: Code generated in 547.008176 ms
+25/11/24 00:51:13 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 350.1 KiB, free 413.6 MiB)
+25/11/24 00:51:13 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 34.3 KiB, free 413.5 MiB)
+25/11/24 00:51:13 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 34.3 KiB, free: 413.9 MiB)
+25/11/24 00:51:13 INFO SparkContext: Created broadcast 0 from csv at NativeMethodAccessorImpl.java:0
+25/11/24 00:51:13 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes.
+25/11/24 00:51:14 INFO SparkContext: Starting job: csv at NativeMethodAccessorImpl.java:0
+25/11/24 00:51:14 INFO DAGScheduler: Got job 0 (csv at NativeMethodAccessorImpl.java:0) with 1 output partitions
+25/11/24 00:51:14 INFO DAGScheduler: Final stage: ResultStage 0 (csv at NativeMethodAccessorImpl.java:0)
+25/11/24 00:51:14 INFO DAGScheduler: Parents of final stage: List()
+25/11/24 00:51:14 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:14 INFO DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[3] at csv at NativeMethodAccessorImpl.java:0), which has no missing parents
+25/11/24 00:51:14 INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 13.5 KiB, free 413.5 MiB)
+25/11/24 00:51:14 INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 6.4 KiB, free 413.5 MiB)
+25/11/24 00:51:14 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 6.4 KiB, free: 413.9 MiB)
+25/11/24 00:51:14 INFO SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:14 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[3] at csv at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:14 INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks resource profile 0
+25/11/24 00:51:14 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 8221 bytes)
+25/11/24 00:51:14 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+25/11/24 00:51:15 INFO CodeGenerator: Code generated in 37.59766 ms
+25/11/24 00:51:15 INFO FileScanRDD: Reading File path: file:///home/ec2-user/ValidationDataset.csv, range: 0-8662, partition values: [empty row]
+25/11/24 00:51:15 INFO CodeGenerator: Code generated in 31.266396 ms
+25/11/24 00:51:15 INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 1788 bytes result sent to driver
+25/11/24 00:51:15 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 992 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:15 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+25/11/24 00:51:15 INFO DAGScheduler: ResultStage 0 (csv at NativeMethodAccessorImpl.java:0) finished in 1.255 s
+25/11/24 00:51:15 INFO DAGScheduler: Job 0 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:15 INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
+25/11/24 00:51:15 INFO DAGScheduler: Job 0 finished: csv at NativeMethodAccessorImpl.java:0, took 1.319446 s
+25/11/24 00:51:15 INFO CodeGenerator: Code generated in 38.571165 ms
+25/11/24 00:51:15 INFO FileSourceStrategy: Pushed Filters:
+25/11/24 00:51:15 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/24 00:51:15 INFO MemoryStore: Block broadcast_2 stored as values in memory (estimated size 350.1 KiB, free 413.2 MiB)
+25/11/24 00:51:15 INFO MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 34.3 KiB, free 413.2 MiB)
+25/11/24 00:51:15 INFO BlockManagerInfo: Added broadcast_2_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 34.3 KiB, free: 413.9 MiB)
+25/11/24 00:51:15 INFO SparkContext: Created broadcast 2 from csv at NativeMethodAccessorImpl.java:0
+25/11/24 00:51:15 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes.
+25/11/24 00:51:15 INFO SparkContext: Starting job: csv at NativeMethodAccessorImpl.java:0
+25/11/24 00:51:15 INFO DAGScheduler: Got job 1 (csv at NativeMethodAccessorImpl.java:0) with 1 output partitions
+25/11/24 00:51:15 INFO DAGScheduler: Final stage: ResultStage 1 (csv at NativeMethodAccessorImpl.java:0)
+25/11/24 00:51:15 INFO DAGScheduler: Parents of final stage: List()
+25/11/24 00:51:15 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:16 INFO DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[9] at csv at NativeMethodAccessorImpl.java:0), which has no missing parents
+25/11/24 00:51:16 INFO MemoryStore: Block broadcast_3 stored as values in memory (estimated size 27.5 KiB, free 413.1 MiB)
+25/11/24 00:51:16 INFO MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 12.7 KiB, free 413.1 MiB)
+25/11/24 00:51:16 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 12.7 KiB, free: 413.8 MiB)
+25/11/24 00:51:16 INFO SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:16 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[9] at csv at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:16 INFO TaskSchedulerImpl: Adding task set 1.0 with 1 tasks resource profile 0
+25/11/24 00:51:16 INFO TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 8221 bytes)
+25/11/24 00:51:16 INFO Executor: Running task 0.0 in stage 1.0 (TID 1)
+25/11/24 00:51:16 INFO CodeGenerator: Code generated in 27.535177 ms
+25/11/24 00:51:16 INFO FileScanRDD: Reading File path: file:///home/ec2-user/ValidationDataset.csv, range: 0-8662, partition values: [empty row]
+25/11/24 00:51:16 INFO Executor: Finished task 0.0 in stage 1.0 (TID 1). 1704 bytes result sent to driver
+25/11/24 00:51:16 INFO TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 343 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:16 INFO DAGScheduler: ResultStage 1 (csv at NativeMethodAccessorImpl.java:0) finished in 0.502 s
+25/11/24 00:51:16 INFO DAGScheduler: Job 1 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:16 INFO TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+25/11/24 00:51:16 INFO TaskSchedulerImpl: Killing all running tasks in stage 1: Stage finished
+25/11/24 00:51:16 INFO DAGScheduler: Job 1 finished: csv at NativeMethodAccessorImpl.java:0, took 0.561153 s
+25/11/24 00:51:17 INFO FileSourceStrategy: Pushed Filters:
+25/11/24 00:51:17 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/24 00:51:17 INFO CodeGenerator: Code generated in 106.446692 ms
+25/11/24 00:51:17 INFO MemoryStore: Block broadcast_4 stored as values in memory (estimated size 350.0 KiB, free 412.8 MiB)
+25/11/24 00:51:17 INFO MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 34.3 KiB, free 412.7 MiB)
+25/11/24 00:51:17 INFO BlockManagerInfo: Added broadcast_4_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 34.3 KiB, free: 413.8 MiB)
+25/11/24 00:51:17 INFO SparkContext: Created broadcast 4 from first at StandardScaler.scala:113
+25/11/24 00:51:17 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes.
+25/11/24 00:51:18 INFO DAGScheduler: Registering RDD 14 (first at StandardScaler.scala:113) as input to shuffle 0
+25/11/24 00:51:18 INFO DAGScheduler: Got map stage job 2 (first at StandardScaler.scala:113) with 1 output partitions
+25/11/24 00:51:18 INFO DAGScheduler: Final stage: ShuffleMapStage 2 (first at StandardScaler.scala:113)
+25/11/24 00:51:18 INFO DAGScheduler: Parents of final stage: List()
+25/11/24 00:51:18 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:18 INFO DAGScheduler: Submitting ShuffleMapStage 2 (MapPartitionsRDD[14] at first at StandardScaler.scala:113), which has no missing parents
+25/11/24 00:51:18 INFO MemoryStore: Block broadcast_5 stored as values in memory (estimated size 51.5 KiB, free 412.7 MiB)
+25/11/24 00:51:18 INFO MemoryStore: Block broadcast_5_piece0 stored as bytes in memory (estimated size 22.6 KiB, free 412.7 MiB)
+25/11/24 00:51:18 INFO BlockManagerInfo: Added broadcast_5_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 22.6 KiB, free: 413.8 MiB)
+25/11/24 00:51:18 INFO SparkContext: Created broadcast 5 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:18 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 2 (MapPartitionsRDD[14] at first at StandardScaler.scala:113) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:18 INFO TaskSchedulerImpl: Adding task set 2.0 with 1 tasks resource profile 0
+25/11/24 00:51:18 INFO TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 8210 bytes)
+25/11/24 00:51:18 INFO Executor: Running task 0.0 in stage 2.0 (TID 2)
+25/11/24 00:51:18 INFO CodeGenerator: Code generated in 58.537891 ms
+25/11/24 00:51:18 INFO FileScanRDD: Reading File path: file:///home/ec2-user/ValidationDataset.csv, range: 0-8662, partition values: [empty row]
+25/11/24 00:51:18 INFO CodeGenerator: Code generated in 33.03126 ms
+25/11/24 00:51:18 INFO CodeGenerator: Code generated in 16.899546 ms
+25/11/24 00:51:18 INFO CodeGenerator: Code generated in 14.47264 ms
+25/11/24 00:51:18 INFO CodeGenerator: Code generated in 17.968175 ms
+25/11/24 00:51:18 INFO CodeGenerator: Code generated in 15.698476 ms
+25/11/24 00:51:18 INFO Executor: Finished task 0.0 in stage 2.0 (TID 2). 2419 bytes result sent to driver
+25/11/24 00:51:18 INFO TaskSetManager: Finished task 0.0 in stage 2.0 (TID 2) in 598 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:18 INFO DAGScheduler: ShuffleMapStage 2 (first at StandardScaler.scala:113) finished in 0.676 s
+25/11/24 00:51:18 INFO DAGScheduler: looking for newly runnable stages
+25/11/24 00:51:18 INFO DAGScheduler: running: Set()
+25/11/24 00:51:18 INFO DAGScheduler: waiting: Set()
+25/11/24 00:51:18 INFO DAGScheduler: failed: Set()
+25/11/24 00:51:18 INFO TaskSchedulerImpl: Removed TaskSet 2.0, whose tasks have all completed, from pool
+25/11/24 00:51:18 INFO CodeGenerator: Code generated in 25.838591 ms
+25/11/24 00:51:18 INFO SparkContext: Starting job: first at StandardScaler.scala:113
+25/11/24 00:51:18 INFO DAGScheduler: Got job 3 (first at StandardScaler.scala:113) with 1 output partitions
+25/11/24 00:51:18 INFO DAGScheduler: Final stage: ResultStage 4 (first at StandardScaler.scala:113)
+25/11/24 00:51:18 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 3)
+25/11/24 00:51:18 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:18 INFO DAGScheduler: Submitting ResultStage 4 (MapPartitionsRDD[18] at first at StandardScaler.scala:113), which has no missing parents
+25/11/24 00:51:18 INFO MemoryStore: Block broadcast_6 stored as values in memory (estimated size 53.8 KiB, free 412.6 MiB)
+25/11/24 00:51:19 INFO MemoryStore: Block broadcast_6_piece0 stored as bytes in memory (estimated size 23.7 KiB, free 412.6 MiB)
+25/11/24 00:51:19 INFO BlockManagerInfo: Added broadcast_6_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 23.7 KiB, free: 413.8 MiB)
+25/11/24 00:51:19 INFO SparkContext: Created broadcast 6 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:19 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 4 (MapPartitionsRDD[18] at first at StandardScaler.scala:113) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:19 INFO TaskSchedulerImpl: Adding task set 4.0 with 1 tasks resource profile 0
+25/11/24 00:51:19 INFO TaskSetManager: Starting task 0.0 in stage 4.0 (TID 3) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, NODE_LOCAL, 7615 bytes)
+25/11/24 00:51:19 INFO Executor: Running task 0.0 in stage 4.0 (TID 3)
+25/11/24 00:51:19 INFO ShuffleBlockFetcherIterator: Getting 1 (868.0 B) non-empty blocks including 1 (868.0 B) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/24 00:51:19 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 40 ms
+25/11/24 00:51:19 INFO CodeGenerator: Code generated in 47.720821 ms
+25/11/24 00:51:19 INFO CodeGenerator: Code generated in 54.656004 ms
+25/11/24 00:51:19 INFO Executor: Finished task 0.0 in stage 4.0 (TID 3). 5013 bytes result sent to driver
+25/11/24 00:51:19 INFO TaskSetManager: Finished task 0.0 in stage 4.0 (TID 3) in 326 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:19 INFO TaskSchedulerImpl: Removed TaskSet 4.0, whose tasks have all completed, from pool
+25/11/24 00:51:19 INFO DAGScheduler: ResultStage 4 (first at StandardScaler.scala:113) finished in 0.402 s
+25/11/24 00:51:19 INFO DAGScheduler: Job 3 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:19 INFO TaskSchedulerImpl: Killing all running tasks in stage 4: Stage finished
+25/11/24 00:51:19 INFO DAGScheduler: Job 3 finished: first at StandardScaler.scala:113, took 0.455424 s
+25/11/24 00:51:19 INFO CodeGenerator: Code generated in 44.468181 ms
+25/11/24 00:51:19 INFO BlockManagerInfo: Removed broadcast_6_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 23.7 KiB, free: 413.8 MiB)
+=== Loading trained Random Forest model from ./wine_rf_model_rf1 ===
+25/11/24 00:51:19 INFO MemoryStore: Block broadcast_7 stored as values in memory (estimated size 358.2 KiB, free 412.3 MiB)
+25/11/24 00:51:19 INFO MemoryStore: Block broadcast_7_piece0 stored as bytes in memory (estimated size 32.6 KiB, free 412.3 MiB)
+25/11/24 00:51:19 INFO BlockManagerInfo: Added broadcast_7_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 32.6 KiB, free: 413.8 MiB)
+25/11/24 00:51:19 INFO SparkContext: Created broadcast 7 from textFile at ReadWrite.scala:587
+25/11/24 00:51:20 INFO FileInputFormat: Total input files to process : 1
+25/11/24 00:51:20 INFO SparkContext: Starting job: first at ReadWrite.scala:587
+25/11/24 00:51:20 INFO DAGScheduler: Got job 4 (first at ReadWrite.scala:587) with 1 output partitions
+25/11/24 00:51:20 INFO DAGScheduler: Final stage: ResultStage 5 (first at ReadWrite.scala:587)
+25/11/24 00:51:20 INFO DAGScheduler: Parents of final stage: List()
+25/11/24 00:51:20 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:20 INFO DAGScheduler: Submitting ResultStage 5 (wine_rf_model_rf1/metadata MapPartitionsRDD[20] at textFile at ReadWrite.scala:587), which has no missing parents
+25/11/24 00:51:20 INFO MemoryStore: Block broadcast_8 stored as values in memory (estimated size 4.9 KiB, free 412.3 MiB)
+25/11/24 00:51:20 INFO MemoryStore: Block broadcast_8_piece0 stored as bytes in memory (estimated size 2.8 KiB, free 412.3 MiB)
+25/11/24 00:51:20 INFO BlockManagerInfo: Added broadcast_8_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 2.8 KiB, free: 413.7 MiB)
+25/11/24 00:51:20 INFO SparkContext: Created broadcast 8 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:20 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 5 (wine_rf_model_rf1/metadata MapPartitionsRDD[20] at textFile at ReadWrite.scala:587) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:20 INFO TaskSchedulerImpl: Adding task set 5.0 with 1 tasks resource profile 0
+25/11/24 00:51:20 INFO TaskSetManager: Starting task 0.0 in stage 5.0 (TID 4) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 7688 bytes)
+25/11/24 00:51:20 INFO Executor: Running task 0.0 in stage 5.0 (TID 4)
+25/11/24 00:51:20 INFO HadoopRDD: Input split: file:/home/ec2-user/wine_rf_model_rf1/metadata/part-00000:0+820
+25/11/24 00:51:20 INFO Executor: Finished task 0.0 in stage 5.0 (TID 4). 1760 bytes result sent to driver
+25/11/24 00:51:20 INFO TaskSetManager: Finished task 0.0 in stage 5.0 (TID 4) in 67 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:20 INFO TaskSchedulerImpl: Removed TaskSet 5.0, whose tasks have all completed, from pool
+25/11/24 00:51:20 INFO DAGScheduler: ResultStage 5 (first at ReadWrite.scala:587) finished in 0.096 s
+25/11/24 00:51:20 INFO DAGScheduler: Job 4 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:20 INFO TaskSchedulerImpl: Killing all running tasks in stage 5: Stage finished
+25/11/24 00:51:20 INFO DAGScheduler: Job 4 finished: first at ReadWrite.scala:587, took 0.107134 s
+25/11/24 00:51:20 INFO InMemoryFileIndex: It took 2 ms to list leaf files for 1 paths.
+25/11/24 00:51:20 INFO BlockManagerInfo: Removed broadcast_8_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 2.8 KiB, free: 413.8 MiB)
+25/11/24 00:51:20 INFO SparkContext: Starting job: parquet at treeModels.scala:520
+25/11/24 00:51:20 INFO DAGScheduler: Got job 5 (parquet at treeModels.scala:520) with 1 output partitions
+25/11/24 00:51:20 INFO DAGScheduler: Final stage: ResultStage 6 (parquet at treeModels.scala:520)
+25/11/24 00:51:20 INFO DAGScheduler: Parents of final stage: List()
+25/11/24 00:51:20 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:20 INFO DAGScheduler: Submitting ResultStage 6 (MapPartitionsRDD[22] at parquet at treeModels.scala:520), which has no missing parents
+25/11/24 00:51:20 INFO MemoryStore: Block broadcast_9 stored as values in memory (estimated size 103.1 KiB, free 412.2 MiB)
+25/11/24 00:51:20 INFO MemoryStore: Block broadcast_9_piece0 stored as bytes in memory (estimated size 37.1 KiB, free 412.1 MiB)
+25/11/24 00:51:20 INFO BlockManagerInfo: Added broadcast_9_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 37.1 KiB, free: 413.7 MiB)
+25/11/24 00:51:20 INFO SparkContext: Created broadcast 9 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:20 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 6 (MapPartitionsRDD[22] at parquet at treeModels.scala:520) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:20 INFO TaskSchedulerImpl: Adding task set 6.0 with 1 tasks resource profile 0
+25/11/24 00:51:20 INFO TaskSetManager: Starting task 0.0 in stage 6.0 (TID 5) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 7829 bytes)
+25/11/24 00:51:20 INFO Executor: Running task 0.0 in stage 6.0 (TID 5)
+25/11/24 00:51:21 INFO Executor: Finished task 0.0 in stage 6.0 (TID 5). 1842 bytes result sent to driver
+25/11/24 00:51:21 INFO TaskSetManager: Finished task 0.0 in stage 6.0 (TID 5) in 656 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:21 INFO TaskSchedulerImpl: Removed TaskSet 6.0, whose tasks have all completed, from pool
+25/11/24 00:51:21 INFO DAGScheduler: ResultStage 6 (parquet at treeModels.scala:520) finished in 0.694 s
+25/11/24 00:51:21 INFO DAGScheduler: Job 5 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:21 INFO TaskSchedulerImpl: Killing all running tasks in stage 6: Stage finished
+25/11/24 00:51:21 INFO DAGScheduler: Job 5 finished: parquet at treeModels.scala:520, took 0.701340 s
+25/11/24 00:51:21 INFO FileSourceStrategy: Pushed Filters:
+25/11/24 00:51:21 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/24 00:51:21 INFO CodeGenerator: Code generated in 46.512303 ms
+25/11/24 00:51:21 INFO MemoryStore: Block broadcast_10 stored as values in memory (estimated size 356.6 KiB, free 411.8 MiB)
+25/11/24 00:51:21 INFO MemoryStore: Block broadcast_10_piece0 stored as bytes in memory (estimated size 35.0 KiB, free 411.8 MiB)
+25/11/24 00:51:21 INFO BlockManagerInfo: Added broadcast_10_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 35.0 KiB, free: 413.7 MiB)
+25/11/24 00:51:21 INFO SparkContext: Created broadcast 10 from rdd at treeModels.scala:522
+25/11/24 00:51:21 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes.
+25/11/24 00:51:21 INFO SparkContext: Starting job: collect at treeModels.scala:527
+25/11/24 00:51:21 INFO DAGScheduler: Registering RDD 29 (map at treeModels.scala:523) as input to shuffle 1
+25/11/24 00:51:21 INFO DAGScheduler: Got job 6 (collect at treeModels.scala:527) with 1 output partitions
+25/11/24 00:51:21 INFO DAGScheduler: Final stage: ResultStage 8 (collect at treeModels.scala:527)
+25/11/24 00:51:21 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 7)
+25/11/24 00:51:21 INFO DAGScheduler: Missing parents: List(ShuffleMapStage 7)
+25/11/24 00:51:21 INFO DAGScheduler: Submitting ShuffleMapStage 7 (MapPartitionsRDD[29] at map at treeModels.scala:523), which has no missing parents
+25/11/24 00:51:21 INFO MemoryStore: Block broadcast_11 stored as values in memory (estimated size 31.6 KiB, free 411.7 MiB)
+25/11/24 00:51:21 INFO MemoryStore: Block broadcast_11_piece0 stored as bytes in memory (estimated size 13.7 KiB, free 411.7 MiB)
+25/11/24 00:51:21 INFO BlockManagerInfo: Added broadcast_11_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 13.7 KiB, free: 413.7 MiB)
+25/11/24 00:51:21 INFO SparkContext: Created broadcast 11 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:21 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 7 (MapPartitionsRDD[29] at map at treeModels.scala:523) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:21 INFO TaskSchedulerImpl: Adding task set 7.0 with 1 tasks resource profile 0
+25/11/24 00:51:21 INFO TaskSetManager: Starting task 0.0 in stage 7.0 (TID 6) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 8288 bytes)
+25/11/24 00:51:21 INFO Executor: Running task 0.0 in stage 7.0 (TID 6)
+25/11/24 00:51:21 INFO CodeGenerator: Code generated in 39.718981 ms
+25/11/24 00:51:22 INFO CodeGenerator: Code generated in 41.974441 ms
+25/11/24 00:51:22 INFO FileScanRDD: Reading File path: file:///home/ec2-user/wine_rf_model_rf1/treesMetadata/part-00000-86bde4a4-5da1-4ea7-9798-bac7c028f20a-c000.snappy.parquet, range: 0-23275, partition values: [empty row]
+25/11/24 00:51:22 INFO CodecPool: Got brand-new decompressor [.snappy]
+25/11/24 00:51:22 INFO Executor: Finished task 0.0 in stage 7.0 (TID 6). 1967 bytes result sent to driver
+25/11/24 00:51:22 INFO TaskSetManager: Finished task 0.0 in stage 7.0 (TID 6) in 1008 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:22 INFO TaskSchedulerImpl: Removed TaskSet 7.0, whose tasks have all completed, from pool
+25/11/24 00:51:22 INFO DAGScheduler: ShuffleMapStage 7 (map at treeModels.scala:523) finished in 1.090 s
+25/11/24 00:51:22 INFO DAGScheduler: looking for newly runnable stages
+25/11/24 00:51:22 INFO DAGScheduler: running: Set()
+25/11/24 00:51:22 INFO DAGScheduler: waiting: Set(ResultStage 8)
+25/11/24 00:51:22 INFO DAGScheduler: failed: Set()
+25/11/24 00:51:22 INFO DAGScheduler: Submitting ResultStage 8 (MapPartitionsRDD[31] at values at treeModels.scala:527), which has no missing parents
+25/11/24 00:51:22 INFO MemoryStore: Block broadcast_12 stored as values in memory (estimated size 5.6 KiB, free 411.7 MiB)
+25/11/24 00:51:22 INFO MemoryStore: Block broadcast_12_piece0 stored as bytes in memory (estimated size 3.1 KiB, free 411.7 MiB)
+25/11/24 00:51:22 INFO BlockManagerInfo: Added broadcast_12_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 3.1 KiB, free: 413.7 MiB)
+25/11/24 00:51:22 INFO SparkContext: Created broadcast 12 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:22 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 8 (MapPartitionsRDD[31] at values at treeModels.scala:527) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:22 INFO TaskSchedulerImpl: Adding task set 8.0 with 1 tasks resource profile 0
+25/11/24 00:51:22 INFO TaskSetManager: Starting task 0.0 in stage 8.0 (TID 7) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, NODE_LOCAL, 7433 bytes)
+25/11/24 00:51:22 INFO Executor: Running task 0.0 in stage 8.0 (TID 7)
+25/11/24 00:51:23 INFO ShuffleBlockFetcherIterator: Getting 1 (74.8 KiB) non-empty blocks including 1 (74.8 KiB) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/24 00:51:23 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 1 ms
+25/11/24 00:51:23 INFO Executor: Finished task 0.0 in stage 8.0 (TID 7). 376894 bytes result sent to driver
+25/11/24 00:51:23 INFO TaskSetManager: Finished task 0.0 in stage 8.0 (TID 7) in 897 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:23 INFO DAGScheduler: ResultStage 8 (collect at treeModels.scala:527) finished in 0.925 s
+25/11/24 00:51:23 INFO DAGScheduler: Job 6 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:23 INFO TaskSchedulerImpl: Removed TaskSet 8.0, whose tasks have all completed, from pool
+25/11/24 00:51:23 INFO TaskSchedulerImpl: Killing all running tasks in stage 8: Stage finished
+25/11/24 00:51:23 INFO DAGScheduler: Job 6 finished: collect at treeModels.scala:527, took 2.049823 s
+25/11/24 00:51:23 INFO InMemoryFileIndex: It took 1 ms to list leaf files for 1 paths.
+25/11/24 00:51:23 INFO SparkContext: Starting job: parquet at treeModels.scala:532
+25/11/24 00:51:23 INFO DAGScheduler: Got job 7 (parquet at treeModels.scala:532) with 1 output partitions
+25/11/24 00:51:23 INFO DAGScheduler: Final stage: ResultStage 9 (parquet at treeModels.scala:532)
+25/11/24 00:51:23 INFO DAGScheduler: Parents of final stage: List()
+25/11/24 00:51:23 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:23 INFO DAGScheduler: Submitting ResultStage 9 (MapPartitionsRDD[33] at parquet at treeModels.scala:532), which has no missing parents
+25/11/24 00:51:24 INFO MemoryStore: Block broadcast_13 stored as values in memory (estimated size 103.1 KiB, free 411.6 MiB)
+25/11/24 00:51:24 INFO MemoryStore: Block broadcast_13_piece0 stored as bytes in memory (estimated size 37.1 KiB, free 411.6 MiB)
+25/11/24 00:51:24 INFO BlockManagerInfo: Added broadcast_13_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 37.1 KiB, free: 413.6 MiB)
+25/11/24 00:51:24 INFO SparkContext: Created broadcast 13 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:24 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 9 (MapPartitionsRDD[33] at parquet at treeModels.scala:532) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:24 INFO TaskSchedulerImpl: Adding task set 9.0 with 1 tasks resource profile 0
+25/11/24 00:51:24 INFO TaskSetManager: Starting task 0.0 in stage 9.0 (TID 8) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 7820 bytes)
+25/11/24 00:51:24 INFO Executor: Running task 0.0 in stage 9.0 (TID 8)
+25/11/24 00:51:24 INFO Executor: Finished task 0.0 in stage 9.0 (TID 8). 2431 bytes result sent to driver
+25/11/24 00:51:24 INFO TaskSetManager: Finished task 0.0 in stage 9.0 (TID 8) in 48 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:24 INFO DAGScheduler: ResultStage 9 (parquet at treeModels.scala:532) finished in 0.091 s
+25/11/24 00:51:24 INFO DAGScheduler: Job 7 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:24 INFO TaskSchedulerImpl: Removed TaskSet 9.0, whose tasks have all completed, from pool
+25/11/24 00:51:24 INFO TaskSchedulerImpl: Killing all running tasks in stage 9: Stage finished
+25/11/24 00:51:24 INFO DAGScheduler: Job 7 finished: parquet at treeModels.scala:532, took 0.122112 s
+25/11/24 00:51:24 INFO BlockManagerInfo: Removed broadcast_13_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 37.1 KiB, free: 413.7 MiB)
+25/11/24 00:51:24 INFO FileSourceStrategy: Pushed Filters:
+25/11/24 00:51:24 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/24 00:51:24 INFO CodeGenerator: Code generated in 48.523149 ms
+25/11/24 00:51:24 INFO MemoryStore: Block broadcast_14 stored as values in memory (estimated size 360.1 KiB, free 411.4 MiB)
+25/11/24 00:51:24 INFO MemoryStore: Block broadcast_14_piece0 stored as bytes in memory (estimated size 35.5 KiB, free 411.3 MiB)
+25/11/24 00:51:24 INFO BlockManagerInfo: Added broadcast_14_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 35.5 KiB, free: 413.6 MiB)
+25/11/24 00:51:24 INFO SparkContext: Created broadcast 14 from rdd at treeModels.scala:543
+25/11/24 00:51:24 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes.
+25/11/24 00:51:24 INFO SparkContext: Starting job: collect at treeModels.scala:549
+25/11/24 00:51:24 INFO DAGScheduler: Registering RDD 40 (map at treeModels.scala:544) as input to shuffle 3
+25/11/24 00:51:24 INFO DAGScheduler: Registering RDD 42 (map at treeModels.scala:546) as input to shuffle 2
+25/11/24 00:51:24 INFO DAGScheduler: Got job 8 (collect at treeModels.scala:549) with 1 output partitions
+25/11/24 00:51:24 INFO DAGScheduler: Final stage: ResultStage 12 (collect at treeModels.scala:549)
+25/11/24 00:51:24 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 11)
+25/11/24 00:51:24 INFO DAGScheduler: Missing parents: List(ShuffleMapStage 11)
+25/11/24 00:51:24 INFO DAGScheduler: Submitting ShuffleMapStage 10 (MapPartitionsRDD[40] at map at treeModels.scala:544), which has no missing parents
+25/11/24 00:51:24 INFO MemoryStore: Block broadcast_15 stored as values in memory (estimated size 49.3 KiB, free 411.3 MiB)
+25/11/24 00:51:24 INFO MemoryStore: Block broadcast_15_piece0 stored as bytes in memory (estimated size 18.2 KiB, free 411.3 MiB)
+25/11/24 00:51:24 INFO BlockManagerInfo: Added broadcast_15_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 18.2 KiB, free: 413.6 MiB)
+25/11/24 00:51:24 INFO SparkContext: Created broadcast 15 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:24 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 10 (MapPartitionsRDD[40] at map at treeModels.scala:544) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:24 INFO TaskSchedulerImpl: Adding task set 10.0 with 1 tasks resource profile 0
+25/11/24 00:51:24 INFO TaskSetManager: Starting task 0.0 in stage 10.0 (TID 9) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 8279 bytes)
+25/11/24 00:51:24 INFO Executor: Running task 0.0 in stage 10.0 (TID 9)
+25/11/24 00:51:24 INFO CodeGenerator: Code generated in 51.033905 ms
+25/11/24 00:51:24 INFO CodeGenerator: Code generated in 70.63233 ms
+25/11/24 00:51:24 INFO FileScanRDD: Reading File path: file:///home/ec2-user/wine_rf_model_rf1/data/part-00000-308d931f-074c-4c8f-9f20-e510ac6778a2-c000.snappy.parquet, range: 0-1328967, partition values: [empty row]
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_7_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 32.6 KiB, free: 413.6 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_4_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 34.3 KiB, free: 413.7 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_0_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 34.3 KiB, free: 413.7 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_2_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 34.3 KiB, free: 413.7 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_1_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 6.4 KiB, free: 413.8 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_5_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 22.6 KiB, free: 413.8 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_9_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 37.1 KiB, free: 413.8 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_3_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 12.7 KiB, free: 413.8 MiB)
+25/11/24 00:51:25 INFO BlockManagerInfo: Removed broadcast_11_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 13.7 KiB, free: 413.8 MiB)
+25/11/24 00:51:26 INFO BlockManagerInfo: Removed broadcast_12_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 3.1 KiB, free: 413.8 MiB)
+25/11/24 00:51:26 INFO Executor: Finished task 0.0 in stage 10.0 (TID 9). 1967 bytes result sent to driver
+25/11/24 00:51:26 INFO TaskSetManager: Finished task 0.0 in stage 10.0 (TID 9) in 2114 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:26 INFO TaskSchedulerImpl: Removed TaskSet 10.0, whose tasks have all completed, from pool
+25/11/24 00:51:26 INFO DAGScheduler: ShuffleMapStage 10 (map at treeModels.scala:544) finished in 2.142 s
+25/11/24 00:51:26 INFO DAGScheduler: looking for newly runnable stages
+25/11/24 00:51:26 INFO DAGScheduler: running: Set()
+25/11/24 00:51:26 INFO DAGScheduler: waiting: Set(ResultStage 12, ShuffleMapStage 11)
+25/11/24 00:51:26 INFO DAGScheduler: failed: Set()
+25/11/24 00:51:26 INFO DAGScheduler: Submitting ShuffleMapStage 11 (MapPartitionsRDD[42] at map at treeModels.scala:546), which has no missing parents
+25/11/24 00:51:26 INFO MemoryStore: Block broadcast_16 stored as values in memory (estimated size 50.6 KiB, free 413.0 MiB)
+25/11/24 00:51:26 INFO MemoryStore: Block broadcast_16_piece0 stored as bytes in memory (estimated size 18.8 KiB, free 413.0 MiB)
+25/11/24 00:51:26 INFO BlockManagerInfo: Added broadcast_16_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 18.8 KiB, free: 413.8 MiB)
+25/11/24 00:51:26 INFO SparkContext: Created broadcast 16 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:26 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 11 (MapPartitionsRDD[42] at map at treeModels.scala:546) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:26 INFO TaskSchedulerImpl: Adding task set 11.0 with 1 tasks resource profile 0
+25/11/24 00:51:26 INFO TaskSetManager: Starting task 0.0 in stage 11.0 (TID 10) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, NODE_LOCAL, 7422 bytes)
+25/11/24 00:51:26 INFO Executor: Running task 0.0 in stage 11.0 (TID 10)
+25/11/24 00:51:26 INFO ShuffleBlockFetcherIterator: Getting 1 (3.6 MiB) non-empty blocks including 1 (3.6 MiB) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/24 00:51:26 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 2 ms
+25/11/24 00:51:30 INFO Executor: Finished task 0.0 in stage 11.0 (TID 10). 2784 bytes result sent to driver
+25/11/24 00:51:30 INFO TaskSetManager: Finished task 0.0 in stage 11.0 (TID 10) in 3284 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:30 INFO TaskSchedulerImpl: Removed TaskSet 11.0, whose tasks have all completed, from pool
+25/11/24 00:51:30 INFO DAGScheduler: ShuffleMapStage 11 (map at treeModels.scala:546) finished in 3.304 s
+25/11/24 00:51:30 INFO DAGScheduler: looking for newly runnable stages
+25/11/24 00:51:30 INFO DAGScheduler: running: Set()
+25/11/24 00:51:30 INFO DAGScheduler: waiting: Set(ResultStage 12)
+25/11/24 00:51:30 INFO DAGScheduler: failed: Set()
+25/11/24 00:51:30 INFO DAGScheduler: Submitting ResultStage 12 (MapPartitionsRDD[44] at values at treeModels.scala:549), which has no missing parents
+25/11/24 00:51:30 INFO MemoryStore: Block broadcast_17 stored as values in memory (estimated size 5.6 KiB, free 413.0 MiB)
+25/11/24 00:51:30 INFO MemoryStore: Block broadcast_17_piece0 stored as bytes in memory (estimated size 3.1 KiB, free 413.0 MiB)
+25/11/24 00:51:30 INFO BlockManagerInfo: Added broadcast_17_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 3.1 KiB, free: 413.8 MiB)
+25/11/24 00:51:30 INFO SparkContext: Created broadcast 17 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:30 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 12 (MapPartitionsRDD[44] at values at treeModels.scala:549) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:30 INFO TaskSchedulerImpl: Adding task set 12.0 with 1 tasks resource profile 0
+25/11/24 00:51:30 INFO TaskSetManager: Starting task 0.0 in stage 12.0 (TID 11) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, NODE_LOCAL, 7433 bytes)
+25/11/24 00:51:30 INFO Executor: Running task 0.0 in stage 12.0 (TID 11)
+25/11/24 00:51:30 INFO ShuffleBlockFetcherIterator: Getting 1 (2.3 MiB) non-empty blocks including 1 (2.3 MiB) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/24 00:51:30 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 0 ms
+25/11/24 00:51:32 INFO MemoryStore: Block taskresult_11 stored as bytes in memory (estimated size 8.3 MiB, free 404.7 MiB)
+25/11/24 00:51:32 INFO BlockManagerInfo: Added taskresult_11 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 8.3 MiB, free: 405.5 MiB)
+25/11/24 00:51:32 INFO Executor: Finished task 0.0 in stage 12.0 (TID 11). 8748120 bytes result sent via BlockManager)
+25/11/24 00:51:32 INFO TransportClientFactory: Successfully created connection to ip-172-31-65-2.ec2.internal/172.31.65.2:41985 after 83 ms (0 ms spent in bootstraps)
+25/11/24 00:51:32 INFO BlockManagerInfo: Removed broadcast_16_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 18.8 KiB, free: 405.5 MiB)
+25/11/24 00:51:33 INFO BlockManagerInfo: Removed broadcast_15_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 18.2 KiB, free: 405.5 MiB)
+25/11/24 00:51:33 INFO TaskSetManager: Finished task 0.0 in stage 12.0 (TID 11) in 3035 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:33 INFO DAGScheduler: ResultStage 12 (collect at treeModels.scala:549) finished in 3.049 s
+25/11/24 00:51:33 INFO BlockManagerInfo: Removed taskresult_11 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 8.3 MiB, free: 413.9 MiB)
+25/11/24 00:51:33 INFO DAGScheduler: Job 8 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:33 INFO TaskSchedulerImpl: Removed TaskSet 12.0, whose tasks have all completed, from pool
+25/11/24 00:51:33 INFO TaskSchedulerImpl: Killing all running tasks in stage 12: Stage finished
+25/11/24 00:51:33 INFO DAGScheduler: Job 8 finished: collect at treeModels.scala:549, took 8.532697 s
+=== Running predictions ===
+25/11/24 00:51:34 INFO FileSourceStrategy: Pushed Filters:
+25/11/24 00:51:34 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/24 00:51:34 INFO CodeGenerator: Code generated in 47.476748 ms
+25/11/24 00:51:34 INFO MemoryStore: Block broadcast_18 stored as values in memory (estimated size 350.0 KiB, free 412.8 MiB)
+25/11/24 00:51:34 INFO MemoryStore: Block broadcast_18_piece0 stored as bytes in memory (estimated size 34.3 KiB, free 412.8 MiB)
+25/11/24 00:51:34 INFO BlockManagerInfo: Added broadcast_18_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 34.3 KiB, free: 413.8 MiB)
+25/11/24 00:51:34 INFO SparkContext: Created broadcast 18 from showString at NativeMethodAccessorImpl.java:0
+25/11/24 00:51:34 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes.
+25/11/24 00:51:35 INFO SparkContext: Starting job: showString at NativeMethodAccessorImpl.java:0
+25/11/24 00:51:35 INFO DAGScheduler: Got job 9 (showString at NativeMethodAccessorImpl.java:0) with 1 output partitions
+25/11/24 00:51:35 INFO DAGScheduler: Final stage: ResultStage 13 (showString at NativeMethodAccessorImpl.java:0)
+25/11/24 00:51:35 INFO DAGScheduler: Parents of final stage: List()
+25/11/24 00:51:35 INFO DAGScheduler: Missing parents: List()
+25/11/24 00:51:35 INFO DAGScheduler: Submitting ResultStage 13 (MapPartitionsRDD[48] at showString at NativeMethodAccessorImpl.java:0), which has no missing parents
+25/11/24 00:51:35 WARN DAGScheduler: Broadcasting large task binary with size 8.8 MiB
+25/11/24 00:51:35 INFO MemoryStore: Block broadcast_19 stored as values in memory (estimated size 8.8 MiB, free 404.0 MiB)
+25/11/24 00:51:35 INFO MemoryStore: Block broadcast_19_piece0 stored as bytes in memory (estimated size 2.4 MiB, free 401.6 MiB)
+25/11/24 00:51:35 INFO BlockManagerInfo: Added broadcast_19_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 2.4 MiB, free: 411.5 MiB)
+25/11/24 00:51:35 INFO SparkContext: Created broadcast 19 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:35 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 13 (MapPartitionsRDD[48] at showString at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:35 INFO TaskSchedulerImpl: Adding task set 13.0 with 1 tasks resource profile 0
+25/11/24 00:51:35 INFO TaskSetManager: Starting task 0.0 in stage 13.0 (TID 12) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 8221 bytes)
+25/11/24 00:51:35 INFO Executor: Running task 0.0 in stage 13.0 (TID 12)
+25/11/24 00:51:35 INFO CodeGenerator: Code generated in 71.864565 ms
+25/11/24 00:51:35 INFO FileScanRDD: Reading File path: file:///home/ec2-user/ValidationDataset.csv, range: 0-8662, partition values: [empty row]
+25/11/24 00:51:35 INFO CodeGenerator: Code generated in 91.433808 ms
+25/11/24 00:51:35 INFO CodeGenerator: Code generated in 13.575389 ms
+25/11/24 00:51:36 INFO Executor: Finished task 0.0 in stage 13.0 (TID 12). 3370 bytes result sent to driver
+25/11/24 00:51:36 INFO TaskSetManager: Finished task 0.0 in stage 13.0 (TID 12) in 719 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:36 INFO TaskSchedulerImpl: Removed TaskSet 13.0, whose tasks have all completed, from pool
+25/11/24 00:51:36 INFO DAGScheduler: ResultStage 13 (showString at NativeMethodAccessorImpl.java:0) finished in 0.957 s
+25/11/24 00:51:36 INFO DAGScheduler: Job 9 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:36 INFO TaskSchedulerImpl: Killing all running tasks in stage 13: Stage finished
+25/11/24 00:51:36 INFO DAGScheduler: Job 9 finished: showString at NativeMethodAccessorImpl.java:0, took 0.967456 s
+25/11/24 00:51:36 INFO CodeGenerator: Code generated in 10.264446 ms
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+|label|prediction|probability                                                                                                                         |
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999999,0.16112767678323064,0.5974385297476885,0.21935586338058394,0.017077930088496757,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.049735145981924446,0.2156845227962575,0.3664025976198311,0.3297324560982624,0.03844527750372451,0.0]                 |
+|5.0  |6.0       |[0.0,0.0,0.0,0.07430812602786126,0.16360418380433678,0.34249654337015706,0.3740292498224265,0.04556189697521834,0.0]                |
+|6.0  |6.0       |[0.0,0.0,0.0,0.0,0.07988537310462128,0.4099000029585951,0.42725853510425826,0.07795608883252533,0.005]                              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999999,0.16112767678323064,0.5974385297476885,0.21935586338058394,0.017077930088496757,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999998,0.139917279767109,0.5690842368411824,0.27152263811581046,0.014475845275898179,0.0]                |
+|5.0  |5.0       |[0.0,0.0,0.0,0.005000000000000001,0.16181579031055063,0.6381404261494225,0.1795955428523754,0.015448240687651573,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.025000000000000005,0.17680617804476237,0.40595043315697155,0.3510556081551533,0.04118778064311282,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.0,0.2168235900994914,0.4718386612525773,0.2625370779650862,0.04880067068284525,0.0]                                  |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.04302187034187722,0.45075289936995205,0.40899969383339907,0.09722553645477156,0.0]                               |
+|5.0  |5.0       |[0.0,0.0,0.0,0.010000000000000004,0.03984213063539346,0.7118050436312235,0.21418413207670417,0.024168693656678786,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.04302187034187722,0.45075289936995205,0.40899969383339907,0.09722553645477156,0.0]                               |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.1351712556902757,0.5030199888780903,0.34379444820014193,0.018014307231491947,0.0]                                |
+|5.0  |5.0       |[0.0,0.0,0.0,0.035,0.13544580365667908,0.5575924499032687,0.22525963496383053,0.04170211147622171,0.005]                            |
+|5.0  |5.0       |[0.0,0.0,0.0,0.020000000000000004,0.031897979697361245,0.761613479763626,0.1838631142796261,0.0026254262593865857,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.020000000000000004,0.03482266935403628,0.7563708446966485,0.1859766947294466,0.002829791219868537,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.005,0.03236630789421596,0.4712246656018598,0.40417142711712356,0.08723759938680059,0.0]                              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.09,0.06820273217526523,0.6052007295972512,0.20747283766972438,0.029123700557759133,0.0]                              |
+|4.0  |5.0       |[0.0,0.0,0.0,0.0,0.16132197644665075,0.5966586502976869,0.22106630504371724,0.020953068211945113,0.0]                               |
+|6.0  |5.0       |[0.0,0.0,0.0,0.005000000000000001,0.0348545841921546,0.5715543122155797,0.2946508164220994,0.07394028717016632,0.020000000000000004]|
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+only showing top 20 rows
+
+=== Evaluating F1 score ===
+25/11/24 00:51:36 INFO FileSourceStrategy: Pushed Filters:
+25/11/24 00:51:36 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/24 00:51:36 INFO CodeGenerator: Code generated in 59.327954 ms
+25/11/24 00:51:36 INFO MemoryStore: Block broadcast_20 stored as values in memory (estimated size 350.0 KiB, free 401.3 MiB)
+25/11/24 00:51:36 INFO MemoryStore: Block broadcast_20_piece0 stored as bytes in memory (estimated size 34.3 KiB, free 401.3 MiB)
+25/11/24 00:51:36 INFO BlockManagerInfo: Added broadcast_20_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 34.3 KiB, free: 411.4 MiB)
+25/11/24 00:51:36 INFO SparkContext: Created broadcast 20 from rdd at MulticlassClassificationEvaluator.scala:191
+25/11/24 00:51:36 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes.
+25/11/24 00:51:36 INFO SparkContext: Starting job: collectAsMap at MulticlassMetrics.scala:61
+25/11/24 00:51:36 INFO DAGScheduler: Registering RDD 56 (map at MulticlassMetrics.scala:52) as input to shuffle 4
+25/11/24 00:51:36 INFO DAGScheduler: Got job 10 (collectAsMap at MulticlassMetrics.scala:61) with 1 output partitions
+25/11/24 00:51:36 INFO DAGScheduler: Final stage: ResultStage 15 (collectAsMap at MulticlassMetrics.scala:61)
+25/11/24 00:51:36 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 14)
+25/11/24 00:51:36 INFO DAGScheduler: Missing parents: List(ShuffleMapStage 14)
+25/11/24 00:51:36 INFO DAGScheduler: Submitting ShuffleMapStage 14 (MapPartitionsRDD[56] at map at MulticlassMetrics.scala:52), which has no missing parents
+25/11/24 00:51:37 WARN DAGScheduler: Broadcasting large task binary with size 8.8 MiB
+25/11/24 00:51:37 INFO MemoryStore: Block broadcast_21 stored as values in memory (estimated size 8.8 MiB, free 392.5 MiB)
+25/11/24 00:51:37 INFO MemoryStore: Block broadcast_21_piece0 stored as bytes in memory (estimated size 2.4 MiB, free 390.1 MiB)
+25/11/24 00:51:37 INFO BlockManagerInfo: Added broadcast_21_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 2.4 MiB, free: 409.1 MiB)
+25/11/24 00:51:37 INFO SparkContext: Created broadcast 21 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:37 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 14 (MapPartitionsRDD[56] at map at MulticlassMetrics.scala:52) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:37 INFO TaskSchedulerImpl: Adding task set 14.0 with 1 tasks resource profile 0
+25/11/24 00:51:37 INFO TaskSetManager: Starting task 0.0 in stage 14.0 (TID 13) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 8210 bytes)
+25/11/24 00:51:37 INFO Executor: Running task 0.0 in stage 14.0 (TID 13)
+25/11/24 00:51:37 INFO BlockManagerInfo: Removed broadcast_19_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 2.4 MiB, free: 411.4 MiB)
+25/11/24 00:51:37 INFO BlockManagerInfo: Removed broadcast_10_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 35.0 KiB, free: 411.5 MiB)
+25/11/24 00:51:37 INFO BlockManagerInfo: Removed broadcast_14_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 35.5 KiB, free: 411.5 MiB)
+25/11/24 00:51:37 INFO BlockManagerInfo: Removed broadcast_18_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 34.3 KiB, free: 411.5 MiB)
+25/11/24 00:51:37 INFO BlockManagerInfo: Removed broadcast_17_piece0 on ip-172-31-65-2.ec2.internal:41985 in memory (size: 3.1 KiB, free: 411.5 MiB)
+25/11/24 00:51:37 INFO CodeGenerator: Code generated in 66.664772 ms
+25/11/24 00:51:37 INFO CodeGenerator: Code generated in 11.065201 ms
+25/11/24 00:51:37 INFO FileScanRDD: Reading File path: file:///home/ec2-user/ValidationDataset.csv, range: 0-8662, partition values: [empty row]
+25/11/24 00:51:38 INFO Executor: Finished task 0.0 in stage 14.0 (TID 13). 1888 bytes result sent to driver
+25/11/24 00:51:38 INFO TaskSetManager: Finished task 0.0 in stage 14.0 (TID 13) in 943 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:38 INFO TaskSchedulerImpl: Removed TaskSet 14.0, whose tasks have all completed, from pool
+25/11/24 00:51:38 INFO DAGScheduler: ShuffleMapStage 14 (map at MulticlassMetrics.scala:52) finished in 1.214 s
+25/11/24 00:51:38 INFO DAGScheduler: looking for newly runnable stages
+25/11/24 00:51:38 INFO DAGScheduler: running: Set()
+25/11/24 00:51:38 INFO DAGScheduler: waiting: Set(ResultStage 15)
+25/11/24 00:51:38 INFO DAGScheduler: failed: Set()
+25/11/24 00:51:38 INFO DAGScheduler: Submitting ResultStage 15 (ShuffledRDD[57] at reduceByKey at MulticlassMetrics.scala:61), which has no missing parents
+25/11/24 00:51:38 INFO MemoryStore: Block broadcast_22 stored as values in memory (estimated size 4.7 KiB, free 402.4 MiB)
+25/11/24 00:51:38 INFO MemoryStore: Block broadcast_22_piece0 stored as bytes in memory (estimated size 2.8 KiB, free 402.4 MiB)
+25/11/24 00:51:38 INFO BlockManagerInfo: Added broadcast_22_piece0 in memory on ip-172-31-65-2.ec2.internal:41985 (size: 2.8 KiB, free: 411.5 MiB)
+25/11/24 00:51:38 INFO SparkContext: Created broadcast 22 from broadcast at DAGScheduler.scala:1580
+25/11/24 00:51:38 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 15 (ShuffledRDD[57] at reduceByKey at MulticlassMetrics.scala:61) (first 15 tasks are for partitions Vector(0))
+25/11/24 00:51:38 INFO TaskSchedulerImpl: Adding task set 15.0 with 1 tasks resource profile 0
+25/11/24 00:51:38 INFO TaskSetManager: Starting task 0.0 in stage 15.0 (TID 14) (ip-172-31-65-2.ec2.internal, executor driver, partition 0, NODE_LOCAL, 7433 bytes)
+25/11/24 00:51:38 INFO Executor: Running task 0.0 in stage 15.0 (TID 14)
+25/11/24 00:51:38 INFO ShuffleBlockFetcherIterator: Getting 1 (445.0 B) non-empty blocks including 1 (445.0 B) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/24 00:51:38 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 3 ms
+25/11/24 00:51:38 INFO Executor: Finished task 0.0 in stage 15.0 (TID 14). 2464 bytes result sent to driver
+25/11/24 00:51:38 INFO TaskSetManager: Finished task 0.0 in stage 15.0 (TID 14) in 21 ms on ip-172-31-65-2.ec2.internal (executor driver) (1/1)
+25/11/24 00:51:38 INFO TaskSchedulerImpl: Removed TaskSet 15.0, whose tasks have all completed, from pool
+25/11/24 00:51:38 INFO DAGScheduler: ResultStage 15 (collectAsMap at MulticlassMetrics.scala:61) finished in 0.031 s
+25/11/24 00:51:38 INFO DAGScheduler: Job 10 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/24 00:51:38 INFO TaskSchedulerImpl: Killing all running tasks in stage 15: Stage finished
+25/11/24 00:51:38 INFO DAGScheduler: Job 10 finished: collectAsMap at MulticlassMetrics.scala:61, took 1.263768 s
+
+F1 score on test data: 0.6098887957009288
+
+25/11/24 00:51:38 INFO SparkContext: SparkContext is stopping with exitCode 0.
+25/11/24 00:51:38 INFO SparkUI: Stopped Spark web UI at http://ip-172-31-65-2.ec2.internal:4040
+25/11/24 00:51:38 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+25/11/24 00:51:38 INFO MemoryStore: MemoryStore cleared
+25/11/24 00:51:38 INFO BlockManager: BlockManager stopped
+25/11/24 00:51:38 INFO BlockManagerMaster: BlockManagerMaster stopped
+25/11/24 00:51:38 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+25/11/24 00:51:38 INFO SparkContext: Successfully stopped SparkContext
+25/11/24 00:51:38 INFO ShutdownHookManager: Shutdown hook called
+25/11/24 00:51:38 INFO ShutdownHookManager: Deleting directory /tmp/spark-ff00c4cb-86af-4252-afe2-64277cb966c2
+25/11/24 00:51:38 INFO ShutdownHookManager: Deleting directory /tmp/spark-b6e34865-e4e3-45ec-9b6d-4911d3e8bdd9/pyspark-455924d9-4c56-46c6-b566-c7f14addca57
+25/11/24 00:51:38 INFO ShutdownHookManager: Deleting directory /tmp/spark-b6e34865-e4e3-45ec-9b6d-4911d3e8bdd9
+[ec2-user@ip-172-31-65-2 ~]$ client_loop: send disconnect: Connection reset
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ec2-user@3.238.123.111
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+Last login: Mon Nov 24 00:36:39 2025 from 172.59.213.62
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum update -y
+sudo yum install -y docker
+sudo service docker start
+Last metadata expiration check: 0:48:43 ago on Mon Nov 24 00:09:19 2025.
+Dependencies resolved.
+Nothing to do.
+Complete!
+Last metadata expiration check: 0:48:44 ago on Mon Nov 24 00:09:19 2025.
+Dependencies resolved.
+========================================================================================================================
+ Package                            Architecture       Version                            Repository               Size
+========================================================================================================================
+Installing:
+ docker                             x86_64             25.0.13-1.amzn2023.0.2             amazonlinux              46 M
+Installing dependencies:
+ container-selinux                  noarch             4:2.242.0-1.amzn2023               amazonlinux              58 k
+ containerd                         x86_64             2.1.4-1.amzn2023.0.2               amazonlinux              23 M
+ iptables-libs                      x86_64             1.8.8-3.amzn2023.0.2               amazonlinux             401 k
+ iptables-nft                       x86_64             1.8.8-3.amzn2023.0.2               amazonlinux             183 k
+ libcgroup                          x86_64             3.0-1.amzn2023.0.1                 amazonlinux              75 k
+ libnetfilter_conntrack             x86_64             1.0.8-2.amzn2023.0.2               amazonlinux              58 k
+ libnfnetlink                       x86_64             1.0.1-19.amzn2023.0.2              amazonlinux              30 k
+ libnftnl                           x86_64             1.2.2-2.amzn2023.0.2               amazonlinux              84 k
+ pigz                               x86_64             2.5-1.amzn2023.0.3                 amazonlinux              83 k
+ runc                               x86_64             1.3.3-2.amzn2023.0.1               amazonlinux             3.9 M
+
+Transaction Summary
+========================================================================================================================
+Install  11 Packages
+
+Total download size: 74 M
+Installed size: 280 M
+Downloading Packages:
+(1/11): container-selinux-2.242.0-1.amzn2023.noarch.rpm                                 1.7 MB/s |  58 kB     00:00
+(2/11): iptables-libs-1.8.8-3.amzn2023.0.2.x86_64.rpm                                    16 MB/s | 401 kB     00:00
+(3/11): iptables-nft-1.8.8-3.amzn2023.0.2.x86_64.rpm                                    6.9 MB/s | 183 kB     00:00
+(4/11): libcgroup-3.0-1.amzn2023.0.1.x86_64.rpm                                         2.6 MB/s |  75 kB     00:00
+(5/11): libnetfilter_conntrack-1.0.8-2.amzn2023.0.2.x86_64.rpm                          2.4 MB/s |  58 kB     00:00
+(6/11): libnfnetlink-1.0.1-19.amzn2023.0.2.x86_64.rpm                                   1.2 MB/s |  30 kB     00:00
+(7/11): libnftnl-1.2.2-2.amzn2023.0.2.x86_64.rpm                                        3.7 MB/s |  84 kB     00:00
+(8/11): pigz-2.5-1.amzn2023.0.3.x86_64.rpm                                              2.7 MB/s |  83 kB     00:00
+(9/11): containerd-2.1.4-1.amzn2023.0.2.x86_64.rpm                                       66 MB/s |  23 MB     00:00
+(10/11): runc-1.3.3-2.amzn2023.0.1.x86_64.rpm                                            25 MB/s | 3.9 MB     00:00
+(11/11): docker-25.0.13-1.amzn2023.0.2.x86_64.rpm                                        66 MB/s |  46 MB     00:00
+------------------------------------------------------------------------------------------------------------------------
+Total                                                                                   102 MB/s |  74 MB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                1/1
+  Installing       : runc-1.3.3-2.amzn2023.0.1.x86_64                                                              1/11
+  Installing       : containerd-2.1.4-1.amzn2023.0.2.x86_64                                                        2/11
+  Running scriptlet: containerd-2.1.4-1.amzn2023.0.2.x86_64                                                        2/11
+  Installing       : pigz-2.5-1.amzn2023.0.3.x86_64                                                                3/11
+  Installing       : libnftnl-1.2.2-2.amzn2023.0.2.x86_64                                                          4/11
+  Installing       : libnfnetlink-1.0.1-19.amzn2023.0.2.x86_64                                                     5/11
+  Installing       : libnetfilter_conntrack-1.0.8-2.amzn2023.0.2.x86_64                                            6/11
+  Installing       : iptables-libs-1.8.8-3.amzn2023.0.2.x86_64                                                     7/11
+  Installing       : iptables-nft-1.8.8-3.amzn2023.0.2.x86_64                                                      8/11
+  Running scriptlet: iptables-nft-1.8.8-3.amzn2023.0.2.x86_64                                                      8/11
+  Installing       : libcgroup-3.0-1.amzn2023.0.1.x86_64                                                           9/11
+  Running scriptlet: container-selinux-4:2.242.0-1.amzn2023.noarch                                                10/11
+  Installing       : container-selinux-4:2.242.0-1.amzn2023.noarch                                                10/11
+  Running scriptlet: container-selinux-4:2.242.0-1.amzn2023.noarch                                                10/11
+  Running scriptlet: docker-25.0.13-1.amzn2023.0.2.x86_64                                                         11/11
+  Installing       : docker-25.0.13-1.amzn2023.0.2.x86_64                                                         11/11
+  Running scriptlet: docker-25.0.13-1.amzn2023.0.2.x86_64                                                         11/11
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
+
+  Running scriptlet: container-selinux-4:2.242.0-1.amzn2023.noarch                                                11/11
+  Running scriptlet: docker-25.0.13-1.amzn2023.0.2.x86_64                                                         11/11
+  Verifying        : container-selinux-4:2.242.0-1.amzn2023.noarch                                                 1/11
+  Verifying        : containerd-2.1.4-1.amzn2023.0.2.x86_64                                                        2/11
+  Verifying        : docker-25.0.13-1.amzn2023.0.2.x86_64                                                          3/11
+  Verifying        : iptables-libs-1.8.8-3.amzn2023.0.2.x86_64                                                     4/11
+  Verifying        : iptables-nft-1.8.8-3.amzn2023.0.2.x86_64                                                      5/11
+  Verifying        : libcgroup-3.0-1.amzn2023.0.1.x86_64                                                           6/11
+  Verifying        : libnetfilter_conntrack-1.0.8-2.amzn2023.0.2.x86_64                                            7/11
+  Verifying        : libnfnetlink-1.0.1-19.amzn2023.0.2.x86_64                                                     8/11
+  Verifying        : libnftnl-1.2.2-2.amzn2023.0.2.x86_64                                                          9/11
+  Verifying        : pigz-2.5-1.amzn2023.0.3.x86_64                                                               10/11
+  Verifying        : runc-1.3.3-2.amzn2023.0.1.x86_64                                                             11/11
+
+Installed:
+  container-selinux-4:2.242.0-1.amzn2023.noarch                   containerd-2.1.4-1.amzn2023.0.2.x86_64
+  docker-25.0.13-1.amzn2023.0.2.x86_64                            iptables-libs-1.8.8-3.amzn2023.0.2.x86_64
+  iptables-nft-1.8.8-3.amzn2023.0.2.x86_64                        libcgroup-3.0-1.amzn2023.0.1.x86_64
+  libnetfilter_conntrack-1.0.8-2.amzn2023.0.2.x86_64              libnfnetlink-1.0.1-19.amzn2023.0.2.x86_64
+  libnftnl-1.2.2-2.amzn2023.0.2.x86_64                            pigz-2.5-1.amzn2023.0.3.x86_64
+  runc-1.3.3-2.amzn2023.0.1.x86_64
+
+Complete!
+Redirecting to /bin/systemctl start docker.service
+[ec2-user@ip-172-31-65-2 ~]$ sudo usermod -aG docker ec2-user
+[ec2-user@ip-172-31-65-2 ~]$ exit
+logout
+Connection to 3.238.123.111 closed.
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ec2-user@3.238.123.111
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+Last login: Mon Nov 24 00:57:58 2025 from 172.59.213.62
+[ec2-user@ip-172-31-65-2 ~]$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[ec2-user@ip-172-31-65-2 ~]$ mkdir -p ~/wine_app
+cd ~/wine_app
+[ec2-user@ip-172-31-65-2 wine_app]$ cp ~/predict_wine.py .
+cp -r ~/wine_rf_model_rf1 .
+
+
+[ec2-user@ip-172-31-65-2 wine_app]$ chmod +x entrypoint.sh
+[ec2-user@ip-172-31-65-2 wine_app]$ docker login
+Log in with your Docker ID or email address to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com/ to create one.
+You can log in with your password or a Personal Access Token (PAT). Using a limited-scope PAT grants better security and is required for organizations using SSO. Learn more at https://docs.docker.com/go/access-tokens/
+
+Username: vs653njit
+Password:
+WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ec2-user@ip-172-31-65-2 wine_app]$ docker build -t vs653njit/wine-predictor:v1 .
+[+] Building 6.4s (7/13)                                                                                 docker:default
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 789B                                                                               0.0s
+ => [internal] load metadata for docker.io/library/python:3.10-slim                                                0.3s
+ => [auth] library/python:pull token for registry-1.docker.io                                                      0.0s
+ => [internal] load .dockerignore                                                                                  0.0s
+ => => transferring context: 2B                                                                                    0.0s
+ => [1/8] FROM docker.io/library/python:3.10-slim@sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22  2.7s
+ => => resolve docker.io/library/python:3.10-slim@sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22  0.0s
+ => => sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22b2b382a2 10.37kB / 10.37kB                   0.0s
+ => => sha256:7c728f59e9f6f9dabfe35efcfe0da7652ebc2deeb6dc6e5b0d3ac409b5485af6 1.75kB / 1.75kB                     0.0s
+ => => sha256:6f924957e3d2926cc6706eea8580f83f1ca6d1eed52365c36ceb9734b643e0bd 5.48kB / 5.48kB                     0.0s
+ => => sha256:0e4bc2bd6656e6e004e3c749af70e5650bac2258243eb0949dea51cb8b7863db 29.78MB / 29.78MB                   0.3s
+ => => sha256:9793cbb1e51ababd0971146499e99c711ab58bdf823b0226bd9b97b5c9317b92 1.29MB / 1.29MB                     0.2s
+ => => sha256:683c3659b1e9bb36ffd123a6efdd5891f83b363fca9054603b1de7962d15931e 13.82MB / 13.82MB                   0.3s
+ => => sha256:f86ba98c4d0f9c7caf377d5426b6c24a4c45058d795fd1a06c1a7c54b626c084 250B / 250B                         0.2s
+ => => extracting sha256:0e4bc2bd6656e6e004e3c749af70e5650bac2258243eb0949dea51cb8b7863db                          1.2s
+ => => extracting sha256:9793cbb1e51ababd0971146499e99c711ab58bdf823b0226bd9b97b5c9317b92                          0.1s
+ => => extracting sha256:683c3659b1e9bb36ffd123a6efdd5891f83b363fca9054603b1de7962d15931e                          0.8s
+ => => extracting sha256:f86ba98c4d0f9c7caf377d5426b6c24a4c45058d795fd1a06c1a7c54b626c084                          0.0s
+ => [internal] load build context                                                                                  0.0s
+ => => transferring context: 1.36MB                                                                                0.0s
+ => ERROR [2/8] RUN apt-get update && apt-get install -y --no-install-recommends     openjdk-11-jre-headless  &&   3.2s
+------
+ > [2/8] RUN apt-get update && apt-get install -y --no-install-recommends     openjdk-11-jre-headless  && rm -rf /var/lib/apt/lists/*:
+0.440 Hit:1 http://deb.debian.org/debian trixie InRelease
+0.441 Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+0.443 Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+0.474 Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9670 kB]
+0.545 Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [5412 B]
+0.546 Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [71.8 kB]
+1.473 Fetched 9838 kB in 1s (9360 kB/s)
+1.473 Reading package lists...
+2.208 Reading package lists...
+2.912 Building dependency tree...
+3.092 Reading state information...
+3.118 Package openjdk-11-jre-headless is not available, but is referred to by another package.
+3.118 This may mean that the package is missing, has been obsoleted, or
+3.118 is only available from another source
+3.118
+3.121 E: Package 'openjdk-11-jre-headless' has no installation candidate
+------
+Dockerfile:4
+--------------------
+   3 |     # Install Java (required by PySpark)
+   4 | >>> RUN apt-get update && apt-get install -y --no-install-recommends \
+   5 | >>>     openjdk-11-jre-headless \
+   6 | >>>  && rm -rf /var/lib/apt/lists/*
+   7 |
+--------------------
+ERROR: failed to solve: process "/bin/sh -c apt-get update && apt-get install -y --no-install-recommends     openjdk-11-jre-headless  && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
+[ec2-user@ip-172-31-65-2 wine_app]$ cd ~/wine_app
+[ec2-user@ip-172-31-65-2 wine_app]$ ls
+Dockerfile  entrypoint.sh  predict_wine.py  wine_rf_model_rf1
+[ec2-user@ip-172-31-65-2 wine_app]$ ^C
+[ec2-user@ip-172-31-65-2 wine_app]$ nano Dockerfile
+[ec2-user@ip-172-31-65-2 wine_app]$
+
+[ec2-user@ip-172-31-65-2 wine_app]$ chmod +x entrypoint.sh
+[ec2-user@ip-172-31-65-2 wine_app]$ docker build -t vs653njit/wine-predictor:v1 .
+[+] Building 0.2s (3/3) FINISHED                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 611B                                                                               0.0s
+ => ERROR [internal] load metadata for docker.io/bitnami/spark:3.5.0                                               0.2s
+ => [auth] bitnami/spark:pull token for registry-1.docker.io                                                       0.0s
+------
+ > [internal] load metadata for docker.io/bitnami/spark:3.5.0:
+------
+Dockerfile:1
+--------------------
+   1 | >>> FROM bitnami/spark:3.5.0
+   2 |
+   3 |     # Spark image uses user "1001" by default; we'll work in /app
+--------------------
+ERROR: failed to solve: bitnami/spark:3.5.0: docker.io/bitnami/spark:3.5.0: not found
+[ec2-user@ip-172-31-65-2 wine_app]$ nano Dockerfile
+[ec2-user@ip-172-31-65-2 wine_app]$ docker build -t vs653njit/wine-predictor:v1 .
+[+] Building 0.1s (2/2) FINISHED                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 607B                                                                               0.0s
+ => ERROR [internal] load metadata for docker.io/bitnami/spark:3                                                   0.0s
+------
+ > [internal] load metadata for docker.io/bitnami/spark:3:
+------
+Dockerfile:1
+--------------------
+   1 | >>> FROM bitnami/spark:3
+   2 |
+   3 |     # Spark image uses user "1001" by default; we'll work in /app
+--------------------
+
+
+[ec2-user@ip-172-31-65-2 wine_app]$ docker build -t vs653njit/wine-predictor:v1 .
+[+] Building 0.1s (2/2) FINISHED                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 611B                                                                               0.0s
+ => ERROR [internal] load metadata for docker.io/bitnami/spark:3.5.1                                               0.0s
+------
+ > [internal] load metadata for docker.io/bitnami/spark:3.5.1:
+------
+Dockerfile:1
+--------------------
+   1 | >>> FROM bitnami/spark:3.5.1
+   2 |
+   3 |     # Spark image uses user "1001" by default; we'll work in /app
+--------------------
+
+
+[ec2-user@ip-172-31-65-2 wine_app]$ docker build -t vs653njit/wine-predictor:v1 .
+[+] Building 0.1s (3/3) FINISHED                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 605B                                                                               0.0s
+ => ERROR [internal] load metadata for docker.io/bitnami/spark:latest                                              0.1s
+ => [auth] bitnami/spark:pull token for registry-1.docker.io                                                       0.0s
+------
+ > [internal] load metadata for docker.io/bitnami/spark:latest:
+------
+Dockerfile:1
+--------------------
+   1 | >>> FROM bitnami/spark
+   2 |
+   3 |     # Spark image uses user "1001" by default; we'll work in /app
+--------------------
+ERROR: failed to solve: bitnami/spark: docker.io/bitnami/spark:latest: not found
+[ec2-user@ip-172-31-65-2 wine_app]$ docker pull jupyter/pyspark-notebook:python-3.10
+python-3.10: Pulling from jupyter/pyspark-notebook
+dbf6a9befcde: Pull complete
+9673f1e4deb5: Pull complete
+8ce2bf70ce50: Pull complete
+4f4fb700ef54: Pull complete
+40642c3e9d4c: Pull complete
+a4ad1b1519be: Pull complete
+b211d4318880: Pull complete
+b729e6a38079: Pull complete
+506399e9cf74: Pull complete
+5e5269d65d63: Pull complete
+84ff5919a2a5: Pull complete
+a2f4d798ee6b: Pull complete
+ff2e679f05b1: Pull complete
+7118bba4fecb: Pull complete
+e74df4630d7e: Pull complete
+9bef1070e786: Pull complete
+927c88876a29: Pull complete
+08a334d347a6: Pull complete
+5fa65bc392bc: Pull complete
+d38595464938: Extracting [==================================================>]  497.3MB/497.3MB
+c518b086ef82: Download complete
+bea0801513bd: Download complete
+fd0dab998289: Download complete
+db5fa4bb927e: Download complete
+1fdaebfad1f6: Download complete
+1c42592fec75: Download complete
+dd66dcd75158: Download complete
+febd7287868b: Download complete
+failed to register layer: write /opt/conda/lib/libgrpc_authorization_provider.so.1.54.2: no space left on device
+[ec2-user@ip-172-31-65-2 wine_app]$ df -h
+Filesystem        Size  Used Avail Use% Mounted on
+devtmpfs          4.0M     0  4.0M   0% /dev
+tmpfs             453M     0  453M   0% /dev/shm
+tmpfs             181M  472K  181M   1% /run
+/dev/nvme0n1p1    8.0G  4.2G  3.8G  53% /
+tmpfs             453M     0  453M   0% /tmp
+/dev/nvme0n1p128   10M  1.3M  8.7M  13% /boot/efi
+tmpfs              91M  4.0K   91M   1% /run/user/1000
+[ec2-user@ip-172-31-65-2 wine_app]$ sudo docker system prune -a --volumes
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all anonymous volumes not used by at least one container
+  - all images without at least one container associated to them
+  - all build cache
+
+Are you sure you want to continue? [y/N] y
+Deleted build cache objects:
+w5sjvbnndt4xkjvmhhrrl8wju
+vigh91rxn6x0utt8y1huvr6ee
+71um36om8f81o5ncc2fhqohmu
+i362uoq63pxqxf2t1rxiddun0
+v5qes2wr90pzh0uskgdmgi5i1
+one1cwf7ippko958t80hpzg5c
+05zx9w8qcd7otnnzvv2tlzslt
+
+Total reclaimed space: 1.357MB
+[ec2-user@ip-172-31-65-2 wine_app]$ cd ~
+ls -lh
+total 382M
+-rw-r--r--.  1 ec2-user ec2-user 8.5K Nov 23 23:21 ValidationDataset.csv
+-rw-r--r--.  1 ec2-user ec2-user 2.8K Nov 23 23:47 predict_wine.py
+drwxr-xr-x. 13 ec2-user ec2-user  16K Sep  9  2023 spark-3.5.0-bin-hadoop3
+-rw-r--r--.  1 ec2-user ec2-user 382M Sep  9  2023 spark-3.5.0-bin-hadoop3.tgz
+drwxr-xr-x.  3 ec2-user ec2-user   93 Nov 24 01:02 wine_app
+drwxr-xr-x.  5 ec2-user ec2-user   55 Nov 24 00:45 wine_rf_model_rf1
+[ec2-user@ip-172-31-65-2 ~]$ rm -f spark-3.5.0-bin-hadoop3.tgz\
+>
+[ec2-user@ip-172-31-65-2 ~]$ ls -lh
+total 32K
+-rw-r--r--.  1 ec2-user ec2-user 8.5K Nov 23 23:21 ValidationDataset.csv
+-rw-r--r--.  1 ec2-user ec2-user 2.8K Nov 23 23:47 predict_wine.py
+drwxr-xr-x. 13 ec2-user ec2-user  16K Sep  9  2023 spark-3.5.0-bin-hadoop3
+drwxr-xr-x.  3 ec2-user ec2-user   93 Nov 24 01:02 wine_app
+drwxr-xr-x.  5 ec2-user ec2-user   55 Nov 24 00:45 wine_rf_model_rf1
+[ec2-user@ip-172-31-65-2 ~]$ cd ~/wine_app
+ls
+
+
+[ec2-user@ip-172-31-65-2 wine_app]$ nano entrypoint.sh
+[ec2-user@ip-172-31-65-2 wine_app]$ chmod +x entrypoint.sh
+[ec2-user@ip-172-31-65-2 wine_app]$ docker build -t vs653njit/wine-predictor:v1 .
+[+] Building 7.3s (7/13)                                                                                 docker:default
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 818B                                                                               0.0s
+ => [internal] load metadata for docker.io/library/python:3.10-slim                                                0.3s
+ => [auth] library/python:pull token for registry-1.docker.io                                                      0.0s
+ => [internal] load .dockerignore                                                                                  0.0s
+ => => transferring context: 2B                                                                                    0.0s
+ => [1/8] FROM docker.io/library/python:3.10-slim@sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22  3.5s
+ => => resolve docker.io/library/python:3.10-slim@sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22  0.0s
+ => => sha256:0e4bc2bd6656e6e004e3c749af70e5650bac2258243eb0949dea51cb8b7863db 29.78MB / 29.78MB                   0.9s
+ => => sha256:9793cbb1e51ababd0971146499e99c711ab58bdf823b0226bd9b97b5c9317b92 1.29MB / 1.29MB                     0.1s
+ => => sha256:683c3659b1e9bb36ffd123a6efdd5891f83b363fca9054603b1de7962d15931e 13.82MB / 13.82MB                   0.5s
+ => => sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22b2b382a2 10.37kB / 10.37kB                   0.0s
+ => => sha256:7c728f59e9f6f9dabfe35efcfe0da7652ebc2deeb6dc6e5b0d3ac409b5485af6 1.75kB / 1.75kB                     0.0s
+ => => sha256:6f924957e3d2926cc6706eea8580f83f1ca6d1eed52365c36ceb9734b643e0bd 5.48kB / 5.48kB                     0.0s
+ => => sha256:f86ba98c4d0f9c7caf377d5426b6c24a4c45058d795fd1a06c1a7c54b626c084 250B / 250B                         0.5s
+ => => extracting sha256:0e4bc2bd6656e6e004e3c749af70e5650bac2258243eb0949dea51cb8b7863db                          1.3s
+ => => extracting sha256:9793cbb1e51ababd0971146499e99c711ab58bdf823b0226bd9b97b5c9317b92                          0.1s
+ => => extracting sha256:683c3659b1e9bb36ffd123a6efdd5891f83b363fca9054603b1de7962d15931e                          0.9s
+ => => extracting sha256:f86ba98c4d0f9c7caf377d5426b6c24a4c45058d795fd1a06c1a7c54b626c084                          0.0s
+ => [internal] load build context                                                                                  0.0s
+ => => transferring context: 1.36MB                                                                                0.0s
+ => ERROR [2/8] RUN apt-get update && apt-get install -y --no-install-recommends     openjdk-11-jre-headless  &&   3.4s
+------
+ > [2/8] RUN apt-get update && apt-get install -y --no-install-recommends     openjdk-11-jre-headless  && rm -rf /var/lib/apt/lists/*:
+0.589 Hit:1 http://deb.debian.org/debian trixie InRelease
+0.589 Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+0.601 Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+0.618 Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9670 kB]
+0.700 Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [5412 B]
+0.701 Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [71.8 kB]
+1.621 Fetched 9838 kB in 1s (9280 kB/s)
+1.621 Reading package lists...
+2.352 Reading package lists...
+3.068 Building dependency tree...
+3.258 Reading state information...
+3.286 Package openjdk-11-jre-headless is not available, but is referred to by another package.
+3.286 This may mean that the package is missing, has been obsoleted, or
+3.286 is only available from another source
+3.286
+3.289 E: Package 'openjdk-11-jre-headless' has no installation candidate
+------
+Dockerfile:4
+--------------------
+   3 |     # Install Java (required by PySpark/Spark)
+   4 | >>> RUN apt-get update && apt-get install -y --no-install-recommends \
+   5 | >>>     openjdk-11-jre-headless \
+   6 | >>>  && rm -rf /var/lib/apt/lists/*
+   7 |
+--------------------
+ERROR: failed to solve: process "/bin/sh -c apt-get update && apt-get install -y --no-install-recommends     openjdk-11-jre-headless  && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
+
+
+[ec2-user@ip-172-31-65-2 wine_app]$ sudo docker system prune -a --volumes
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all anonymous volumes not used by at least one container
+  - all images without at least one container associated to them
+  - all build cache
+
+Are you sure you want to continue? [y/N] y
+Deleted build cache objects:
+quae0myoq4k1zjtlzxsp10ikw
+q13cai2ylh6icle0ed8ol6pat
+uf2s3dssgyw2ldkbmo2szbc0d
+3p20cxaplseeabyzqbwl0ae2q
+m1mwxje281rel3228a7c7skae
+jxyg6pecq5hnt4ltg9gpb98gf
+3othq35djg3t23anf8ejot1fk
+
+Total reclaimed space: 1.357MB
+[ec2-user@ip-172-31-65-2 wine_app]$ docker build -t vs653njit/wine-predictor:v1 .
+[+] Building 73.0s (13/13) FINISHED                                                                      docker:default
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 733B                                                                               0.0s
+ => [internal] load metadata for docker.io/library/python:3.10-slim                                                0.2s
+ => [internal] load .dockerignore                                                                                  0.0s
+ => => transferring context: 2B                                                                                    0.0s
+ => [1/8] FROM docker.io/library/python:3.10-slim@sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22  2.8s
+ => => resolve docker.io/library/python:3.10-slim@sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22  0.0s
+ => => sha256:7c728f59e9f6f9dabfe35efcfe0da7652ebc2deeb6dc6e5b0d3ac409b5485af6 1.75kB / 1.75kB                     0.0s
+ => => sha256:6f924957e3d2926cc6706eea8580f83f1ca6d1eed52365c36ceb9734b643e0bd 5.48kB / 5.48kB                     0.0s
+ => => sha256:0e4bc2bd6656e6e004e3c749af70e5650bac2258243eb0949dea51cb8b7863db 29.78MB / 29.78MB                   0.5s
+ => => sha256:9793cbb1e51ababd0971146499e99c711ab58bdf823b0226bd9b97b5c9317b92 1.29MB / 1.29MB                     0.1s
+ => => sha256:683c3659b1e9bb36ffd123a6efdd5891f83b363fca9054603b1de7962d15931e 13.82MB / 13.82MB                   0.2s
+ => => sha256:c299e10e0070171113f9a1f109dd05e7e634fa94589b056e0e87bb22b2b382a2 10.37kB / 10.37kB                   0.0s
+ => => sha256:f86ba98c4d0f9c7caf377d5426b6c24a4c45058d795fd1a06c1a7c54b626c084 250B / 250B                         0.1s
+ => => extracting sha256:0e4bc2bd6656e6e004e3c749af70e5650bac2258243eb0949dea51cb8b7863db                          1.1s
+ => => extracting sha256:9793cbb1e51ababd0971146499e99c711ab58bdf823b0226bd9b97b5c9317b92                          0.1s
+ => => extracting sha256:683c3659b1e9bb36ffd123a6efdd5891f83b363fca9054603b1de7962d15931e                          0.8s
+ => => extracting sha256:f86ba98c4d0f9c7caf377d5426b6c24a4c45058d795fd1a06c1a7c54b626c084                          0.0s
+ => [internal] load build context                                                                                  0.0s
+ => => transferring context: 1.36MB                                                                                0.0s
+ => [2/8] RUN apt-get update && apt-get install -y --no-install-recommends     default-jdk-headless  && rm -rf /  11.0s
+ => [3/8] WORKDIR /app                                                                                             0.0s
+ => [4/8] COPY predict_wine.py /app/                                                                               0.0s
+ => [5/8] COPY wine_rf_model_rf1 /app/wine_rf_model_rf1                                                            0.0s
+ => [6/8] RUN pip install --no-cache-dir     pyspark==3.5.0     numpy     pandas                                  52.2s
+ => [7/8] COPY entrypoint.sh /app/entrypoint.sh                                                                    0.1s
+ => [8/8] RUN chmod +x /app/entrypoint.sh                                                                          0.6s
+ => exporting to image                                                                                             5.7s
+ => => exporting layers                                                                                            5.7s
+ => => writing image sha256:5e97bfedd026d07fb4a2372c108498a9b1ffb1fafaec601bc6acdf3dcb27aca6                       0.0s
+ => => naming to docker.io/vs653njit/wine-predictor:v1                                                             0.0s
+[ec2-user@ip-172-31-65-2 wine_app]$ cp ~/ValidationDataset.csv .
+ls
+Dockerfile  ValidationDataset.csv  entrypoint.sh  predict_wine.py  wine_rf_model_rf1
+[ec2-user@ip-172-31-65-2 wine_app]$ docker run --rm \
+  -v "$(pwd):/data" \
+  yourdockerhubusername/wine-predictor:v1 \
+  /data/ValidationDataset.csv
+Unable to find image 'yourdockerhubusername/wine-predictor:v1' locally
+docker: Error response from daemon: pull access denied for yourdockerhubusername/wine-predictor, repository does not exist or may require 'docker login': denied: requested access to the resource is denied.
+See 'docker run --help'.
+[ec2-user@ip-172-31-65-2 wine_app]$ docker run --rm \
+  -v "$(pwd):/data" \
+  vs653njit/wine-predictor:v1 \
+  /data/ValidationDataset.csv
+Running prediction on: /data/ValidationDataset.csv
+/usr/local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+25/11/24 01:38:25 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/11/24 01:38:43 WARN DAGScheduler: Broadcasting large task binary with size 8.8 MiB
+25/11/24 01:38:43 WARN DAGScheduler: Broadcasting large task binary with size 8.8 MiB
+=== Loading and preprocessing test data ===
+=== Loading data from /data/ValidationDataset.csv ===
+=== Loading trained Random Forest model from /app/wine_rf_model_rf1 ===
+=== Running predictions ===
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+|label|prediction|probability                                                                                                                         |
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999999,0.16112767678323064,0.5974385297476885,0.21935586338058394,0.017077930088496757,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.049735145981924446,0.2156845227962575,0.3664025976198311,0.3297324560982624,0.03844527750372451,0.0]                 |
+|5.0  |6.0       |[0.0,0.0,0.0,0.07430812602786126,0.16360418380433678,0.34249654337015706,0.3740292498224265,0.04556189697521834,0.0]                |
+|6.0  |6.0       |[0.0,0.0,0.0,0.0,0.07988537310462128,0.4099000029585951,0.42725853510425826,0.07795608883252533,0.005]                              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999999,0.16112767678323064,0.5974385297476885,0.21935586338058394,0.017077930088496757,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999998,0.139917279767109,0.5690842368411824,0.27152263811581046,0.014475845275898179,0.0]                |
+|5.0  |5.0       |[0.0,0.0,0.0,0.005000000000000001,0.16181579031055063,0.6381404261494225,0.1795955428523754,0.015448240687651573,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.025000000000000005,0.17680617804476237,0.40595043315697155,0.3510556081551533,0.04118778064311282,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.0,0.2168235900994914,0.4718386612525773,0.2625370779650862,0.04880067068284525,0.0]                                  |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.04302187034187722,0.45075289936995205,0.40899969383339907,0.09722553645477156,0.0]                               |
+|5.0  |5.0       |[0.0,0.0,0.0,0.010000000000000004,0.03984213063539346,0.7118050436312235,0.21418413207670417,0.024168693656678786,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.04302187034187722,0.45075289936995205,0.40899969383339907,0.09722553645477156,0.0]                               |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.1351712556902757,0.5030199888780903,0.34379444820014193,0.018014307231491947,0.0]                                |
+|5.0  |5.0       |[0.0,0.0,0.0,0.035,0.13544580365667908,0.5575924499032687,0.22525963496383053,0.04170211147622171,0.005]                            |
+|5.0  |5.0       |[0.0,0.0,0.0,0.020000000000000004,0.031897979697361245,0.761613479763626,0.1838631142796261,0.0026254262593865857,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.020000000000000004,0.03482266935403628,0.7563708446966485,0.1859766947294466,0.002829791219868537,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.005,0.03236630789421596,0.4712246656018598,0.40417142711712356,0.08723759938680059,0.0]                              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.09,0.06820273217526523,0.6052007295972512,0.20747283766972438,0.029123700557759133,0.0]                              |
+|4.0  |5.0       |[0.0,0.0,0.0,0.0,0.16132197644665075,0.5966586502976869,0.22106630504371724,0.020953068211945113,0.0]                               |
+|6.0  |5.0       |[0.0,0.0,0.0,0.005000000000000001,0.0348545841921546,0.5715543122155797,0.2946508164220994,0.07394028717016632,0.020000000000000004]|
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+only showing top 20 rows
+
+=== Evaluating F1 score ===
+
+F1 score on test data: 0.6098887957009288
+
+[ec2-user@ip-172-31-65-2 wine_app]$ docker login
+Authenticating with existing credentials...
+WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ec2-user@ip-172-31-65-2 wine_app]$ docker login
+docker push vs653njit/wine-predictor:v1
+Authenticating with existing credentials...
+WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+The push refers to repository [docker.io/vs653njit/wine-predictor]
+6e0c4f97f2c4: Pushed
+6100685e15bc: Pushed
+591a9edce715: Pushed
+5b4f4683268e: Pushed
+35be7d881dca: Pushed
+67b5cc97c4a7: Pushed
+668f0b3f89c1: Pushed
+548ba1e7e829: Mounted from library/python
+a8045a14b5f4: Mounted from library/python
+cb4ecf39d967: Mounted from library/python
+70a290c5e58b: Mounted from library/python
+v1: digest: sha256:58e2d1da8a35570bfaf105dfabea8adde85e1bf49a024e040f9a8e96192dbd80 size: 2624
+[ec2-user@ip-172-31-65-2 wine_app]$

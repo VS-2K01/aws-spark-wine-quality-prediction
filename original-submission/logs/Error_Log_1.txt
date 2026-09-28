@@ -1,0 +1,1751 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem hadoop@ec2-3-208-73-121.compute-1.amazonaws.com
+ssh: connect to host ec2-3-208-73-121.compute-1.amazonaws.com port 22: Connection timed out
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem hadoop@ec2-3-208-73-121.compute-1.amazonaws.com
+The authenticity of host 'ec2-3-208-73-121.compute-1.amazonaws.com (3.208.73.121)' can't be established.
+ED25519 key fingerprint is SHA256:nfoSI1mCzYUP5Rsd6lUjz3L/k5dVCyBet9drUBAL4Os.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ec2-3-208-73-121.compute-1.amazonaws.com' (ED25519) to the list of known hosts.
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+Last login: Sun Nov 23 23:21:43 2025
+
+EEEEEEEEEEEEEEEEEEEE MMMMMMMM           MMMMMMMM RRRRRRRRRRRRRRR
+E::::::::::::::::::E M:::::::M         M:::::::M R::::::::::::::R
+EE:::::EEEEEEEEE:::E M::::::::M       M::::::::M R:::::RRRRRR:::::R
+  E::::E       EEEEE M:::::::::M     M:::::::::M RR::::R      R::::R
+  E::::E             M::::::M:::M   M:::M::::::M   R:::R      R::::R
+  E:::::EEEEEEEEEE   M:::::M M:::M M:::M M:::::M   R:::RRRRRR:::::R
+  E::::::::::::::E   M:::::M  M:::M:::M  M:::::M   R:::::::::::RR
+  E:::::EEEEEEEEEE   M:::::M   M:::::M   M:::::M   R:::RRRRRR::::R
+  E::::E             M:::::M    M:::M    M:::::M   R:::R      R::::R
+  E::::E       EEEEE M:::::M     MMM     M:::::M   R:::R      R::::R
+EE:::::EEEEEEEE::::E M:::::M             M:::::M   R:::R      R::::R
+E::::::::::::::::::E M:::::M             M:::::M RR::::R      R::::R
+EEEEEEEEEEEEEEEEEEEE MMMMMMM             MMMMMMM RRRRRRR      RRRRRR
+
+[hadoop@ip-172-31-4-214 ~]$ BUCKET=cs643-project2-wine-quality-prediction
+[hadoop@ip-172-31-4-214 ~]$ aws s3 cp s3://$BUCKET/code/train_wine_rf.py
+
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+
+aws: error: the following arguments are required: paths
+
+[hadoop@ip-172-31-4-214 ~]$ aws s3 cp s3://$BUCKET/code/train_wine_rf.py .
+download: s3://cs643-project2-wine-quality-prediction/code/train_wine_rf.py to ./train_wine_rf.py
+[hadoop@ip-172-31-4-214 ~]$ spark-submit \
+  --master yarn \
+  --deploy-mode cluster \
+  train_wine_rf.py \
+  s3://$BUCKET/data/TrainingDataset.csv \
+  s3://$BUCKET/data/ValidationDataset.csv \
+  s3://$BUCKET/models/wine_rf_model_rf1
+25/11/23 23:31:16 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/11/23 23:31:16 INFO DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at ip-172-31-4-214.ec2.internal/172.31.4.214:8032
+25/11/23 23:31:17 INFO Configuration: resource-types.xml not found
+25/11/23 23:31:17 INFO ResourceUtils: Unable to find 'resource-types.xml'.
+25/11/23 23:31:17 INFO Client: Verifying our application has not requested more than the maximum memory capability of the cluster (12288 MB per container)
+25/11/23 23:31:17 INFO Client: Will allocate AM container, with 2432 MB memory including 384 MB overhead
+25/11/23 23:31:17 INFO Client: Setting up container launch context for our AM
+25/11/23 23:31:17 INFO Client: Setting up the launch environment for our AM container
+25/11/23 23:31:17 INFO Client: Preparing resources for our AM container
+25/11/23 23:31:17 WARN Client: Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.
+25/11/23 23:31:19 INFO Client: Uploading resource file:/mnt/tmp/spark-f9732420-299e-492c-8967-67532217bc6c/__spark_libs__1820430036289420552.zip -> hdfs://ip-172-31-4-214.ec2.internal:8020/user/hadoop/.sparkStaging/application_1763939718718_0001/__spark_libs__1820430036289420552.zip
+25/11/23 23:31:21 INFO Client: Uploading resource file:/etc/spark/conf.dist/hive-site.xml -> hdfs://ip-172-31-4-214.ec2.internal:8020/user/hadoop/.sparkStaging/application_1763939718718_0001/hive-site.xml
+25/11/23 23:31:21 INFO Client: Uploading resource file:/etc/hudi/conf.dist/hudi-defaults.conf -> hdfs://ip-172-31-4-214.ec2.internal:8020/user/hadoop/.sparkStaging/application_1763939718718_0001/hudi-defaults.conf
+25/11/23 23:31:21 INFO Client: Uploading resource file:/home/hadoop/train_wine_rf.py -> hdfs://ip-172-31-4-214.ec2.internal:8020/user/hadoop/.sparkStaging/application_1763939718718_0001/train_wine_rf.py
+25/11/23 23:31:21 INFO Client: Uploading resource file:/usr/lib/spark/python/lib/pyspark.zip -> hdfs://ip-172-31-4-214.ec2.internal:8020/user/hadoop/.sparkStaging/application_1763939718718_0001/pyspark.zip
+25/11/23 23:31:21 INFO Client: Uploading resource file:/usr/lib/spark/python/lib/py4j-0.10.9.7-src.zip -> hdfs://ip-172-31-4-214.ec2.internal:8020/user/hadoop/.sparkStaging/application_1763939718718_0001/py4j-0.10.9.7-src.zip
+25/11/23 23:31:21 INFO Client: Uploading resource file:/mnt/tmp/spark-f9732420-299e-492c-8967-67532217bc6c/__spark_conf__17298122813136565238.zip -> hdfs://ip-172-31-4-214.ec2.internal:8020/user/hadoop/.sparkStaging/application_1763939718718_0001/__spark_conf__.zip
+25/11/23 23:31:21 INFO SecurityManager: Changing view acls to: hadoop
+25/11/23 23:31:21 INFO SecurityManager: Changing modify acls to: hadoop
+25/11/23 23:31:21 INFO SecurityManager: Changing view acls groups to:
+25/11/23 23:31:21 INFO SecurityManager: Changing modify acls groups to:
+25/11/23 23:31:21 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: hadoop; groups with view permissions: EMPTY; users with modify permissions: hadoop; groups with modify permissions: EMPTY
+25/11/23 23:31:21 INFO Client: Submitting application application_1763939718718_0001 to ResourceManager
+25/11/23 23:31:22 INFO YarnClientImpl: Submitted application application_1763939718718_0001
+25/11/23 23:31:23 INFO Client: Application report for application_1763939718718_0001 (state: ACCEPTED)
+25/11/23 23:31:23 INFO Client:
+         client token: N/A
+         diagnostics: AM container is launched, waiting for AM container to Register with RM
+         ApplicationMaster host: N/A
+         ApplicationMaster RPC port: -1
+         queue: root.default
+         start time: 1763940681883
+         final status: UNDEFINED
+         tracking URL: http://ip-172-31-4-214.ec2.internal:20888/proxy/application_1763939718718_0001/
+         user: hadoop
+25/11/23 23:31:31 INFO Client: Application report for application_1763939718718_0001 (state: RUNNING)
+25/11/23 23:31:31 INFO Client:
+         client token: N/A
+         diagnostics: N/A
+         ApplicationMaster host: ip-172-31-0-108.ec2.internal
+         ApplicationMaster RPC port: 37259
+         queue: root.default
+         start time: 1763940681883
+         final status: UNDEFINED
+         tracking URL: http://ip-172-31-4-214.ec2.internal:20888/proxy/application_1763939718718_0001/
+         user: hadoop
+25/11/23 23:32:01 INFO Client: Application report for application_1763939718718_0001 (state: RUNNING)
+25/11/23 23:32:17 INFO Client: Application report for application_1763939718718_0001 (state: FINISHED)
+25/11/23 23:32:17 INFO Client:
+         client token: N/A
+         diagnostics: N/A
+         ApplicationMaster host: ip-172-31-0-108.ec2.internal
+         ApplicationMaster RPC port: 37259
+         queue: root.default
+         start time: 1763940681883
+         final status: SUCCEEDED
+         tracking URL: http://ip-172-31-4-214.ec2.internal:20888/proxy/application_1763939718718_0001/
+         user: hadoop
+25/11/23 23:32:17 INFO ShutdownHookManager: Shutdown hook called
+25/11/23 23:32:17 INFO ShutdownHookManager: Deleting directory /mnt/tmp/spark-f9732420-299e-492c-8967-67532217bc6c
+25/11/23 23:32:17 INFO ShutdownHookManager: Deleting directory /mnt/tmp/spark-c880c67c-d5dc-4b9d-956b-b48c2db4e98b
+[hadoop@ip-172-31-4-214 ~]$ client_loop: send disconnect: Connection reset
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem hadoop@ec2-3-208-73-121.compute-1.amazonaws.com
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+Last login: Sun Nov 23 23:39:53 2025
+
+EEEEEEEEEEEEEEEEEEEE MMMMMMMM           MMMMMMMM RRRRRRRRRRRRRRR
+E::::::::::::::::::E M:::::::M         M:::::::M R::::::::::::::R
+EE:::::EEEEEEEEE:::E M::::::::M       M::::::::M R:::::RRRRRR:::::R
+  E::::E       EEEEE M:::::::::M     M:::::::::M RR::::R      R::::R
+  E::::E             M::::::M:::M   M:::M::::::M   R:::R      R::::R
+  E:::::EEEEEEEEEE   M:::::M M:::M M:::M M:::::M   R:::RRRRRR:::::R
+  E::::::::::::::E   M:::::M  M:::M:::M  M:::::M   R:::::::::::RR
+  E:::::EEEEEEEEEE   M:::::M   M:::::M   M:::::M   R:::RRRRRR::::R
+  E::::E             M:::::M    M:::M    M:::::M   R:::R      R::::R
+  E::::E       EEEEE M:::::M     MMM     M:::::M   R:::R      R::::R
+EE:::::EEEEEEEE::::E M:::::M             M:::::M   R:::R      R::::R
+E::::::::::::::::::E M:::::M             M:::::M RR::::R      R::::R
+EEEEEEEEEEEEEEEEEEEE MMMMMMM             MMMMMMM RRRRRRR      RRRRRR
+
+[hadoop@ip-172-31-4-214 ~]$ BUCKET=cs643-project2-wine-quality-prediction
+[hadoop@ip-172-31-4-214 ~]$ aws s3 cp s3://$BUCKET/code/predict_wine.py .
+download: s3://cs643-project2-wine-quality-prediction/code/predict_wine.py to ./predict_wine.py
+[hadoop@ip-172-31-4-214 ~]$ spark-submit \
+  --master local[*] \
+  predict_wine.py \
+  s3://$BUCKET/data/ValidationDataset.csv \
+  s3://$BUCKET/models/wine_rf_model_rf1
+25/11/23 23:49:55 INFO EMRParamSideChannel: Setting FGAC mode to false
+25/11/23 23:49:55 INFO SparkContext: Running Spark version 3.5.6-amzn-1
+25/11/23 23:49:55 INFO SparkContext: OS info Linux, 6.1.156-177.286.amzn2023.x86_64, amd64
+25/11/23 23:49:55 INFO SparkContext: Java version 17.0.17
+25/11/23 23:49:55 INFO ResourceUtils: ==============================================================
+25/11/23 23:49:55 INFO ResourceUtils: No custom resources configured for spark.driver.
+25/11/23 23:49:55 INFO ResourceUtils: ==============================================================
+25/11/23 23:49:55 INFO SparkContext: Submitted application: WineQuality_RF_Prediction
+25/11/23 23:49:55 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(executorType -> name: executorType, amount: 1, script: , vendor: , cores -> name: cores, amount: 4, script: , vendor: , memory -> name: memory, amount: 9486, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+25/11/23 23:49:55 INFO ResourceProfile: Limiting resource is cpus at 4 tasks per executor
+25/11/23 23:49:55 INFO ResourceProfileManager: Added ResourceProfile id: 0
+25/11/23 23:49:55 INFO ResourceProfile: User executor ResourceProfile created, executor resources: Map(executorType -> name: executorType, amount: 1, script: , vendor: , cores -> name: cores, amount: 4, script: , vendor: , memory -> name: memory, amount: 9486, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+25/11/23 23:49:55 INFO ResourceProfile: Limiting resource is cpus at 4 tasks per executor
+25/11/23 23:49:55 INFO ResourceProfileManager: Added ResourceProfile id: 1
+25/11/23 23:49:55 INFO SecurityManager: Changing view acls to: hadoop
+25/11/23 23:49:55 INFO SecurityManager: Changing modify acls to: hadoop
+25/11/23 23:49:55 INFO SecurityManager: Changing view acls groups to:
+25/11/23 23:49:55 INFO SecurityManager: Changing modify acls groups to:
+25/11/23 23:49:55 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: hadoop; groups with view permissions: EMPTY; users with modify permissions: hadoop; groups with modify permissions: EMPTY
+25/11/23 23:49:55 INFO Utils: Successfully started service 'sparkDriver' on port 36769.
+25/11/23 23:49:55 INFO SparkEnv: Registering MapOutputTracker
+25/11/23 23:49:55 INFO SparkEnv: Registering BlockManagerMaster
+25/11/23 23:49:55 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+25/11/23 23:49:55 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+25/11/23 23:49:55 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+25/11/23 23:49:55 INFO DiskBlockManager: Created local directory at /mnt/tmp/blockmgr-1cd04802-d3d6-4355-9e33-e785999a2ea2
+25/11/23 23:49:55 INFO MemoryStore: MemoryStore started with capacity 1048.8 MiB
+25/11/23 23:49:55 INFO SparkEnv: Registering OutputCommitCoordinator
+25/11/23 23:49:55 INFO SubResultCacheManager: Sub-result caches are disabled.
+25/11/23 23:49:55 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+25/11/23 23:49:55 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+25/11/23 23:49:56 INFO Executor: Starting executor ID driver on host ip-172-31-4-214.ec2.internal
+25/11/23 23:49:56 INFO Executor: OS info Linux, 6.1.156-177.286.amzn2023.x86_64, amd64
+25/11/23 23:49:56 INFO Executor: Java version 17.0.17
+25/11/23 23:49:56 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): 'file:/usr/lib/hadoop-lzo/lib/*,file:/usr/lib/hadoop/hadoop-aws.jar,file:/usr/share/aws/aws-java-sdk/*,file:/usr/share/aws/aws-java-sdk-v2/*,file:/usr/share/aws/datazone-openlineage-spark/lib/*,file:/usr/share/aws/emr/goodies/lib/emr-spark-goodies.jar,file:/usr/share/aws/emr/security/conf,file:/usr/share/aws/emr/security/lib/*,file:/usr/share/aws/redshift/jdbc/*,file:/usr/share/aws/redshift/spark-redshift/lib/*,file:/usr/share/aws/kinesis/spark-sql-kinesis/lib/*,file:/usr/share/aws/hmclient/lib/aws-glue-datacatalog-spark-client.jar,file:/usr/share/java/Hive-JSON-Serde/hive-openx-serde.jar,file:/usr/share/aws/emr/s3select/lib/emr-s3-select-spark-connector.jar,file:/docker/usr/lib/hadoop-lzo/lib/*,file:/docker/usr/lib/hadoop/hadoop-aws.jar,file:/docker/usr/share/aws/aws-java-sdk/*,file:/docker/usr/share/aws/aws-java-sdk-v2/*,file:/docker/usr/share/aws/datazone-openlineage-spark/lib/*,file:/docker/usr/share/aws/emr/goodies/lib/emr-spark-goodies.jar,file:/docker/usr/share/aws/emr/security/conf,file:/docker/usr/share/aws/emr/security/lib/*,file:/docker/usr/share/aws/redshift/jdbc/*,file:/docker/usr/share/aws/redshift/spark-redshift/lib/*,file:/docker/usr/share/aws/kinesis/spark-sql-kinesis/lib/*,file:/docker/usr/share/aws/hmclient/lib/aws-glue-datacatalog-spark-client.jar,file:/docker/usr/share/java/Hive-JSON-Serde/hive-openx-serde.jar,file:/docker/usr/share/aws/emr/s3select/lib/emr-s3-select-spark-connector.jar,file:/home/hadoop/conf,file:/home/hadoop/emr-spark-goodies.jar,file:/home/hadoop/*,file:/home/hadoop/aws-glue-datacatalog-spark-client.jar,file:/home/hadoop/hive-openx-serde.jar,file:/home/hadoop/hadoop-aws.jar,file:/home/hadoop/emr-s3-select-spark-connector.jar'
+25/11/23 23:49:56 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@3a9f8c9d for default.
+25/11/23 23:49:56 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 44743.
+25/11/23 23:49:56 INFO NettyBlockTransferService: Server created on ip-172-31-4-214.ec2.internal:44743
+25/11/23 23:49:56 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+25/11/23 23:49:56 INFO BlockManager: external shuffle service port = 7337
+25/11/23 23:49:56 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, ip-172-31-4-214.ec2.internal, 44743, None)
+25/11/23 23:49:56 INFO BlockManagerMasterEndpoint: Registering block manager ip-172-31-4-214.ec2.internal:44743 with 1048.8 MiB RAM, BlockManagerId(driver, ip-172-31-4-214.ec2.internal, 44743, None)
+25/11/23 23:49:56 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, ip-172-31-4-214.ec2.internal, 44743, None)
+25/11/23 23:49:56 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, ip-172-31-4-214.ec2.internal, 44743, None)
+25/11/23 23:49:56 INFO SingleEventLogFileWriter: Logging events to hdfs:/var/log/spark/apps/local-1763941796000.inprogress
+=== Loading and preprocessing test data ===
+=== Loading data from s3://cs643-project2-wine-quality-prediction/data/ValidationDataset.csv ===
+25/11/23 23:49:57 INFO SharedState: Setting hive.metastore.warehouse.dir ('null') to the value of spark.sql.warehouse.dir.
+25/11/23 23:49:57 INFO SharedState: Warehouse path is 'hdfs://ip-172-31-4-214.ec2.internal:8020/user/spark/warehouse'.
+25/11/23 23:49:58 INFO EMRFSToS3AConfigMapping: Mapping EMRFS config fs.s3.sts.endpoint to S3A config fs.s3a.assumed.role.sts.endpoint
+25/11/23 23:49:58 INFO EMRFSToS3AConfigMapping: Mapping EMRFS config fs.s3.buffer.dir to S3A config fs.s3a.buffer.dir
+25/11/23 23:49:58 INFO MetricsConfig: Loaded properties from hadoop-metrics2.properties
+25/11/23 23:49:58 INFO MetricsSystemImpl: Scheduled Metric snapshot period at 300 second(s).
+25/11/23 23:49:58 INFO MetricsSystemImpl: s3a-file-system metrics system started
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+25/11/23 23:49:59 INFO InMemoryFileIndex: It took 61 ms to list leaf files for 1 paths.
+25/11/23 23:49:59 INFO InMemoryFileIndex: It took 24 ms to list leaf files for 1 paths.
+25/11/23 23:50:01 INFO FileSourceStrategy: Pushed Filters:
+25/11/23 23:50:01 INFO FileSourceStrategy: Post-Scan Filters: (length(trim(value#0, None)) > 0)
+25/11/23 23:50:01 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 295.0 KiB, free 1048.5 MiB)
+25/11/23 23:50:01 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 51.7 KiB, actual size: 51.7 KiB, free 1048.5 MiB)
+25/11/23 23:50:01 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 51.7 KiB, free: 1048.7 MiB)
+25/11/23 23:50:01 INFO SparkContext: Created broadcast 0 from csv at NativeMethodAccessorImpl.java:0
+25/11/23 23:50:01 INFO GPLNativeCodeLoader: Loaded native gpl library
+25/11/23 23:50:01 INFO LzoCodec: Successfully loaded & initialized native-lzo library [hadoop-lzo rev 049362b7cf53ff5f739d6b1532457f2c6cd495e8]
+25/11/23 23:50:01 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes, number of split files: 1, prefetch: false
+25/11/23 23:50:02 INFO FileSourceScanExec: relation: None, fileSplitsInPartitionHistogram: Vector((1 fileSplits,1))
+25/11/23 23:50:02 INFO CodeGenerator: Code generated in 157.029634 ms
+25/11/23 23:50:02 INFO SparkContext: Starting job: csv at NativeMethodAccessorImpl.java:0
+25/11/23 23:50:02 INFO DAGScheduler: Got job 0 (csv at NativeMethodAccessorImpl.java:0) with 1 output partitions
+25/11/23 23:50:02 INFO DAGScheduler: Final stage: ResultStage 0 (csv at NativeMethodAccessorImpl.java:0)
+25/11/23 23:50:02 INFO DAGScheduler: Parents of final stage: List()
+25/11/23 23:50:02 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:02 INFO DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[3] at csv at NativeMethodAccessorImpl.java:0), which has no missing parents
+25/11/23 23:50:02 INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 17.8 KiB, free 1048.4 MiB)
+25/11/23 23:50:02 INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 8.6 KiB, actual size: 8.6 KiB, free 1048.4 MiB)
+25/11/23 23:50:02 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 8.6 KiB, free: 1048.7 MiB)
+25/11/23 23:50:02 INFO SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:02 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[3] at csv at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:02 INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks resource profile 0
+25/11/23 23:50:02 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9928 bytes)
+25/11/23 23:50:02 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+25/11/23 23:50:02 INFO CodeGenerator: Code generated in 29.402488 ms
+25/11/23 23:50:02 INFO FileScanRDD: TID: 0 - Reading current file: path: s3://cs643-project2-wine-quality-prediction/data/ValidationDataset.csv, range: 0-8662, partition values: [empty row], isDataPresent: false, eTag: "57b40b06b68e1c2d9975bfef31b71761"
+25/11/23 23:50:02 INFO CodeGenerator: Code generated in 10.856546 ms
+25/11/23 23:50:02 INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 2283 bytes result sent to driver
+25/11/23 23:50:02 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 317 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:02 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+25/11/23 23:50:02 INFO DAGScheduler: ResultStage 0 (csv at NativeMethodAccessorImpl.java:0) finished in 0.466 s
+25/11/23 23:50:02 INFO DAGScheduler: Job 0 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:02 INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
+25/11/23 23:50:02 INFO DAGScheduler: Job 0 finished: csv at NativeMethodAccessorImpl.java:0, took 0.507239 s
+25/11/23 23:50:02 INFO CodeGenerator: Code generated in 11.638957 ms
+25/11/23 23:50:02 INFO SQLExecution: Generating and posting SparkListenerSQLExecutionObfuscatedInfo...
+25/11/23 23:50:02 INFO SQLExecution: Posted SparkListenerSQLExecutionObfuscatedInfo in 4 ms
+25/11/23 23:50:02 INFO FileSourceStrategy: Pushed Filters:
+25/11/23 23:50:02 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/23 23:50:02 INFO MemoryStore: Block broadcast_2 stored as values in memory (estimated size 295.0 KiB, free 1048.1 MiB)
+25/11/23 23:50:02 INFO MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 51.7 KiB, actual size: 51.7 KiB, free 1048.1 MiB)
+25/11/23 23:50:02 INFO BlockManagerInfo: Added broadcast_2_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 51.7 KiB, free: 1048.7 MiB)
+25/11/23 23:50:02 INFO SparkContext: Created broadcast 2 from csv at NativeMethodAccessorImpl.java:0
+25/11/23 23:50:02 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes, number of split files: 1, prefetch: false
+25/11/23 23:50:02 INFO FileSourceScanExec: relation: None, fileSplitsInPartitionHistogram: Vector((1 fileSplits,1))
+25/11/23 23:50:02 INFO SparkContext: Starting job: csv at NativeMethodAccessorImpl.java:0
+25/11/23 23:50:02 INFO DAGScheduler: Got job 1 (csv at NativeMethodAccessorImpl.java:0) with 1 output partitions
+25/11/23 23:50:02 INFO DAGScheduler: Final stage: ResultStage 1 (csv at NativeMethodAccessorImpl.java:0)
+25/11/23 23:50:02 INFO DAGScheduler: Parents of final stage: List()
+25/11/23 23:50:02 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:02 INFO DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[9] at csv at NativeMethodAccessorImpl.java:0), which has no missing parents
+25/11/23 23:50:02 INFO MemoryStore: Block broadcast_3 stored as values in memory (estimated size 41.4 KiB, free 1048.1 MiB)
+25/11/23 23:50:02 INFO MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 19.0 KiB, actual size: 19.0 KiB, free 1048.0 MiB)
+25/11/23 23:50:02 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 19.0 KiB, free: 1048.7 MiB)
+25/11/23 23:50:02 INFO SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:02 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[9] at csv at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:02 INFO TaskSchedulerImpl: Adding task set 1.0 with 1 tasks resource profile 0
+25/11/23 23:50:02 INFO TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9928 bytes)
+25/11/23 23:50:02 INFO Executor: Running task 0.0 in stage 1.0 (TID 1)
+25/11/23 23:50:03 INFO CodeGenerator: Code generated in 9.083721 ms
+25/11/23 23:50:03 INFO FileScanRDD: TID: 1 - Reading current file: path: s3://cs643-project2-wine-quality-prediction/data/ValidationDataset.csv, range: 0-8662, partition values: [empty row], isDataPresent: false, eTag: "57b40b06b68e1c2d9975bfef31b71761"
+25/11/23 23:50:03 INFO Executor: Finished task 0.0 in stage 1.0 (TID 1). 1923 bytes result sent to driver
+25/11/23 23:50:03 INFO TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 114 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:03 INFO TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+25/11/23 23:50:03 INFO DAGScheduler: ResultStage 1 (csv at NativeMethodAccessorImpl.java:0) finished in 0.131 s
+25/11/23 23:50:03 INFO DAGScheduler: Job 1 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:03 INFO TaskSchedulerImpl: Killing all running tasks in stage 1: Stage finished
+25/11/23 23:50:03 INFO DAGScheduler: Job 1 finished: csv at NativeMethodAccessorImpl.java:0, took 0.137988 s
+25/11/23 23:50:03 INFO FileSourceStrategy: Pushed Filters:
+25/11/23 23:50:03 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/23 23:50:03 INFO CodeGenerator: Code generated in 50.619778 ms
+25/11/23 23:50:03 INFO MemoryStore: Block broadcast_4 stored as values in memory (estimated size 295.0 KiB, free 1047.7 MiB)
+25/11/23 23:50:03 INFO MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 51.7 KiB, actual size: 51.7 KiB, free 1047.7 MiB)
+25/11/23 23:50:03 INFO BlockManagerInfo: Added broadcast_4_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 51.7 KiB, free: 1048.6 MiB)
+25/11/23 23:50:03 INFO SparkContext: Created broadcast 4 from first at StandardScaler.scala:113
+25/11/23 23:50:03 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes, number of split files: 1, prefetch: false
+25/11/23 23:50:03 INFO FileSourceScanExec: relation: None, fileSplitsInPartitionHistogram: Vector((1 fileSplits,1))
+25/11/23 23:50:03 INFO DAGScheduler: Registering RDD 14 (first at StandardScaler.scala:113) as input to shuffle 0
+25/11/23 23:50:03 INFO DAGScheduler: Got map stage job 2 (first at StandardScaler.scala:113) with 1 output partitions
+25/11/23 23:50:03 INFO DAGScheduler: Final stage: ShuffleMapStage 2 (first at StandardScaler.scala:113)
+25/11/23 23:50:03 INFO DAGScheduler: Parents of final stage: List()
+25/11/23 23:50:03 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:03 INFO DAGScheduler: Submitting ShuffleMapStage 2 (MapPartitionsRDD[14] at first at StandardScaler.scala:113), which has no missing parents
+25/11/23 23:50:03 INFO BlockManagerInfo: Removed broadcast_3_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 19.0 KiB, free: 1048.6 MiB)
+25/11/23 23:50:03 INFO BlockManagerInfo: Removed broadcast_1_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 8.6 KiB, free: 1048.6 MiB)
+25/11/23 23:50:03 INFO MemoryStore: Block broadcast_5 stored as values in memory (estimated size 55.6 KiB, free 1047.7 MiB)
+25/11/23 23:50:03 INFO MemoryStore: Block broadcast_5_piece0 stored as bytes in memory (estimated size 24.7 KiB, actual size: 24.7 KiB, free 1047.7 MiB)
+25/11/23 23:50:03 INFO BlockManagerInfo: Added broadcast_5_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 24.7 KiB, free: 1048.6 MiB)
+25/11/23 23:50:03 INFO SparkContext: Created broadcast 5 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:03 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 2 (MapPartitionsRDD[14] at first at StandardScaler.scala:113) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:03 INFO TaskSchedulerImpl: Adding task set 2.0 with 1 tasks resource profile 0
+25/11/23 23:50:03 INFO TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9917 bytes)
+25/11/23 23:50:03 INFO Executor: Running task 0.0 in stage 2.0 (TID 2)
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 28.760546 ms
+25/11/23 23:50:04 INFO FileScanRDD: TID: 2 - Reading current file: path: s3://cs643-project2-wine-quality-prediction/data/ValidationDataset.csv, range: 0-8662, partition values: [empty row], isDataPresent: false, eTag: "57b40b06b68e1c2d9975bfef31b71761"
+25/11/23 23:50:04 INFO BlockManagerInfo: Removed broadcast_2_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 51.7 KiB, free: 1048.7 MiB)
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 22.80424 ms
+25/11/23 23:50:04 INFO BlockManagerInfo: Removed broadcast_0_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 51.7 KiB, free: 1048.7 MiB)
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 16.322475 ms
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 5.721101 ms
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 5.934771 ms
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 6.51097 ms
+25/11/23 23:50:04 INFO Executor: Finished task 0.0 in stage 2.0 (TID 2). 3105 bytes result sent to driver
+25/11/23 23:50:04 INFO TaskSetManager: Finished task 0.0 in stage 2.0 (TID 2) in 346 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:04 INFO TaskSchedulerImpl: Removed TaskSet 2.0, whose tasks have all completed, from pool
+25/11/23 23:50:04 INFO DAGScheduler: ShuffleMapStage 2 (first at StandardScaler.scala:113) finished in 0.403 s
+25/11/23 23:50:04 INFO DAGScheduler: looking for newly runnable stages
+25/11/23 23:50:04 INFO DAGScheduler: running: Set()
+25/11/23 23:50:04 INFO DAGScheduler: waiting: Set()
+25/11/23 23:50:04 INFO DAGScheduler: failed: Set()
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 12.307198 ms
+25/11/23 23:50:04 INFO SparkContext: Starting job: first at StandardScaler.scala:113
+25/11/23 23:50:04 INFO DAGScheduler: Got job 3 (first at StandardScaler.scala:113) with 1 output partitions
+25/11/23 23:50:04 INFO DAGScheduler: Final stage: ResultStage 4 (first at StandardScaler.scala:113)
+25/11/23 23:50:04 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 3)
+25/11/23 23:50:04 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:04 INFO DAGScheduler: Submitting ResultStage 4 (MapPartitionsRDD[18] at first at StandardScaler.scala:113), which has no missing parents
+25/11/23 23:50:04 INFO MemoryStore: Block broadcast_6 stored as values in memory (estimated size 59.0 KiB, free 1048.3 MiB)
+25/11/23 23:50:04 INFO MemoryStore: Block broadcast_6_piece0 stored as bytes in memory (estimated size 25.8 KiB, actual size: 25.8 KiB, free 1048.3 MiB)
+25/11/23 23:50:04 INFO BlockManagerInfo: Added broadcast_6_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 25.8 KiB, free: 1048.7 MiB)
+25/11/23 23:50:04 INFO SparkContext: Created broadcast 6 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:04 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 4 (MapPartitionsRDD[18] at first at StandardScaler.scala:113) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:04 INFO TaskSchedulerImpl: Adding task set 4.0 with 1 tasks resource profile 0
+25/11/23 23:50:04 INFO TaskSetManager: Starting task 0.0 in stage 4.0 (TID 3) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, NODE_LOCAL, 9148 bytes)
+25/11/23 23:50:04 INFO Executor: Running task 0.0 in stage 4.0 (TID 3)
+25/11/23 23:50:04 INFO ShuffleBlockFetcherIterator: Getting 1 (868.0 B) non-empty blocks including 1 (868.0 B) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/23 23:50:04 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 8 ms
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 17.070866 ms
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 18.312039 ms
+25/11/23 23:50:04 INFO Executor: Finished task 0.0 in stage 4.0 (TID 3). 5739 bytes result sent to driver
+25/11/23 23:50:04 INFO TaskSetManager: Finished task 0.0 in stage 4.0 (TID 3) in 107 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:04 INFO TaskSchedulerImpl: Removed TaskSet 4.0, whose tasks have all completed, from pool
+25/11/23 23:50:04 INFO DAGScheduler: ResultStage 4 (first at StandardScaler.scala:113) finished in 0.118 s
+25/11/23 23:50:04 INFO DAGScheduler: Job 3 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:04 INFO TaskSchedulerImpl: Killing all running tasks in stage 4: Stage finished
+25/11/23 23:50:04 INFO DAGScheduler: Job 3 finished: first at StandardScaler.scala:113, took 0.125503 s
+25/11/23 23:50:04 INFO CodeGenerator: Code generated in 6.140847 ms
+25/11/23 23:50:04 INFO SQLExecution: Generating and posting SparkListenerSQLExecutionObfuscatedInfo...
+25/11/23 23:50:04 INFO SQLExecution: Posted SparkListenerSQLExecutionObfuscatedInfo in 2 ms
+=== Loading trained Random Forest model from s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1 ===
+25/11/23 23:50:04 INFO MemoryStore: Block broadcast_7 stored as values in memory (estimated size 266.2 KiB, free 1048.0 MiB)
+25/11/23 23:50:04 INFO MemoryStore: Block broadcast_7_piece0 stored as bytes in memory (estimated size 43.3 KiB, actual size: 43.3 KiB, free 1048.0 MiB)
+25/11/23 23:50:04 INFO BlockManagerInfo: Added broadcast_7_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 43.3 KiB, free: 1048.7 MiB)
+25/11/23 23:50:04 INFO SparkContext: Created broadcast 7 from textFile at ReadWrite.scala:587
+25/11/23 23:50:04 INFO FileInputFormat: Total input files to process : 1
+25/11/23 23:50:04 INFO SparkContext: Starting job: first at ReadWrite.scala:587
+25/11/23 23:50:04 INFO DAGScheduler: Got job 4 (first at ReadWrite.scala:587) with 1 output partitions
+25/11/23 23:50:04 INFO DAGScheduler: Final stage: ResultStage 5 (first at ReadWrite.scala:587)
+25/11/23 23:50:04 INFO DAGScheduler: Parents of final stage: List()
+25/11/23 23:50:04 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:04 INFO DAGScheduler: Submitting ResultStage 5 (s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/metadata MapPartitionsRDD[20] at textFile at ReadWrite.scala:587), which has no missing parents
+25/11/23 23:50:04 INFO MemoryStore: Block broadcast_8 stored as values in memory (estimated size 5.4 KiB, free 1048.0 MiB)
+25/11/23 23:50:04 INFO MemoryStore: Block broadcast_8_piece0 stored as bytes in memory (estimated size 3.1 KiB, actual size: 3.1 KiB, free 1048.0 MiB)
+25/11/23 23:50:04 INFO BlockManagerInfo: Added broadcast_8_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 3.1 KiB, free: 1048.7 MiB)
+25/11/23 23:50:04 INFO SparkContext: Created broadcast 8 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:04 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 5 (s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/metadata MapPartitionsRDD[20] at textFile at ReadWrite.scala:587) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:04 INFO TaskSchedulerImpl: Adding task set 5.0 with 1 tasks resource profile 0
+25/11/23 23:50:04 INFO TaskSetManager: Starting task 0.0 in stage 5.0 (TID 4) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9252 bytes)
+25/11/23 23:50:04 INFO Executor: Running task 0.0 in stage 5.0 (TID 4)
+25/11/23 23:50:04 INFO HadoopRDD: Input split: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/metadata/part-00000:0+820
+25/11/23 23:50:04 INFO Executor: Finished task 0.0 in stage 5.0 (TID 4). 1760 bytes result sent to driver
+25/11/23 23:50:04 INFO TaskSetManager: Finished task 0.0 in stage 5.0 (TID 4) in 96 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:04 INFO TaskSchedulerImpl: Removed TaskSet 5.0, whose tasks have all completed, from pool
+25/11/23 23:50:04 INFO DAGScheduler: ResultStage 5 (first at ReadWrite.scala:587) finished in 0.102 s
+25/11/23 23:50:04 INFO DAGScheduler: Job 4 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:04 INFO TaskSchedulerImpl: Killing all running tasks in stage 5: Stage finished
+25/11/23 23:50:04 INFO DAGScheduler: Job 4 finished: first at ReadWrite.scala:587, took 0.108521 s
+25/11/23 23:50:05 INFO InMemoryFileIndex: It took 29 ms to list leaf files for 1 paths.
+25/11/23 23:50:05 INFO BlockManagerInfo: Removed broadcast_8_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 3.1 KiB, free: 1048.7 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Removed broadcast_7_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 43.3 KiB, free: 1048.7 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Removed broadcast_6_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 25.8 KiB, free: 1048.7 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Removed broadcast_5_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 24.7 KiB, free: 1048.7 MiB)
+25/11/23 23:50:05 INFO SparkContext: Starting job: parquet at treeModels.scala:520
+25/11/23 23:50:05 INFO DAGScheduler: Got job 5 (parquet at treeModels.scala:520) with 1 output partitions
+25/11/23 23:50:05 INFO DAGScheduler: Final stage: ResultStage 6 (parquet at treeModels.scala:520)
+25/11/23 23:50:05 INFO DAGScheduler: Parents of final stage: List()
+25/11/23 23:50:05 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:05 INFO DAGScheduler: Submitting ResultStage 6 (MapPartitionsRDD[22] at parquet at treeModels.scala:520), which has no missing parents
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_9 stored as values in memory (estimated size 145.8 KiB, free 1048.3 MiB)
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_9_piece0 stored as bytes in memory (estimated size 54.6 KiB, actual size: 54.6 KiB, free 1048.3 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Added broadcast_9_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 54.6 KiB, free: 1048.7 MiB)
+25/11/23 23:50:05 INFO SparkContext: Created broadcast 9 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:05 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 6 (MapPartitionsRDD[22] at parquet at treeModels.scala:520) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:05 INFO TaskSchedulerImpl: Adding task set 6.0 with 1 tasks resource profile 0
+25/11/23 23:50:05 INFO TaskSetManager: Starting task 0.0 in stage 6.0 (TID 5) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 9393 bytes)
+25/11/23 23:50:05 INFO Executor: Running task 0.0 in stage 6.0 (TID 5)
+25/11/23 23:50:05 INFO Executor: Finished task 0.0 in stage 6.0 (TID 5). 1934 bytes result sent to driver
+25/11/23 23:50:05 INFO TaskSetManager: Finished task 0.0 in stage 6.0 (TID 5) in 342 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:05 INFO TaskSchedulerImpl: Removed TaskSet 6.0, whose tasks have all completed, from pool
+25/11/23 23:50:05 INFO DAGScheduler: ResultStage 6 (parquet at treeModels.scala:520) finished in 0.359 s
+25/11/23 23:50:05 INFO DAGScheduler: Job 5 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:05 INFO TaskSchedulerImpl: Killing all running tasks in stage 6: Stage finished
+25/11/23 23:50:05 INFO DAGScheduler: Job 5 finished: parquet at treeModels.scala:520, took 0.364036 s
+25/11/23 23:50:05 INFO FileSourceStrategy: Pushed Filters:
+25/11/23 23:50:05 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/23 23:50:05 INFO CodeGenerator: Code generated in 16.913325 ms
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_10 stored as values in memory (estimated size 295.1 KiB, free 1048.0 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Removed broadcast_4_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 51.7 KiB, free: 1048.7 MiB)
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_10_piece0 stored as bytes in memory (estimated size 52.3 KiB, actual size: 52.3 KiB, free 1048.3 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Added broadcast_10_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 52.3 KiB, free: 1048.7 MiB)
+25/11/23 23:50:05 INFO SparkContext: Created broadcast 10 from rdd at treeModels.scala:522
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_11 stored as values in memory (estimated size 295.1 KiB, free 1048.0 MiB)
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_11_piece0 stored as bytes in memory (estimated size 52.3 KiB, actual size: 52.3 KiB, free 1047.9 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Added broadcast_11_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 52.3 KiB, free: 1048.6 MiB)
+25/11/23 23:50:05 INFO SparkContext: Created broadcast 11 from rdd at treeModels.scala:522
+25/11/23 23:50:05 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes, number of split files: 1, prefetch: true
+25/11/23 23:50:05 INFO FileSourceScanExec: relation: None, fileSplitsInPartitionHistogram: Vector((1 fileSplits,1))
+25/11/23 23:50:05 INFO SparkContext: Starting job: collect at treeModels.scala:527
+25/11/23 23:50:05 INFO DAGScheduler: Registering RDD 29 (map at treeModels.scala:523) as input to shuffle 1
+25/11/23 23:50:05 INFO DAGScheduler: Got job 6 (collect at treeModels.scala:527) with 1 output partitions
+25/11/23 23:50:05 INFO DAGScheduler: Final stage: ResultStage 8 (collect at treeModels.scala:527)
+25/11/23 23:50:05 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 7)
+25/11/23 23:50:05 INFO DAGScheduler: Missing parents: List(ShuffleMapStage 7)
+25/11/23 23:50:05 INFO DAGScheduler: Submitting ShuffleMapStage 7 (MapPartitionsRDD[29] at map at treeModels.scala:523), which has no missing parents
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_12 stored as values in memory (estimated size 48.9 KiB, free 1047.9 MiB)
+25/11/23 23:50:05 INFO MemoryStore: Block broadcast_12_piece0 stored as bytes in memory (estimated size 20.5 KiB, actual size: 20.5 KiB, free 1047.9 MiB)
+25/11/23 23:50:05 INFO BlockManagerInfo: Added broadcast_12_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 20.5 KiB, free: 1048.6 MiB)
+25/11/23 23:50:05 INFO SparkContext: Created broadcast 12 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:05 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 7 (MapPartitionsRDD[29] at map at treeModels.scala:523) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:05 INFO TaskSchedulerImpl: Adding task set 7.0 with 1 tasks resource profile 0
+25/11/23 23:50:05 INFO TaskSetManager: Starting task 0.0 in stage 7.0 (TID 6) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9999 bytes)
+25/11/23 23:50:05 INFO Executor: Running task 0.0 in stage 7.0 (TID 6)
+25/11/23 23:50:05 INFO AsyncFileDownloader: TID: 6 - Number of files to download: 1, unique file paths: 1
+25/11/23 23:50:05 INFO CodeGenerator: Code generated in 10.601227 ms
+25/11/23 23:50:05 INFO ParquetFooterCache: Footer Cache Max Memory Usage Setting to: 27493662, available: 1099746508, memoryFactor: 0.025, Acquired Memory: 0
+25/11/23 23:50:05 INFO CodeGenerator: Code generated in 7.228767 ms
+25/11/23 23:50:05 INFO ParquetFileFormat: TID - 6, all current weight: 0 used, Increase the acquire 0 to 2749366
+25/11/23 23:50:05 INFO AsyncFileDownloader: TID: 6 - Downloading ParquetFileChunkGroup(path=s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/treesMetadata/part-00000-86bde4a4-5da1-4ea7-9798-bac7c028f20a-c000.snappy.parquet, ordinal=0), downloadSize=20.5 KiB, numChunks=1, parallelizedChunks=false
+25/11/23 23:50:05 INFO CodecPool: Got brand-new decompressor [.snappy]
+25/11/23 23:50:05 INFO AsyncFileDownloader: TID: 6 - Downloaded ParquetFileChunkGroup(path=s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/treesMetadata/part-00000-86bde4a4-5da1-4ea7-9798-bac7c028f20a-c000.snappy.parquet, ordinal=0), elapsedTime=62565 micros
+25/11/23 23:50:05 INFO FileScanRDD: TID: 6 - Got next file: path: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/treesMetadata/part-00000-86bde4a4-5da1-4ea7-9798-bac7c028f20a-c000.snappy.parquet, range: 0-23275, partition values: [empty row], isDataPresent: true, eTag: "d2ab06f698805129d61e3c7e31d773e2-1". Elapsed time: 156079 micros
+25/11/23 23:50:05 INFO FileScanRDD: TID: 6 - Reading current file: path: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/treesMetadata/part-00000-86bde4a4-5da1-4ea7-9798-bac7c028f20a-c000.snappy.parquet, range: 0-23275, partition values: [empty row], isDataPresent: true, eTag: "d2ab06f698805129d61e3c7e31d773e2-1"
+25/11/23 23:50:06 INFO Executor: Finished task 0.0 in stage 7.0 (TID 6). 2188 bytes result sent to driver
+25/11/23 23:50:06 INFO TaskSetManager: Finished task 0.0 in stage 7.0 (TID 6) in 422 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:06 INFO TaskSchedulerImpl: Removed TaskSet 7.0, whose tasks have all completed, from pool
+25/11/23 23:50:06 INFO DAGScheduler: ShuffleMapStage 7 (map at treeModels.scala:523) finished in 0.447 s
+25/11/23 23:50:06 INFO DAGScheduler: looking for newly runnable stages
+25/11/23 23:50:06 INFO DAGScheduler: running: Set()
+25/11/23 23:50:06 INFO DAGScheduler: waiting: Set(ResultStage 8)
+25/11/23 23:50:06 INFO DAGScheduler: failed: Set()
+25/11/23 23:50:06 INFO DAGScheduler: Submitting ResultStage 8 (MapPartitionsRDD[31] at values at treeModels.scala:527), which has no missing parents
+25/11/23 23:50:06 INFO MemoryStore: Block broadcast_13 stored as values in memory (estimated size 5.9 KiB, free 1045.2 MiB)
+25/11/23 23:50:06 INFO MemoryStore: Block broadcast_13_piece0 stored as bytes in memory (estimated size 3.3 KiB, actual size: 3.3 KiB, free 1045.2 MiB)
+25/11/23 23:50:06 INFO BlockManagerInfo: Added broadcast_13_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 3.3 KiB, free: 1048.6 MiB)
+25/11/23 23:50:06 INFO SparkContext: Created broadcast 13 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:06 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 8 (MapPartitionsRDD[31] at values at treeModels.scala:527) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:06 INFO TaskSchedulerImpl: Adding task set 8.0 with 1 tasks resource profile 0
+25/11/23 23:50:06 INFO TaskSetManager: Starting task 0.0 in stage 8.0 (TID 7) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, NODE_LOCAL, 8966 bytes)
+25/11/23 23:50:06 INFO Executor: Running task 0.0 in stage 8.0 (TID 7)
+25/11/23 23:50:06 INFO ShuffleBlockFetcherIterator: Getting 1 (74.8 KiB) non-empty blocks including 1 (74.8 KiB) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/23 23:50:06 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 0 ms
+25/11/23 23:50:06 INFO BlockManagerInfo: Removed broadcast_9_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 54.6 KiB, free: 1048.7 MiB)
+25/11/23 23:50:06 INFO BlockManagerInfo: Removed broadcast_11_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 52.3 KiB, free: 1048.7 MiB)
+25/11/23 23:50:06 INFO BlockManagerInfo: Removed broadcast_12_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 20.5 KiB, free: 1048.7 MiB)
+25/11/23 23:50:07 INFO Executor: Finished task 0.0 in stage 8.0 (TID 7). 376900 bytes result sent to driver
+25/11/23 23:50:07 INFO TaskSetManager: Finished task 0.0 in stage 8.0 (TID 7) in 884 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:07 INFO TaskSchedulerImpl: Removed TaskSet 8.0, whose tasks have all completed, from pool
+25/11/23 23:50:07 INFO DAGScheduler: ResultStage 8 (collect at treeModels.scala:527) finished in 0.891 s
+25/11/23 23:50:07 INFO DAGScheduler: Job 6 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:07 INFO TaskSchedulerImpl: Killing all running tasks in stage 8: Stage finished
+25/11/23 23:50:07 INFO DAGScheduler: Job 6 finished: collect at treeModels.scala:527, took 1.346272 s
+25/11/23 23:50:07 INFO InMemoryFileIndex: It took 19 ms to list leaf files for 1 paths.
+25/11/23 23:50:07 INFO SparkContext: Starting job: parquet at treeModels.scala:532
+25/11/23 23:50:07 INFO DAGScheduler: Got job 7 (parquet at treeModels.scala:532) with 1 output partitions
+25/11/23 23:50:07 INFO DAGScheduler: Final stage: ResultStage 9 (parquet at treeModels.scala:532)
+25/11/23 23:50:07 INFO DAGScheduler: Parents of final stage: List()
+25/11/23 23:50:07 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:07 INFO DAGScheduler: Submitting ResultStage 9 (MapPartitionsRDD[33] at parquet at treeModels.scala:532), which has no missing parents
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_14 stored as values in memory (estimated size 145.8 KiB, free 1045.7 MiB)
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_14_piece0 stored as bytes in memory (estimated size 54.6 KiB, actual size: 54.6 KiB, free 1045.6 MiB)
+25/11/23 23:50:07 INFO BlockManagerInfo: Added broadcast_14_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 54.6 KiB, free: 1048.7 MiB)
+25/11/23 23:50:07 INFO SparkContext: Created broadcast 14 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:07 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 9 (MapPartitionsRDD[33] at parquet at treeModels.scala:532) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:07 INFO TaskSchedulerImpl: Adding task set 9.0 with 1 tasks resource profile 0
+25/11/23 23:50:07 INFO TaskSetManager: Starting task 0.0 in stage 9.0 (TID 8) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, PROCESS_LOCAL, 9384 bytes)
+25/11/23 23:50:07 INFO Executor: Running task 0.0 in stage 9.0 (TID 8)
+25/11/23 23:50:07 INFO BlockManagerInfo: Removed broadcast_13_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 3.3 KiB, free: 1048.7 MiB)
+25/11/23 23:50:07 INFO Executor: Finished task 0.0 in stage 9.0 (TID 8). 2478 bytes result sent to driver
+25/11/23 23:50:07 INFO TaskSetManager: Finished task 0.0 in stage 9.0 (TID 8) in 126 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:07 INFO TaskSchedulerImpl: Removed TaskSet 9.0, whose tasks have all completed, from pool
+25/11/23 23:50:07 INFO DAGScheduler: ResultStage 9 (parquet at treeModels.scala:532) finished in 0.146 s
+25/11/23 23:50:07 INFO DAGScheduler: Job 7 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:07 INFO TaskSchedulerImpl: Killing all running tasks in stage 9: Stage finished
+25/11/23 23:50:07 INFO DAGScheduler: Job 7 finished: parquet at treeModels.scala:532, took 0.150015 s
+25/11/23 23:50:07 INFO FileSourceStrategy: Pushed Filters:
+25/11/23 23:50:07 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/23 23:50:07 INFO CodeGenerator: Code generated in 17.811918 ms
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_15 stored as values in memory (estimated size 295.1 KiB, free 1045.4 MiB)
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_15_piece0 stored as bytes in memory (estimated size 52.7 KiB, actual size: 52.7 KiB, free 1045.3 MiB)
+25/11/23 23:50:07 INFO BlockManagerInfo: Added broadcast_15_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 52.7 KiB, free: 1048.6 MiB)
+25/11/23 23:50:07 INFO SparkContext: Created broadcast 15 from rdd at treeModels.scala:543
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_16 stored as values in memory (estimated size 295.1 KiB, free 1045.0 MiB)
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_16_piece0 stored as bytes in memory (estimated size 52.8 KiB, actual size: 52.8 KiB, free 1045.0 MiB)
+25/11/23 23:50:07 INFO BlockManagerInfo: Added broadcast_16_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 52.8 KiB, free: 1048.6 MiB)
+25/11/23 23:50:07 INFO SparkContext: Created broadcast 16 from rdd at treeModels.scala:543
+25/11/23 23:50:07 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes, number of split files: 1, prefetch: true
+25/11/23 23:50:07 INFO FileSourceScanExec: relation: None, fileSplitsInPartitionHistogram: Vector((1 fileSplits,1))
+25/11/23 23:50:07 INFO SparkContext: Starting job: collect at treeModels.scala:549
+25/11/23 23:50:07 INFO DAGScheduler: Registering RDD 40 (map at treeModels.scala:544) as input to shuffle 3
+25/11/23 23:50:07 INFO DAGScheduler: Registering RDD 42 (map at treeModels.scala:546) as input to shuffle 2
+25/11/23 23:50:07 INFO DAGScheduler: Got job 8 (collect at treeModels.scala:549) with 1 output partitions
+25/11/23 23:50:07 INFO DAGScheduler: Final stage: ResultStage 12 (collect at treeModels.scala:549)
+25/11/23 23:50:07 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 11)
+25/11/23 23:50:07 INFO DAGScheduler: Missing parents: List(ShuffleMapStage 11)
+25/11/23 23:50:07 INFO DAGScheduler: Submitting ShuffleMapStage 10 (MapPartitionsRDD[40] at map at treeModels.scala:544), which has no missing parents
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_17 stored as values in memory (estimated size 66.9 KiB, free 1044.9 MiB)
+25/11/23 23:50:07 INFO MemoryStore: Block broadcast_17_piece0 stored as bytes in memory (estimated size 25.0 KiB, actual size: 25.0 KiB, free 1044.9 MiB)
+25/11/23 23:50:07 INFO BlockManagerInfo: Added broadcast_17_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 25.0 KiB, free: 1048.6 MiB)
+25/11/23 23:50:07 INFO SparkContext: Created broadcast 17 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:07 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 10 (MapPartitionsRDD[40] at map at treeModels.scala:544) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:07 INFO TaskSchedulerImpl: Adding task set 10.0 with 1 tasks resource profile 0
+25/11/23 23:50:07 INFO TaskSetManager: Starting task 0.0 in stage 10.0 (TID 9) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9990 bytes)
+25/11/23 23:50:07 INFO Executor: Running task 0.0 in stage 10.0 (TID 9)
+25/11/23 23:50:07 INFO AsyncFileDownloader: TID: 9 - Number of files to download: 1, unique file paths: 1
+25/11/23 23:50:07 INFO CodeGenerator: Code generated in 18.519434 ms
+25/11/23 23:50:07 INFO CodeGenerator: Code generated in 22.94176 ms
+25/11/23 23:50:07 INFO AsyncFileDownloader: TID: 9 - Downloading ParquetFileChunkGroup(path=s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/data/part-00000-308d931f-074c-4c8f-9f20-e510ac6778a2-c000.snappy.parquet, ordinal=0), downloadSize=1293.1 KiB, numChunks=1, parallelizedChunks=false
+25/11/23 23:50:07 INFO AsyncFileDownloader: TID: 9 - Downloaded ParquetFileChunkGroup(path=s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/data/part-00000-308d931f-074c-4c8f-9f20-e510ac6778a2-c000.snappy.parquet, ordinal=0), elapsedTime=93105 micros
+25/11/23 23:50:07 INFO FileScanRDD: TID: 9 - Got next file: path: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/data/part-00000-308d931f-074c-4c8f-9f20-e510ac6778a2-c000.snappy.parquet, range: 0-1328967, partition values: [empty row], isDataPresent: true, eTag: "662b317fd6ec8fb2aef12e56617bc479-1". Elapsed time: 113615 micros
+25/11/23 23:50:07 INFO FileScanRDD: TID: 9 - Reading current file: path: s3://cs643-project2-wine-quality-prediction/models/wine_rf_model_rf1/data/part-00000-308d931f-074c-4c8f-9f20-e510ac6778a2-c000.snappy.parquet, range: 0-1328967, partition values: [empty row], isDataPresent: true, eTag: "662b317fd6ec8fb2aef12e56617bc479-1"
+25/11/23 23:50:08 INFO BlockManagerInfo: Removed broadcast_16_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 52.8 KiB, free: 1048.6 MiB)
+25/11/23 23:50:08 INFO BlockManagerInfo: Removed broadcast_14_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 54.6 KiB, free: 1048.7 MiB)
+25/11/23 23:50:08 INFO Executor: Finished task 0.0 in stage 10.0 (TID 9). 2274 bytes result sent to driver
+25/11/23 23:50:08 INFO TaskSetManager: Finished task 0.0 in stage 10.0 (TID 9) in 785 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:08 INFO TaskSchedulerImpl: Removed TaskSet 10.0, whose tasks have all completed, from pool
+25/11/23 23:50:08 INFO DAGScheduler: ShuffleMapStage 10 (map at treeModels.scala:544) finished in 0.797 s
+25/11/23 23:50:08 INFO DAGScheduler: looking for newly runnable stages
+25/11/23 23:50:08 INFO DAGScheduler: running: Set()
+25/11/23 23:50:08 INFO DAGScheduler: waiting: Set(ResultStage 12, ShuffleMapStage 11)
+25/11/23 23:50:08 INFO DAGScheduler: failed: Set()
+25/11/23 23:50:08 INFO DAGScheduler: Submitting ShuffleMapStage 11 (MapPartitionsRDD[42] at map at treeModels.scala:546), which has no missing parents
+25/11/23 23:50:08 INFO MemoryStore: Block broadcast_18 stored as values in memory (estimated size 68.3 KiB, free 1045.3 MiB)
+25/11/23 23:50:08 INFO MemoryStore: Block broadcast_18_piece0 stored as bytes in memory (estimated size 26.0 KiB, actual size: 26.0 KiB, free 1045.3 MiB)
+25/11/23 23:50:08 INFO BlockManagerInfo: Added broadcast_18_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 26.0 KiB, free: 1048.6 MiB)
+25/11/23 23:50:08 INFO SparkContext: Created broadcast 18 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:08 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 11 (MapPartitionsRDD[42] at map at treeModels.scala:546) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:08 INFO TaskSchedulerImpl: Adding task set 11.0 with 1 tasks resource profile 0
+25/11/23 23:50:08 INFO TaskSetManager: Starting task 0.0 in stage 11.0 (TID 10) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, NODE_LOCAL, 8955 bytes)
+25/11/23 23:50:08 INFO Executor: Running task 0.0 in stage 11.0 (TID 10)
+25/11/23 23:50:08 INFO ShuffleBlockFetcherIterator: Getting 1 (3.6 MiB) non-empty blocks including 1 (3.6 MiB) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/23 23:50:08 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 0 ms
+25/11/23 23:50:10 INFO Executor: Finished task 0.0 in stage 11.0 (TID 10). 3005 bytes result sent to driver
+25/11/23 23:50:10 INFO TaskSetManager: Finished task 0.0 in stage 11.0 (TID 10) in 2571 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:10 INFO TaskSchedulerImpl: Removed TaskSet 11.0, whose tasks have all completed, from pool
+25/11/23 23:50:10 INFO DAGScheduler: ShuffleMapStage 11 (map at treeModels.scala:546) finished in 2.587 s
+25/11/23 23:50:10 INFO DAGScheduler: looking for newly runnable stages
+25/11/23 23:50:10 INFO DAGScheduler: running: Set()
+25/11/23 23:50:10 INFO DAGScheduler: waiting: Set(ResultStage 12)
+25/11/23 23:50:10 INFO DAGScheduler: failed: Set()
+25/11/23 23:50:10 INFO DAGScheduler: Submitting ResultStage 12 (MapPartitionsRDD[44] at values at treeModels.scala:549), which has no missing parents
+25/11/23 23:50:10 INFO MemoryStore: Block broadcast_19 stored as values in memory (estimated size 5.9 KiB, free 1045.3 MiB)
+25/11/23 23:50:10 INFO MemoryStore: Block broadcast_19_piece0 stored as bytes in memory (estimated size 3.4 KiB, actual size: 3.4 KiB, free 1045.3 MiB)
+25/11/23 23:50:10 INFO BlockManagerInfo: Added broadcast_19_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 3.4 KiB, free: 1048.6 MiB)
+25/11/23 23:50:10 INFO SparkContext: Created broadcast 19 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:10 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 12 (MapPartitionsRDD[44] at values at treeModels.scala:549) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:10 INFO TaskSchedulerImpl: Adding task set 12.0 with 1 tasks resource profile 0
+25/11/23 23:50:10 INFO TaskSetManager: Starting task 0.0 in stage 12.0 (TID 11) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, NODE_LOCAL, 8966 bytes)
+25/11/23 23:50:10 INFO Executor: Running task 0.0 in stage 12.0 (TID 11)
+25/11/23 23:50:10 INFO ShuffleBlockFetcherIterator: Getting 1 (2.3 MiB) non-empty blocks including 1 (2.3 MiB) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/23 23:50:10 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 0 ms
+25/11/23 23:50:11 INFO BlockManagerInfo: Removed broadcast_17_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 25.0 KiB, free: 1048.7 MiB)
+25/11/23 23:50:11 INFO BlockManagerInfo: Removed broadcast_18_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 26.0 KiB, free: 1048.7 MiB)
+25/11/23 23:50:12 INFO MemoryStore: Block taskresult_11 stored as bytes in memory (estimated size 8.3 MiB, actual size: 8.3 MiB, free 1037.1 MiB)
+25/11/23 23:50:12 INFO BlockManagerInfo: Added taskresult_11 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 8.3 MiB, free: 1040.4 MiB)
+25/11/23 23:50:12 INFO Executor: Finished task 0.0 in stage 12.0 (TID 11). 8748120 bytes result sent via BlockManager)
+25/11/23 23:50:12 INFO TransportClientFactory: Successfully created connection to ip-172-31-4-214.ec2.internal/172.31.4.214:44743 after 21 ms (0 ms spent in bootstraps)
+25/11/23 23:50:12 INFO TaskSetManager: Finished task 0.0 in stage 12.0 (TID 11) in 1768 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:12 INFO TaskSchedulerImpl: Removed TaskSet 12.0, whose tasks have all completed, from pool
+25/11/23 23:50:12 INFO BlockManagerInfo: Removed taskresult_11 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 8.3 MiB, free: 1048.7 MiB)
+25/11/23 23:50:12 INFO DAGScheduler: ResultStage 12 (collect at treeModels.scala:549) finished in 1.776 s
+25/11/23 23:50:12 INFO DAGScheduler: Job 8 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:12 INFO TaskSchedulerImpl: Killing all running tasks in stage 12: Stage finished
+25/11/23 23:50:12 INFO DAGScheduler: Job 8 finished: collect at treeModels.scala:549, took 5.171909 s
+=== Running predictions ===
+25/11/23 23:50:13 INFO FileSourceStrategy: Pushed Filters:
+25/11/23 23:50:13 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/23 23:50:13 INFO CodeGenerator: Code generated in 26.184541 ms
+25/11/23 23:50:13 INFO MemoryStore: Block broadcast_20 stored as values in memory (estimated size 295.0 KiB, free 1045.2 MiB)
+25/11/23 23:50:13 INFO MemoryStore: Block broadcast_20_piece0 stored as bytes in memory (estimated size 51.7 KiB, actual size: 51.7 KiB, free 1045.2 MiB)
+25/11/23 23:50:13 INFO BlockManagerInfo: Added broadcast_20_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 51.7 KiB, free: 1048.6 MiB)
+25/11/23 23:50:13 INFO SparkContext: Created broadcast 20 from showString at NativeMethodAccessorImpl.java:0
+25/11/23 23:50:13 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes, number of split files: 1, prefetch: false
+25/11/23 23:50:13 INFO FileSourceScanExec: relation: None, fileSplitsInPartitionHistogram: Vector((1 fileSplits,1))
+25/11/23 23:50:13 INFO SparkContext: Starting job: showString at NativeMethodAccessorImpl.java:0
+25/11/23 23:50:13 INFO DAGScheduler: Got job 9 (showString at NativeMethodAccessorImpl.java:0) with 1 output partitions
+25/11/23 23:50:13 INFO DAGScheduler: Final stage: ResultStage 13 (showString at NativeMethodAccessorImpl.java:0)
+25/11/23 23:50:13 INFO DAGScheduler: Parents of final stage: List()
+25/11/23 23:50:13 INFO DAGScheduler: Missing parents: List()
+25/11/23 23:50:13 INFO DAGScheduler: Submitting ResultStage 13 (MapPartitionsRDD[48] at showString at NativeMethodAccessorImpl.java:0), which has no missing parents
+25/11/23 23:50:13 WARN DAGScheduler: Broadcasting large task binary with size 8.8 MiB
+25/11/23 23:50:13 INFO MemoryStore: Block broadcast_21 stored as values in memory (estimated size 8.8 MiB, free 1036.4 MiB)
+25/11/23 23:50:13 INFO MemoryStore: Block broadcast_21_piece0 stored as bytes in memory (estimated size 2.4 MiB, actual size: 2.4 MiB, free 1034.0 MiB)
+25/11/23 23:50:13 INFO BlockManagerInfo: Added broadcast_21_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 2.4 MiB, free: 1046.3 MiB)
+25/11/23 23:50:13 INFO SparkContext: Created broadcast 21 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:13 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 13 (MapPartitionsRDD[48] at showString at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:13 INFO TaskSchedulerImpl: Adding task set 13.0 with 1 tasks resource profile 0
+25/11/23 23:50:13 INFO TaskSetManager: Starting task 0.0 in stage 13.0 (TID 12) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9928 bytes)
+25/11/23 23:50:13 INFO Executor: Running task 0.0 in stage 13.0 (TID 12)
+25/11/23 23:50:13 INFO CodeGenerator: Code generated in 24.560017 ms
+25/11/23 23:50:13 INFO FileScanRDD: TID: 12 - Reading current file: path: s3://cs643-project2-wine-quality-prediction/data/ValidationDataset.csv, range: 0-8662, partition values: [empty row], isDataPresent: false, eTag: "57b40b06b68e1c2d9975bfef31b71761"
+25/11/23 23:50:13 INFO CodeGenerator: Code generated in 9.024413 ms
+25/11/23 23:50:13 INFO CodeGenerator: Code generated in 5.225901 ms
+25/11/23 23:50:14 INFO Executor: Finished task 0.0 in stage 13.0 (TID 12). 3822 bytes result sent to driver
+25/11/23 23:50:14 INFO TaskSetManager: Finished task 0.0 in stage 13.0 (TID 12) in 442 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:14 INFO TaskSchedulerImpl: Removed TaskSet 13.0, whose tasks have all completed, from pool
+25/11/23 23:50:14 INFO DAGScheduler: ResultStage 13 (showString at NativeMethodAccessorImpl.java:0) finished in 0.623 s
+25/11/23 23:50:14 INFO DAGScheduler: Job 9 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:14 INFO TaskSchedulerImpl: Killing all running tasks in stage 13: Stage finished
+25/11/23 23:50:14 INFO DAGScheduler: Job 9 finished: showString at NativeMethodAccessorImpl.java:0, took 0.627319 s
+25/11/23 23:50:14 INFO CodeGenerator: Code generated in 7.348685 ms
+25/11/23 23:50:14 INFO SQLExecution: Generating and posting SparkListenerSQLExecutionObfuscatedInfo...
+25/11/23 23:50:14 INFO SQLExecution: Posted SparkListenerSQLExecutionObfuscatedInfo in 1 ms
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+|label|prediction|probability                                                                                                                         |
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999999,0.16112767678323064,0.5974385297476885,0.21935586338058394,0.017077930088496757,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.049735145981924446,0.2156845227962575,0.3664025976198311,0.3297324560982624,0.03844527750372451,0.0]                 |
+|5.0  |6.0       |[0.0,0.0,0.0,0.07430812602786126,0.16360418380433678,0.34249654337015706,0.3740292498224265,0.04556189697521834,0.0]                |
+|6.0  |6.0       |[0.0,0.0,0.0,0.0,0.07988537310462128,0.4099000029585951,0.42725853510425826,0.07795608883252533,0.005]                              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999999,0.16112767678323064,0.5974385297476885,0.21935586338058394,0.017077930088496757,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.004999999999999998,0.139917279767109,0.5690842368411824,0.27152263811581046,0.014475845275898179,0.0]                |
+|5.0  |5.0       |[0.0,0.0,0.0,0.005000000000000001,0.16181579031055063,0.6381404261494225,0.1795955428523754,0.015448240687651573,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.025000000000000005,0.17680617804476237,0.40595043315697155,0.3510556081551533,0.04118778064311282,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.0,0.2168235900994914,0.4718386612525773,0.2625370779650862,0.04880067068284525,0.0]                                  |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.04302187034187722,0.45075289936995205,0.40899969383339907,0.09722553645477156,0.0]                               |
+|5.0  |5.0       |[0.0,0.0,0.0,0.010000000000000004,0.03984213063539346,0.7118050436312235,0.21418413207670417,0.024168693656678786,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.04302187034187722,0.45075289936995205,0.40899969383339907,0.09722553645477156,0.0]                               |
+|5.0  |5.0       |[0.0,0.0,0.0,0.0,0.1351712556902757,0.5030199888780903,0.34379444820014193,0.018014307231491947,0.0]                                |
+|5.0  |5.0       |[0.0,0.0,0.0,0.035,0.13544580365667908,0.5575924499032687,0.22525963496383053,0.04170211147622171,0.005]                            |
+|5.0  |5.0       |[0.0,0.0,0.0,0.020000000000000004,0.031897979697361245,0.761613479763626,0.1838631142796261,0.0026254262593865857,0.0]              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.020000000000000004,0.03482266935403628,0.7563708446966485,0.1859766947294466,0.002829791219868537,0.0]               |
+|7.0  |5.0       |[0.0,0.0,0.0,0.005,0.03236630789421596,0.4712246656018598,0.40417142711712356,0.08723759938680059,0.0]                              |
+|5.0  |5.0       |[0.0,0.0,0.0,0.09,0.06820273217526523,0.6052007295972512,0.20747283766972438,0.029123700557759133,0.0]                              |
+|4.0  |5.0       |[0.0,0.0,0.0,0.0,0.16132197644665075,0.5966586502976869,0.22106630504371724,0.020953068211945113,0.0]                               |
+|6.0  |5.0       |[0.0,0.0,0.0,0.005000000000000001,0.0348545841921546,0.5715543122155797,0.2946508164220994,0.07394028717016632,0.020000000000000004]|
++-----+----------+------------------------------------------------------------------------------------------------------------------------------------+
+only showing top 20 rows
+
+=== Evaluating F1 score ===
+25/11/23 23:50:14 INFO FileSourceStrategy: Pushed Filters:
+25/11/23 23:50:14 INFO FileSourceStrategy: Post-Scan Filters:
+25/11/23 23:50:14 INFO CodeGenerator: Code generated in 42.002857 ms
+25/11/23 23:50:14 INFO MemoryStore: Block broadcast_22 stored as values in memory (estimated size 295.0 KiB, free 1033.7 MiB)
+25/11/23 23:50:14 INFO MemoryStore: Block broadcast_22_piece0 stored as bytes in memory (estimated size 51.7 KiB, actual size: 51.7 KiB, free 1033.7 MiB)
+25/11/23 23:50:14 INFO BlockManagerInfo: Added broadcast_22_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 51.7 KiB, free: 1046.2 MiB)
+25/11/23 23:50:14 INFO SparkContext: Created broadcast 22 from rdd at MulticlassClassificationEvaluator.scala:191
+25/11/23 23:50:14 INFO FileSourceScanExec: Planning scan with bin packing, max size: 4194304 bytes, open cost is considered as scanning 4194304 bytes, number of split files: 1, prefetch: false
+25/11/23 23:50:14 INFO FileSourceScanExec: relation: None, fileSplitsInPartitionHistogram: Vector((1 fileSplits,1))
+25/11/23 23:50:14 INFO SparkContext: Starting job: collectAsMap at MulticlassMetrics.scala:61
+25/11/23 23:50:14 INFO DAGScheduler: Registering RDD 56 (map at MulticlassMetrics.scala:52) as input to shuffle 4
+25/11/23 23:50:14 INFO DAGScheduler: Got job 10 (collectAsMap at MulticlassMetrics.scala:61) with 1 output partitions
+25/11/23 23:50:14 INFO DAGScheduler: Final stage: ResultStage 15 (collectAsMap at MulticlassMetrics.scala:61)
+25/11/23 23:50:14 INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 14)
+25/11/23 23:50:14 INFO DAGScheduler: Missing parents: List(ShuffleMapStage 14)
+25/11/23 23:50:14 INFO DAGScheduler: Submitting ShuffleMapStage 14 (MapPartitionsRDD[56] at map at MulticlassMetrics.scala:52), which has no missing parents
+25/11/23 23:50:14 WARN DAGScheduler: Broadcasting large task binary with size 8.8 MiB
+25/11/23 23:50:14 INFO MemoryStore: Block broadcast_23 stored as values in memory (estimated size 8.8 MiB, free 1024.9 MiB)
+25/11/23 23:50:14 INFO MemoryStore: Block broadcast_23_piece0 stored as bytes in memory (estimated size 2.4 MiB, actual size: 2.4 MiB, free 1022.5 MiB)
+25/11/23 23:50:14 INFO BlockManagerInfo: Added broadcast_23_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 2.4 MiB, free: 1043.9 MiB)
+25/11/23 23:50:14 INFO SparkContext: Created broadcast 23 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:14 INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 14 (MapPartitionsRDD[56] at map at MulticlassMetrics.scala:52) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:14 INFO TaskSchedulerImpl: Adding task set 14.0 with 1 tasks resource profile 0
+25/11/23 23:50:14 INFO TaskSetManager: Starting task 0.0 in stage 14.0 (TID 13) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, ANY, 9917 bytes)
+25/11/23 23:50:14 INFO Executor: Running task 0.0 in stage 14.0 (TID 13)
+25/11/23 23:50:14 INFO BlockManagerInfo: Removed broadcast_21_piece0 on ip-172-31-4-214.ec2.internal:44743 in memory (size: 2.4 MiB, free: 1046.2 MiB)
+25/11/23 23:50:15 INFO CodeGenerator: Code generated in 39.856194 ms
+25/11/23 23:50:15 INFO CodeGenerator: Code generated in 10.424215 ms
+25/11/23 23:50:15 INFO FileScanRDD: TID: 13 - Reading current file: path: s3://cs643-project2-wine-quality-prediction/data/ValidationDataset.csv, range: 0-8662, partition values: [empty row], isDataPresent: false, eTag: "57b40b06b68e1c2d9975bfef31b71761"
+25/11/23 23:50:15 INFO Executor: Finished task 0.0 in stage 14.0 (TID 13). 2152 bytes result sent to driver
+25/11/23 23:50:15 INFO TaskSetManager: Finished task 0.0 in stage 14.0 (TID 13) in 683 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:15 INFO TaskSchedulerImpl: Removed TaskSet 14.0, whose tasks have all completed, from pool
+25/11/23 23:50:15 INFO DAGScheduler: ShuffleMapStage 14 (map at MulticlassMetrics.scala:52) finished in 0.890 s
+25/11/23 23:50:15 INFO DAGScheduler: looking for newly runnable stages
+25/11/23 23:50:15 INFO DAGScheduler: running: Set()
+25/11/23 23:50:15 INFO DAGScheduler: waiting: Set(ResultStage 15)
+25/11/23 23:50:15 INFO DAGScheduler: failed: Set()
+25/11/23 23:50:15 INFO DAGScheduler: Submitting ResultStage 15 (ShuffledRDD[57] at reduceByKey at MulticlassMetrics.scala:61), which has no missing parents
+25/11/23 23:50:15 INFO MemoryStore: Block broadcast_24 stored as values in memory (estimated size 5.0 KiB, free 1033.6 MiB)
+25/11/23 23:50:15 INFO MemoryStore: Block broadcast_24_piece0 stored as bytes in memory (estimated size 3.0 KiB, actual size: 3.0 KiB, free 1033.6 MiB)
+25/11/23 23:50:15 INFO BlockManagerInfo: Added broadcast_24_piece0 in memory on ip-172-31-4-214.ec2.internal:44743 (size: 3.0 KiB, free: 1046.2 MiB)
+25/11/23 23:50:15 INFO SparkContext: Created broadcast 24 from broadcast at DAGScheduler.scala:1721
+25/11/23 23:50:15 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 15 (ShuffledRDD[57] at reduceByKey at MulticlassMetrics.scala:61) (first 15 tasks are for partitions Vector(0))
+25/11/23 23:50:15 INFO TaskSchedulerImpl: Adding task set 15.0 with 1 tasks resource profile 0
+25/11/23 23:50:15 INFO TaskSetManager: Starting task 0.0 in stage 15.0 (TID 14) (ip-172-31-4-214.ec2.internal, executor driver, partition 0, NODE_LOCAL, 8966 bytes)
+25/11/23 23:50:15 INFO Executor: Running task 0.0 in stage 15.0 (TID 14)
+25/11/23 23:50:15 INFO ShuffleBlockFetcherIterator: Getting 1 (445.0 B) non-empty blocks including 1 (445.0 B) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+25/11/23 23:50:15 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 0 ms
+25/11/23 23:50:15 INFO Executor: Finished task 0.0 in stage 15.0 (TID 14). 2464 bytes result sent to driver
+25/11/23 23:50:15 INFO TaskSetManager: Finished task 0.0 in stage 15.0 (TID 14) in 11 ms on ip-172-31-4-214.ec2.internal (executor driver) (1/1)
+25/11/23 23:50:15 INFO TaskSchedulerImpl: Removed TaskSet 15.0, whose tasks have all completed, from pool
+25/11/23 23:50:15 INFO DAGScheduler: ResultStage 15 (collectAsMap at MulticlassMetrics.scala:61) finished in 0.017 s
+25/11/23 23:50:15 INFO DAGScheduler: Job 10 is finished. Cancelling potential speculative or zombie tasks for this job
+25/11/23 23:50:15 INFO TaskSchedulerImpl: Killing all running tasks in stage 15: Stage finished
+25/11/23 23:50:15 INFO DAGScheduler: Job 10 finished: collectAsMap at MulticlassMetrics.scala:61, took 0.922055 s
+25/11/23 23:50:15 INFO SparkContext: SparkContext is stopping with exitCode 0.
+
+F1 score on test data: 0.6098887957009288
+
+25/11/23 23:50:15 INFO SparkUI: Stopped Spark web UI at http://ip-172-31-4-214.ec2.internal:4040
+25/11/23 23:50:15 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+25/11/23 23:50:15 INFO MemoryStore: MemoryStore cleared
+25/11/23 23:50:15 INFO BlockManager: BlockManager stopped
+25/11/23 23:50:15 INFO BlockManagerMaster: BlockManagerMaster stopped
+25/11/23 23:50:15 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+25/11/23 23:50:15 INFO SparkContext: Successfully stopped SparkContext
+25/11/23 23:50:15 INFO ShutdownHookManager: Shutdown hook called
+25/11/23 23:50:15 INFO ShutdownHookManager: Deleting directory /mnt/tmp/spark-be6cb1b2-29e3-4038-889d-cab429bdaa94
+25/11/23 23:50:15 INFO ShutdownHookManager: Deleting directory /mnt/tmp/spark-2019a342-c80b-48da-98cc-58f2ce8c98a7
+25/11/23 23:50:15 INFO ShutdownHookManager: Deleting directory /mnt/tmp/spark-2019a342-c80b-48da-98cc-58f2ce8c98a7/pyspark-e67a7dee-e55c-4d2c-9ff0-28bf0d5dfaaf
+25/11/23 23:50:15 INFO MetricsSystemImpl: Stopping s3a-file-system metrics system...
+25/11/23 23:50:15 INFO MetricsSystemImpl: s3a-file-system metrics system stopped.
+25/11/23 23:50:15 INFO MetricsSystemImpl: s3a-file-system metrics system shutdown complete.
+[hadoop@ip-172-31-4-214 ~]$ client_loop: send disconnect: Connection reset
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ubuntu@34.204.203.100
+ssh: connect to host 34.204.203.100 port 22: Connection timed out
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ubuntu@34.204.203.100
+The authenticity of host '34.204.203.100 (34.204.203.100)' can't be established.
+ED25519 key fingerprint is SHA256:4oTzEb6y30P+hlx8m29ueggu/pVEl6R4bj+fKlIiBkE.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '34.204.203.100' (ED25519) to the list of known hosts.
+ubuntu@34.204.203.100: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ubuntu@34.204.203.100
+ubuntu@34.204.203.100: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ubuntu@34.204.203.100
+ubuntu@34.204.203.100: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+PS C:\Users\vivek\Downloads> ssh -i labsuser(1).pem ubuntu@34.204.203.100
+Warning: Identity file labsuser not accessible: No such file or directory.
+ubuntu@34.204.203.100: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ubuntu@34.204.203.100
+ubuntu@34.204.203.100: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+PS C:\Users\vivek\Downloads> ssh -i labsuser.pem ec2-user@34.204.203.100
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+[ec2-user@ip-172-31-65-2 ~]$ sudo apt update
+sudo: apt: command not found
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum update -y
+Amazon Linux 2023 Kernel Livepatch repository                                           273 kB/s |  29 kB     00:00
+Dependencies resolved.
+Nothing to do.
+Complete!
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum install -y python3 python3-pip
+Last metadata expiration check: 0:00:51 ago on Mon Nov 24 00:09:19 2025.
+Package python3-3.9.24-1.amzn2023.0.4.x86_64 is already installed.
+Dependencies resolved.
+========================================================================================================================
+ Package                       Architecture        Version                               Repository                Size
+========================================================================================================================
+Installing:
+ python3-pip                   noarch              21.3.1-2.amzn2023.0.14                amazonlinux              1.8 M
+Installing weak dependencies:
+ libxcrypt-compat              x86_64              4.4.33-7.amzn2023                     amazonlinux               92 k
+
+Transaction Summary
+========================================================================================================================
+Install  2 Packages
+
+Total download size: 1.9 M
+Installed size: 11 M
+Downloading Packages:
+(1/2): python3-pip-21.3.1-2.amzn2023.0.14.noarch.rpm                                     31 MB/s | 1.8 MB     00:00
+(2/2): libxcrypt-compat-4.4.33-7.amzn2023.x86_64.rpm                                    1.4 MB/s |  92 kB     00:00
+------------------------------------------------------------------------------------------------------------------------
+Total                                                                                    19 MB/s | 1.9 MB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                1/1
+  Installing       : libxcrypt-compat-4.4.33-7.amzn2023.x86_64                                                      1/2
+  Installing       : python3-pip-21.3.1-2.amzn2023.0.14.noarch                                                      2/2
+  Running scriptlet: python3-pip-21.3.1-2.amzn2023.0.14.noarch                                                      2/2
+  Verifying        : libxcrypt-compat-4.4.33-7.amzn2023.x86_64                                                      1/2
+  Verifying        : python3-pip-21.3.1-2.amzn2023.0.14.noarch                                                      2/2
+
+Installed:
+  libxcrypt-compat-4.4.33-7.amzn2023.x86_64                  python3-pip-21.3.1-2.amzn2023.0.14.noarch
+
+Complete!
+[ec2-user@ip-172-31-65-2 ~]$ pytho3 --version
+-bash: pytho3: command not found
+[ec2-user@ip-172-31-65-2 ~]$ python3 --version
+Python 3.9.24
+[ec2-user@ip-172-31-65-2 ~]$ pip3 --version
+pip 21.3.1 from /usr/lib/python3.9/site-packages/pip (python 3.9)
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum install -y java-1.8.0-openjdk
+Last metadata expiration check: 0:01:43 ago on Mon Nov 24 00:09:19 2025.
+Dependencies resolved.
+========================================================================================================================
+ Package                                       Architecture Version                             Repository         Size
+========================================================================================================================
+Installing:
+ java-1.8.0-amazon-corretto                    x86_64       1:1.8.0_472.b08-1.amzn2023          amazonlinux        38 M
+Installing dependencies:
+ adwaita-cursor-theme                          noarch       47.0-1.amzn2023.0.1                 amazonlinux       325 k
+ adwaita-icon-theme                            noarch       47.0-1.amzn2023.0.1                 amazonlinux       285 k
+ adwaita-icon-theme-legacy                     noarch       46.2-2.amzn2023                     amazonlinux       2.2 M
+ alsa-lib                                      x86_64       1.2.7.2-1.amzn2023.0.2              amazonlinux       504 k
+ at-spi2-atk                                   x86_64       2.54.0-1.amzn2023.0.1               amazonlinux        90 k
+ at-spi2-core                                  x86_64       2.54.0-1.amzn2023.0.1               amazonlinux       363 k
+ atk                                           x86_64       2.54.0-1.amzn2023.0.1               amazonlinux        85 k
+ avahi-glib                                    x86_64       0.8-14.amzn2023.0.14                amazonlinux        15 k
+ avahi-libs                                    x86_64       0.8-14.amzn2023.0.14                amazonlinux        68 k
+ bluez-libs                                    x86_64       5.62-2.amzn2023.0.5                 amazonlinux        83 k
+ cairo                                         x86_64       1.18.0-4.amzn2023.0.3               amazonlinux       717 k
+ cairo-gobject                                 x86_64       1.18.0-4.amzn2023.0.3               amazonlinux        19 k
+ colord-libs                                   x86_64       1.4.5-2.amzn2023.0.2                amazonlinux       235 k
+ cups-filesystem                               noarch       1:2.4.14-1.amzn2023.0.1             amazonlinux        14 k
+ cups-libs                                     x86_64       1:2.4.14-1.amzn2023.0.1             amazonlinux       274 k
+ dejavu-sans-fonts                             noarch       2.37-16.amzn2023.0.2                amazonlinux       1.3 M
+ dejavu-sans-mono-fonts                        noarch       2.37-16.amzn2023.0.2                amazonlinux       467 k
+ dejavu-serif-fonts                            noarch       2.37-16.amzn2023.0.2                amazonlinux       1.0 M
+ duktape                                       x86_64       2.7.0-21.amzn2023                   amazonlinux       171 k
+ exiv2-libs                                    x86_64       0.28.5-128.amzn2023                 amazonlinux       904 k
+ fdk-aac-free                                  x86_64       2.0.0-14.amzn2023.0.1               amazonlinux       338 k
+ flac-libs                                     x86_64       1.3.4-1.amzn2023.0.2                amazonlinux       234 k
+ fontconfig                                    x86_64       2.13.94-2.amzn2023.0.2              amazonlinux       273 k
+ fonts-filesystem                              noarch       1:2.0.5-12.amzn2023.0.2             amazonlinux       9.5 k
+ freetype                                      x86_64       2.13.2-5.amzn2023.0.1               amazonlinux       423 k
+ fribidi                                       x86_64       1.0.11-3.amzn2023.0.2               amazonlinux        54 k
+ fuse-common                                   x86_64       3.10.4-1.amzn2023.0.2               amazonlinux       8.5 k
+ fuse3                                         x86_64       3.10.4-1.amzn2023.0.2               amazonlinux        54 k
+ fuse3-libs                                    x86_64       3.10.4-1.amzn2023.0.2               amazonlinux        92 k
+ gdk-pixbuf2                                   x86_64       2.42.12-180.amzn2023                amazonlinux       471 k
+ gdk-pixbuf2-modules                           x86_64       2.42.12-180.amzn2023                amazonlinux        29 k
+ geoclue2                                      x86_64       2.7.0-6.amzn2023.0.2                amazonlinux       128 k
+ giflib                                        x86_64       5.2.1-9.amzn2023.0.2                amazonlinux        48 k
+ gobject-introspection                         x86_64       1.82.0-1.amzn2023                   amazonlinux       122 k
+ google-noto-fonts-common                      noarch       20240401-1.amzn2023.0.2             amazonlinux        17 k
+ google-noto-sans-vf-fonts                     noarch       20240401-1.amzn2023.0.2             amazonlinux       593 k
+ gpgmepp                                       x86_64       1.23.2-182.amzn2023.0.1             amazonlinux       127 k
+ graphene                                      x86_64       1.10.6-9.amzn2023.0.1               amazonlinux        63 k
+ graphite2                                     x86_64       1.3.14-7.amzn2023.0.2               amazonlinux        97 k
+ gsettings-desktop-schemas                     x86_64       47.1-206.amzn2023                   amazonlinux       765 k
+ gsm                                           x86_64       1.0.19-5.amzn2023.0.3               amazonlinux        39 k
+ gstreamer1                                    x86_64       1.24.10-1.amzn2023.0.1              amazonlinux       1.7 M
+ gstreamer1-plugins-base                       x86_64       1.24.10-1.amzn2023.0.2              amazonlinux       2.3 M
+ gtk-update-icon-cache                         x86_64       3.24.43-1.amzn2023.0.1              amazonlinux        35 k
+ gtk3                                          x86_64       3.24.43-1.amzn2023.0.1              amazonlinux       5.7 M
+ harfbuzz                                      x86_64       7.0.0-2.amzn2023.0.2                amazonlinux       873 k
+ hicolor-icon-theme                            noarch       0.17-10.amzn2023.0.3                amazonlinux        44 k
+ highway                                       x86_64       1.2.0-30.amzn2023.0.1               amazonlinux        34 k
+ imath                                         x86_64       3.1.5-1.amzn2023.0.3                amazonlinux       100 k
+ inih-cpp                                      x86_64       58-2.amzn2023.0.1                   amazonlinux        19 k
+ iso-codes                                     noarch       4.6.0-1.amzn2023.0.3                amazonlinux       3.3 M
+ javapackages-filesystem                       noarch       6.0.0-7.amzn2023.0.6                amazonlinux        12 k
+ jbigkit-libs                                  x86_64       2.1-21.amzn2023.0.2                 amazonlinux        54 k
+ json-glib                                     x86_64       1.10.0-1.amzn2023.0.2               amazonlinux       157 k
+ langpacks-core-font-en                        noarch       3.0-21.amzn2023.0.4                 amazonlinux        10 k
+ lcms2                                         x86_64       2.16-73.amzn2023                    amazonlinux       189 k
+ libX11                                        x86_64       1.8.10-2.amzn2023.0.1               amazonlinux       659 k
+ libX11-common                                 noarch       1.8.10-2.amzn2023.0.1               amazonlinux       147 k
+ libX11-xcb                                    x86_64       1.8.10-2.amzn2023.0.1               amazonlinux        14 k
+ libXau                                        x86_64       1.0.11-6.amzn2023.0.1               amazonlinux        33 k
+ libXcomposite                                 x86_64       0.4.6-3.amzn2023.0.1                amazonlinux        26 k
+ libXcursor                                    x86_64       1.2.1-7.amzn2023.0.1                amazonlinux        32 k
+ libXdamage                                    x86_64       1.1.6-3.amzn2023.0.1                amazonlinux        25 k
+ libXext                                       x86_64       1.3.6-1.amzn2023.0.1                amazonlinux        42 k
+ libXfixes                                     x86_64       6.0.1-3.amzn2023.0.1                amazonlinux        21 k
+ libXft                                        x86_64       2.3.8-6.amzn2023.0.1                amazonlinux        75 k
+ libXi                                         x86_64       1.8.2-1.amzn2023.0.1                amazonlinux        42 k
+ libXinerama                                   x86_64       1.1.5-6.amzn2023.0.1                amazonlinux        16 k
+ libXrandr                                     x86_64       1.5.4-3.amzn2023.0.1                amazonlinux        29 k
+ libXrender                                    x86_64       0.9.11-6.amzn2023.0.1               amazonlinux        29 k
+ libXtst                                       x86_64       1.2.5-1.amzn2023.0.1                amazonlinux        22 k
+ libXv                                         x86_64       1.0.12-3.amzn2023.0.1               amazonlinux        20 k
+ libXxf86vm                                    x86_64       1.1.5-6.amzn2023.0.1                amazonlinux        19 k
+ libasyncns                                    x86_64       0.8-20.amzn2023.0.2                 amazonlinux        30 k
+ libbrotli                                     x86_64       1.0.9-4.amzn2023.0.2                amazonlinux       315 k
+ libcanberra                                   x86_64       0.30-35.amzn2023                    amazonlinux        87 k
+ libcloudproviders                             x86_64       0.3.1-3.amzn2023.0.2                amazonlinux        45 k
+ libdatrie                                     x86_64       0.2.13-1.amzn2023.0.2               amazonlinux        33 k
+ libdrm                                        x86_64       2.4.123-1.amzn2023.0.1              amazonlinux       162 k
+ libepoxy                                      x86_64       1.5.9-1.amzn2023.0.2                amazonlinux       242 k
+ libexif                                       x86_64       0.6.22-4.amzn2023.0.2               amazonlinux       423 k
+ libgexiv2                                     x86_64       0.14.3-2.amzn2023                   amazonlinux        98 k
+ libglvnd                                      x86_64       1:1.7.0-4.amzn2023.0.2              amazonlinux       135 k
+ libglvnd-egl                                  x86_64       1:1.7.0-4.amzn2023.0.2              amazonlinux        37 k
+ libglvnd-glx                                  x86_64       1:1.7.0-4.amzn2023.0.2              amazonlinux       141 k
+ libgudev                                      x86_64       238-5.amzn2023.0.1                  amazonlinux        36 k
+ libgusb                                       x86_64       0.3.8-1.amzn2023.0.2                amazonlinux        51 k
+ libicu                                        x86_64       67.1-7.amzn2023.0.4                 amazonlinux       9.6 M
+ libjpeg-turbo                                 x86_64       2.1.4-2.amzn2023.0.5                amazonlinux       190 k
+ libjxl                                        x86_64       1:0.10.3-54.amzn2023                amazonlinux       1.2 M
+ libnotify                                     x86_64       0.8.3-4.amzn2023.0.1                amazonlinux        53 k
+ libogg                                        x86_64       2:1.3.4-4.amzn2023.0.2              amazonlinux        34 k
+ libosinfo                                     x86_64       1.12.0-1.amzn2023.0.1               amazonlinux       315 k
+ libpciaccess                                  x86_64       0.16-4.amzn2023.0.2                 amazonlinux        28 k
+ libpng                                        x86_64       2:1.6.37-10.amzn2023.0.6            amazonlinux       128 k
+ libproxy                                      x86_64       0.5.7-3.amzn2023.0.1                amazonlinux        46 k
+ librsvg2                                      x86_64       2.59.2-317.amzn2023                 amazonlinux       1.8 M
+ libsbc                                        x86_64       1.4-7.amzn2023.0.2                  amazonlinux        69 k
+ libsndfile                                    x86_64       1.2.2-3.amzn2023.0.3                amazonlinux       225 k
+ libsoup3                                      x86_64       3.6.5-52.amzn2023                   amazonlinux       385 k
+ libstemmer                                    x86_64       0-16.585svn.amzn2023.0.2            amazonlinux        84 k
+ libthai                                       x86_64       0.1.28-6.amzn2023.0.2               amazonlinux       209 k
+ libtheora                                     x86_64       1:1.1.1-29.amzn2023.0.3             amazonlinux       165 k
+ libtiff                                       x86_64       4.4.0-4.amzn2023.0.24               amazonlinux       210 k
+ libtool-ltdl                                  x86_64       2.4.7-1.amzn2023.0.3                amazonlinux        38 k
+ libtracker-sparql                             x86_64       3.7.3-3.amzn2023.0.1                amazonlinux       369 k
+ libunwind                                     x86_64       1.4.0-5.amzn2023.0.3                amazonlinux        66 k
+ libusbx                                       x86_64       1.0.24-2.amzn2023.0.2               amazonlinux        73 k
+ libvorbis                                     x86_64       1:1.3.7-3.amzn2023.0.2              amazonlinux       206 k
+ libwayland-client                             x86_64       1.23.0-2.amzn2023.0.2               amazonlinux        35 k
+ libwayland-cursor                             x86_64       1.23.0-2.amzn2023.0.2               amazonlinux        20 k
+ libwayland-egl                                x86_64       1.23.0-2.amzn2023.0.2               amazonlinux        14 k
+ libwayland-server                             x86_64       1.23.0-2.amzn2023.0.2               amazonlinux        44 k
+ libwebp                                       x86_64       1.2.4-1.amzn2023.0.6                amazonlinux       341 k
+ libxcb                                        x86_64       1.17.0-1.amzn2023.0.1               amazonlinux       235 k
+ libxkbcommon                                  x86_64       1.6.0-2.amzn2023.0.1                amazonlinux       145 k
+ libxshmfence                                  x86_64       1.3.2-3.amzn2023.0.1                amazonlinux        13 k
+ libxslt                                       x86_64       1.1.43-1.amzn2023.0.3               amazonlinux       183 k
+ llvm-libs                                     x86_64       15.0.7-3.amzn2023.0.1               amazonlinux        25 M
+ mesa-dri-drivers                              x86_64       24.2.6-1267.amzn2023.0.1            amazonlinux        28 M
+ mesa-filesystem                               x86_64       24.2.6-1267.amzn2023.0.1            amazonlinux       9.9 k
+ mesa-libEGL                                   x86_64       24.2.6-1267.amzn2023.0.1            amazonlinux       141 k
+ mesa-libGL                                    x86_64       24.2.6-1267.amzn2023.0.1            amazonlinux       169 k
+ mesa-libgbm                                   x86_64       24.2.6-1267.amzn2023.0.1            amazonlinux        37 k
+ mesa-libglapi                                 x86_64       24.2.6-1267.amzn2023.0.1            amazonlinux        44 k
+ openexr-libs                                  x86_64       3.1.5-1.amzn2023.0.5                amazonlinux       1.1 M
+ openjpeg2                                     x86_64       2.5.2-5.amzn2023.0.1                amazonlinux       186 k
+ opus                                          x86_64       1.3.1-8.amzn2023.0.3                amazonlinux       225 k
+ orc                                           x86_64       0.4.31-4.amzn2023.0.4               amazonlinux       192 k
+ osinfo-db                                     noarch       20240701-1.amzn2023.0.1             amazonlinux       290 k
+ osinfo-db-tools                               x86_64       1.12.0-1.amzn2023.0.1               amazonlinux        73 k
+ pango                                         x86_64       1.54.0-2.amzn2023.0.4               amazonlinux       347 k
+ pipewire-jack-audio-connection-kit-libs       x86_64       1.2.7-4.amzn2023.0.4                amazonlinux       143 k
+ pipewire-libs                                 x86_64       1.2.7-4.amzn2023.0.4                amazonlinux       1.9 M
+ pixman                                        x86_64       0.43.4-1.amzn2023.0.4               amazonlinux       296 k
+ polkit                                        x86_64       125-1.amzn2023.0.2                  amazonlinux       153 k
+ polkit-libs                                   x86_64       125-1.amzn2023.0.2                  amazonlinux        69 k
+ poppler                                       x86_64       24.08.0-1.amzn2023                  amazonlinux       1.2 M
+ poppler-data                                  noarch       0.4.9-7.amzn2023.0.2                amazonlinux       1.8 M
+ poppler-glib                                  x86_64       24.08.0-1.amzn2023                  amazonlinux       182 k
+ pulseaudio-libs                               x86_64       15.0-5.amzn2023.0.4                 amazonlinux       668 k
+ rtkit                                         x86_64       0.11-26.amzn2023.0.2                amazonlinux        56 k
+ shared-mime-info                              x86_64       2.2-2.amzn2023.0.1                  amazonlinux       382 k
+ sound-theme-freedesktop                       noarch       0.8-22.amzn2023                     amazonlinux       378 k
+ tracker                                       x86_64       3.7.3-3.amzn2023.0.1                amazonlinux       632 k
+ upower-libs                                   x86_64       1.90.6-139.amzn2023                 amazonlinux        61 k
+ webrtc-audio-processing                       x86_64       0.3.1-6.amzn2023.0.2                amazonlinux       332 k
+ wireplumber                                   x86_64       0.5.7-1.amzn2023.0.1                amazonlinux       100 k
+ wireplumber-libs                              x86_64       0.5.7-1.amzn2023.0.1                amazonlinux       389 k
+ xdg-desktop-portal                            x86_64       1.18.4-105.amzn2023                 amazonlinux       469 k
+ xkeyboard-config                              noarch       2.41-1.amzn2023.0.1                 amazonlinux       922 k
+ xml-common                                    noarch       0.6.3-56.amzn2023.0.2               amazonlinux        32 k
+ xprop                                         x86_64       1.2.7-1.amzn2023                    amazonlinux        36 k
+Installing weak dependencies:
+ abattis-cantarell-fonts                       noarch       0.301-2.amzn2023.0.1                amazonlinux       366 k
+ adobe-source-code-pro-fonts                   noarch       2.030.1.050-10.amzn2023.0.2         amazonlinux       831 k
+ dconf                                         x86_64       0.40.0-3.amzn2023.0.2               amazonlinux       109 k
+ exiv2                                         x86_64       0.28.5-128.amzn2023                 amazonlinux       2.0 M
+ glib-networking                               x86_64       2.80.0-186.amzn2023.0.1             amazonlinux       185 k
+ jxl-pixbuf-loader                             x86_64       1:0.10.3-54.amzn2023                amazonlinux        19 k
+ libcanberra-gtk3                              x86_64       0.30-35.amzn2023                    amazonlinux        32 k
+ low-memory-monitor                            x86_64       2.1-2.amzn2023.0.3                  amazonlinux        35 k
+ mesa-va-drivers                               x86_64       24.2.6-1267.amzn2023.0.1            amazonlinux       8.5 k
+ pipewire                                      x86_64       1.2.7-4.amzn2023.0.4                amazonlinux       123 k
+ pipewire-alsa                                 x86_64       1.2.7-4.amzn2023.0.4                amazonlinux        61 k
+ pipewire-jack-audio-connection-kit            x86_64       1.2.7-4.amzn2023.0.4                amazonlinux        15 k
+ pipewire-pulseaudio                           x86_64       1.2.7-4.amzn2023.0.4                amazonlinux       198 k
+ polkit-pkla-compat                            x86_64       0.1-19.amzn2023.0.2                 amazonlinux        45 k
+ rsvg-pixbuf-loader                            x86_64       2.59.2-317.amzn2023                 amazonlinux       166 k
+ tracker-miners                                x86_64       3.7.4-2.amzn2023.0.1                amazonlinux       884 k
+ upower                                        x86_64       1.90.6-139.amzn2023                 amazonlinux       134 k
+ xdg-desktop-portal-gtk                        x86_64       1.15.1-61.amzn2023                  amazonlinux       140 k
+
+Transaction Summary
+========================================================================================================================
+Install  172 Packages
+
+Total download size: 156 M
+Installed size: 608 M
+Downloading Packages:
+(1/172): abattis-cantarell-fonts-0.301-2.amzn2023.0.1.noarch.rpm                        8.4 MB/s | 366 kB     00:00
+(2/172): adwaita-cursor-theme-47.0-1.amzn2023.0.1.noarch.rpm                            6.4 MB/s | 325 kB     00:00
+(3/172): adobe-source-code-pro-fonts-2.030.1.050-10.amzn2023.0.2.noarch.rpm              14 MB/s | 831 kB     00:00
+(4/172): adwaita-icon-theme-47.0-1.amzn2023.0.1.noarch.rpm                              8.7 MB/s | 285 kB     00:00
+(5/172): adwaita-icon-theme-legacy-46.2-2.amzn2023.noarch.rpm                            50 MB/s | 2.2 MB     00:00
+(6/172): alsa-lib-1.2.7.2-1.amzn2023.0.2.x86_64.rpm                                      12 MB/s | 504 kB     00:00
+(7/172): at-spi2-atk-2.54.0-1.amzn2023.0.1.x86_64.rpm                                   3.0 MB/s |  90 kB     00:00
+(8/172): at-spi2-core-2.54.0-1.amzn2023.0.1.x86_64.rpm                                   13 MB/s | 363 kB     00:00
+(9/172): avahi-glib-0.8-14.amzn2023.0.14.x86_64.rpm                                     753 kB/s |  15 kB     00:00
+(10/172): atk-2.54.0-1.amzn2023.0.1.x86_64.rpm                                          3.0 MB/s |  85 kB     00:00
+(11/172): avahi-libs-0.8-14.amzn2023.0.14.x86_64.rpm                                    3.1 MB/s |  68 kB     00:00
+(12/172): bluez-libs-5.62-2.amzn2023.0.5.x86_64.rpm                                     3.1 MB/s |  83 kB     00:00
+(13/172): cairo-1.18.0-4.amzn2023.0.3.x86_64.rpm                                         21 MB/s | 717 kB     00:00
+(14/172): cairo-gobject-1.18.0-4.amzn2023.0.3.x86_64.rpm                                949 kB/s |  19 kB     00:00
+(15/172): colord-libs-1.4.5-2.amzn2023.0.2.x86_64.rpm                                   8.2 MB/s | 235 kB     00:00
+(16/172): cups-filesystem-2.4.14-1.amzn2023.0.1.noarch.rpm                              676 kB/s |  14 kB     00:00
+(17/172): cups-libs-2.4.14-1.amzn2023.0.1.x86_64.rpm                                     11 MB/s | 274 kB     00:00
+(18/172): dconf-0.40.0-3.amzn2023.0.2.x86_64.rpm                                        1.9 MB/s | 109 kB     00:00
+(19/172): dejavu-sans-mono-fonts-2.37-16.amzn2023.0.2.noarch.rpm                        7.5 MB/s | 467 kB     00:00
+(20/172): dejavu-sans-fonts-2.37-16.amzn2023.0.2.noarch.rpm                              17 MB/s | 1.3 MB     00:00
+(21/172): dejavu-serif-fonts-2.37-16.amzn2023.0.2.noarch.rpm                             28 MB/s | 1.0 MB     00:00
+(22/172): duktape-2.7.0-21.amzn2023.x86_64.rpm                                          5.9 MB/s | 171 kB     00:00
+(23/172): exiv2-0.28.5-128.amzn2023.x86_64.rpm                                           51 MB/s | 2.0 MB     00:00
+(24/172): fdk-aac-free-2.0.0-14.amzn2023.0.1.x86_64.rpm                                 9.4 MB/s | 338 kB     00:00
+(25/172): exiv2-libs-0.28.5-128.amzn2023.x86_64.rpm                                      18 MB/s | 904 kB     00:00
+(26/172): flac-libs-1.3.4-1.amzn2023.0.2.x86_64.rpm                                     8.8 MB/s | 234 kB     00:00
+(27/172): fonts-filesystem-2.0.5-12.amzn2023.0.2.noarch.rpm                             458 kB/s | 9.5 kB     00:00
+(28/172): fontconfig-2.13.94-2.amzn2023.0.2.x86_64.rpm                                  7.8 MB/s | 273 kB     00:00
+(29/172): freetype-2.13.2-5.amzn2023.0.1.x86_64.rpm                                      14 MB/s | 423 kB     00:00
+(30/172): fribidi-1.0.11-3.amzn2023.0.2.x86_64.rpm                                      2.6 MB/s |  54 kB     00:00
+(31/172): fuse3-3.10.4-1.amzn2023.0.2.x86_64.rpm                                        2.5 MB/s |  54 kB     00:00
+(32/172): fuse-common-3.10.4-1.amzn2023.0.2.x86_64.rpm                                  218 kB/s | 8.5 kB     00:00
+(33/172): fuse3-libs-3.10.4-1.amzn2023.0.2.x86_64.rpm                                   2.6 MB/s |  92 kB     00:00
+(34/172): gdk-pixbuf2-2.42.12-180.amzn2023.x86_64.rpm                                    15 MB/s | 471 kB     00:00
+(35/172): gdk-pixbuf2-modules-2.42.12-180.amzn2023.x86_64.rpm                           1.1 MB/s |  29 kB     00:00
+(36/172): geoclue2-2.7.0-6.amzn2023.0.2.x86_64.rpm                                      5.0 MB/s | 128 kB     00:00
+(37/172): giflib-5.2.1-9.amzn2023.0.2.x86_64.rpm                                        2.4 MB/s |  48 kB     00:00
+(38/172): glib-networking-2.80.0-186.amzn2023.0.1.x86_64.rpm                            6.4 MB/s | 185 kB     00:00
+(39/172): google-noto-fonts-common-20240401-1.amzn2023.0.2.noarch.rpm                   816 kB/s |  17 kB     00:00
+(40/172): gobject-introspection-1.82.0-1.amzn2023.x86_64.rpm                            3.9 MB/s | 122 kB     00:00
+(41/172): google-noto-sans-vf-fonts-20240401-1.amzn2023.0.2.noarch.rpm                   21 MB/s | 593 kB     00:00
+(42/172): graphene-1.10.6-9.amzn2023.0.1.x86_64.rpm                                     3.2 MB/s |  63 kB     00:00
+(43/172): gpgmepp-1.23.2-182.amzn2023.0.1.x86_64.rpm                                    4.5 MB/s | 127 kB     00:00
+(44/172): graphite2-1.3.14-7.amzn2023.0.2.x86_64.rpm                                    3.6 MB/s |  97 kB     00:00
+(45/172): gsm-1.0.19-5.amzn2023.0.3.x86_64.rpm                                          1.7 MB/s |  39 kB     00:00
+(46/172): gsettings-desktop-schemas-47.1-206.amzn2023.x86_64.rpm                         20 MB/s | 765 kB     00:00
+(47/172): gstreamer1-1.24.10-1.amzn2023.0.1.x86_64.rpm                                   36 MB/s | 1.7 MB     00:00
+(48/172): gtk-update-icon-cache-3.24.43-1.amzn2023.0.1.x86_64.rpm                       1.0 MB/s |  35 kB     00:00
+(49/172): gstreamer1-plugins-base-1.24.10-1.amzn2023.0.2.x86_64.rpm                      37 MB/s | 2.3 MB     00:00
+(50/172): harfbuzz-7.0.0-2.amzn2023.0.2.x86_64.rpm                                       22 MB/s | 873 kB     00:00
+(51/172): hicolor-icon-theme-0.17-10.amzn2023.0.3.noarch.rpm                            1.6 MB/s |  44 kB     00:00
+(52/172): highway-1.2.0-30.amzn2023.0.1.x86_64.rpm                                      1.7 MB/s |  34 kB     00:00
+(53/172): gtk3-3.24.43-1.amzn2023.0.1.x86_64.rpm                                         61 MB/s | 5.7 MB     00:00
+(54/172): inih-cpp-58-2.amzn2023.0.1.x86_64.rpm                                         585 kB/s |  19 kB     00:00
+(55/172): imath-3.1.5-1.amzn2023.0.3.x86_64.rpm                                         1.9 MB/s | 100 kB     00:00
+(56/172): javapackages-filesystem-6.0.0-7.amzn2023.0.6.noarch.rpm                       597 kB/s |  12 kB     00:00
+(57/172): iso-codes-4.6.0-1.amzn2023.0.3.noarch.rpm                                      53 MB/s | 3.3 MB     00:00
+(58/172): jbigkit-libs-2.1-21.amzn2023.0.2.x86_64.rpm                                   1.2 MB/s |  54 kB     00:00
+(59/172): json-glib-1.10.0-1.amzn2023.0.2.x86_64.rpm                                    5.3 MB/s | 157 kB     00:00
+(60/172): jxl-pixbuf-loader-0.10.3-54.amzn2023.x86_64.rpm                               817 kB/s |  19 kB     00:00
+(61/172): langpacks-core-font-en-3.0-21.amzn2023.0.4.noarch.rpm                         498 kB/s |  10 kB     00:00
+(62/172): lcms2-2.16-73.amzn2023.x86_64.rpm                                             7.5 MB/s | 189 kB     00:00
+(63/172): libX11-1.8.10-2.amzn2023.0.1.x86_64.rpm                                        22 MB/s | 659 kB     00:00
+(64/172): libX11-common-1.8.10-2.amzn2023.0.1.noarch.rpm                                4.6 MB/s | 147 kB     00:00
+(65/172): libX11-xcb-1.8.10-2.amzn2023.0.1.x86_64.rpm                                   635 kB/s |  14 kB     00:00
+(66/172): libXau-1.0.11-6.amzn2023.0.1.x86_64.rpm                                       1.6 MB/s |  33 kB     00:00
+(67/172): libXcomposite-0.4.6-3.amzn2023.0.1.x86_64.rpm                                 1.1 MB/s |  26 kB     00:00
+(68/172): libXcursor-1.2.1-7.amzn2023.0.1.x86_64.rpm                                    1.5 MB/s |  32 kB     00:00
+(69/172): libXext-1.3.6-1.amzn2023.0.1.x86_64.rpm                                       2.3 MB/s |  42 kB     00:00
+(70/172): libXdamage-1.1.6-3.amzn2023.0.1.x86_64.rpm                                    1.1 MB/s |  25 kB     00:00
+(71/172): libXfixes-6.0.1-3.amzn2023.0.1.x86_64.rpm                                     1.0 MB/s |  21 kB     00:00
+(72/172): libXft-2.3.8-6.amzn2023.0.1.x86_64.rpm                                        2.8 MB/s |  75 kB     00:00
+(73/172): libXi-1.8.2-1.amzn2023.0.1.x86_64.rpm                                         2.0 MB/s |  42 kB     00:00
+(74/172): libXinerama-1.1.5-6.amzn2023.0.1.x86_64.rpm                                   807 kB/s |  16 kB     00:00
+(75/172): libXrandr-1.5.4-3.amzn2023.0.1.x86_64.rpm                                     1.3 MB/s |  29 kB     00:00
+(76/172): libXrender-0.9.11-6.amzn2023.0.1.x86_64.rpm                                   1.5 MB/s |  29 kB     00:00
+(77/172): libXtst-1.2.5-1.amzn2023.0.1.x86_64.rpm                                       1.0 MB/s |  22 kB     00:00
+(78/172): libXv-1.0.12-3.amzn2023.0.1.x86_64.rpm                                        950 kB/s |  20 kB     00:00
+(79/172): libXxf86vm-1.1.5-6.amzn2023.0.1.x86_64.rpm                                    751 kB/s |  19 kB     00:00
+(80/172): libasyncns-0.8-20.amzn2023.0.2.x86_64.rpm                                     1.2 MB/s |  30 kB     00:00
+(81/172): libbrotli-1.0.9-4.amzn2023.0.2.x86_64.rpm                                      11 MB/s | 315 kB     00:00
+(82/172): libcanberra-0.30-35.amzn2023.x86_64.rpm                                       2.9 MB/s |  87 kB     00:00
+(83/172): libcanberra-gtk3-0.30-35.amzn2023.x86_64.rpm                                  1.4 MB/s |  32 kB     00:00
+(84/172): libcloudproviders-0.3.1-3.amzn2023.0.2.x86_64.rpm                             2.0 MB/s |  45 kB     00:00
+(85/172): libdatrie-0.2.13-1.amzn2023.0.2.x86_64.rpm                                    1.7 MB/s |  33 kB     00:00
+(86/172): java-1.8.0-amazon-corretto-1.8.0_472.b08-1.amzn2023.x86_64.rpm                 59 MB/s |  38 MB     00:00
+(87/172): libdrm-2.4.123-1.amzn2023.0.1.x86_64.rpm                                      617 kB/s | 162 kB     00:00
+(88/172): libepoxy-1.5.9-1.amzn2023.0.2.x86_64.rpm                                      967 kB/s | 242 kB     00:00
+(89/172): libexif-0.6.22-4.amzn2023.0.2.x86_64.rpm                                       15 MB/s | 423 kB     00:00
+(90/172): libgexiv2-0.14.3-2.amzn2023.x86_64.rpm                                        3.1 MB/s |  98 kB     00:00
+(91/172): libglvnd-1.7.0-4.amzn2023.0.2.x86_64.rpm                                      3.1 MB/s | 135 kB     00:00
+(92/172): libglvnd-egl-1.7.0-4.amzn2023.0.2.x86_64.rpm                                  1.2 MB/s |  37 kB     00:00
+(93/172): libglvnd-glx-1.7.0-4.amzn2023.0.2.x86_64.rpm                                  5.2 MB/s | 141 kB     00:00
+(94/172): libgudev-238-5.amzn2023.0.1.x86_64.rpm                                        1.5 MB/s |  36 kB     00:00
+(95/172): libgusb-0.3.8-1.amzn2023.0.2.x86_64.rpm                                       2.5 MB/s |  51 kB     00:00
+(96/172): libjpeg-turbo-2.1.4-2.amzn2023.0.5.x86_64.rpm                                 6.5 MB/s | 190 kB     00:00
+(97/172): libjxl-0.10.3-54.amzn2023.x86_64.rpm                                           37 MB/s | 1.2 MB     00:00
+(98/172): libnotify-0.8.3-4.amzn2023.0.1.x86_64.rpm                                     2.4 MB/s |  53 kB     00:00
+(99/172): libogg-1.3.4-4.amzn2023.0.2.x86_64.rpm                                        1.4 MB/s |  34 kB     00:00
+(100/172): libosinfo-1.12.0-1.amzn2023.0.1.x86_64.rpm                                    12 MB/s | 315 kB     00:00
+(101/172): libpciaccess-0.16-4.amzn2023.0.2.x86_64.rpm                                  1.5 MB/s |  28 kB     00:00
+(102/172): libicu-67.1-7.amzn2023.0.4.x86_64.rpm                                         65 MB/s | 9.6 MB     00:00
+(103/172): libproxy-0.5.7-3.amzn2023.0.1.x86_64.rpm                                     834 kB/s |  46 kB     00:00
+(104/172): libpng-1.6.37-10.amzn2023.0.6.x86_64.rpm                                     2.1 MB/s | 128 kB     00:00
+(105/172): libsbc-1.4-7.amzn2023.0.2.x86_64.rpm                                         3.3 MB/s |  69 kB     00:00
+(106/172): librsvg2-2.59.2-317.amzn2023.x86_64.rpm                                       45 MB/s | 1.8 MB     00:00
+(107/172): libsndfile-1.2.2-3.amzn2023.0.3.x86_64.rpm                                   5.6 MB/s | 225 kB     00:00
+(108/172): libsoup3-3.6.5-52.amzn2023.x86_64.rpm                                        9.8 MB/s | 385 kB     00:00
+(109/172): libstemmer-0-16.585svn.amzn2023.0.2.x86_64.rpm                               2.8 MB/s |  84 kB     00:00
+(110/172): libthai-0.1.28-6.amzn2023.0.2.x86_64.rpm                                     6.0 MB/s | 209 kB     00:00
+(111/172): libtheora-1.1.1-29.amzn2023.0.3.x86_64.rpm                                   7.0 MB/s | 165 kB     00:00
+(112/172): libtiff-4.4.0-4.amzn2023.0.24.x86_64.rpm                                     8.0 MB/s | 210 kB     00:00
+(113/172): libtool-ltdl-2.4.7-1.amzn2023.0.3.x86_64.rpm                                 1.6 MB/s |  38 kB     00:00
+(114/172): libunwind-1.4.0-5.amzn2023.0.3.x86_64.rpm                                    3.0 MB/s |  66 kB     00:00
+(115/172): libtracker-sparql-3.7.3-3.amzn2023.0.1.x86_64.rpm                            9.8 MB/s | 369 kB     00:00
+(116/172): libusbx-1.0.24-2.amzn2023.0.2.x86_64.rpm                                     2.4 MB/s |  73 kB     00:00
+(117/172): libvorbis-1.3.7-3.amzn2023.0.2.x86_64.rpm                                    8.9 MB/s | 206 kB     00:00
+(118/172): libwayland-client-1.23.0-2.amzn2023.0.2.x86_64.rpm                           1.6 MB/s |  35 kB     00:00
+(119/172): libwayland-cursor-1.23.0-2.amzn2023.0.2.x86_64.rpm                           975 kB/s |  20 kB     00:00
+(120/172): libwayland-egl-1.23.0-2.amzn2023.0.2.x86_64.rpm                              615 kB/s |  14 kB     00:00
+(121/172): libwayland-server-1.23.0-2.amzn2023.0.2.x86_64.rpm                           2.0 MB/s |  44 kB     00:00
+(122/172): libwebp-1.2.4-1.amzn2023.0.6.x86_64.rpm                                       14 MB/s | 341 kB     00:00
+(123/172): libxcb-1.17.0-1.amzn2023.0.1.x86_64.rpm                                      9.2 MB/s | 235 kB     00:00
+(124/172): libxkbcommon-1.6.0-2.amzn2023.0.1.x86_64.rpm                                 5.0 MB/s | 145 kB     00:00
+(125/172): libxshmfence-1.3.2-3.amzn2023.0.1.x86_64.rpm                                 632 kB/s |  13 kB     00:00
+(126/172): libxslt-1.1.43-1.amzn2023.0.3.x86_64.rpm                                     5.2 MB/s | 183 kB     00:00
+(127/172): low-memory-monitor-2.1-2.amzn2023.0.3.x86_64.rpm                             1.4 MB/s |  35 kB     00:00
+(128/172): mesa-filesystem-24.2.6-1267.amzn2023.0.1.x86_64.rpm                          500 kB/s | 9.9 kB     00:00
+(129/172): mesa-libEGL-24.2.6-1267.amzn2023.0.1.x86_64.rpm                              4.8 MB/s | 141 kB     00:00
+(130/172): mesa-libGL-24.2.6-1267.amzn2023.0.1.x86_64.rpm                               6.0 MB/s | 169 kB     00:00
+(131/172): mesa-libgbm-24.2.6-1267.amzn2023.0.1.x86_64.rpm                              1.6 MB/s |  37 kB     00:00
+(132/172): mesa-libglapi-24.2.6-1267.amzn2023.0.1.x86_64.rpm                            2.1 MB/s |  44 kB     00:00
+(133/172): mesa-va-drivers-24.2.6-1267.amzn2023.0.1.x86_64.rpm                          445 kB/s | 8.5 kB     00:00
+(134/172): openexr-libs-3.1.5-1.amzn2023.0.5.x86_64.rpm                                  36 MB/s | 1.1 MB     00:00
+(135/172): openjpeg2-2.5.2-5.amzn2023.0.1.x86_64.rpm                                    6.7 MB/s | 186 kB     00:00
+(136/172): opus-1.3.1-8.amzn2023.0.3.x86_64.rpm                                         7.1 MB/s | 225 kB     00:00
+(137/172): llvm-libs-15.0.7-3.amzn2023.0.1.x86_64.rpm                                    68 MB/s |  25 MB     00:00
+(138/172): orc-0.4.31-4.amzn2023.0.4.x86_64.rpm                                         1.6 MB/s | 192 kB     00:00
+(139/172): mesa-dri-drivers-24.2.6-1267.amzn2023.0.1.x86_64.rpm                          59 MB/s |  28 MB     00:00
+(140/172): osinfo-db-tools-1.12.0-1.amzn2023.0.1.x86_64.rpm                             546 kB/s |  73 kB     00:00
+(141/172): osinfo-db-20240701-1.amzn2023.0.1.noarch.rpm                                 2.0 MB/s | 290 kB     00:00
+(142/172): pango-1.54.0-2.amzn2023.0.4.x86_64.rpm                                        16 MB/s | 347 kB     00:00
+(143/172): pipewire-alsa-1.2.7-4.amzn2023.0.4.x86_64.rpm                                2.8 MB/s |  61 kB     00:00
+(144/172): pipewire-1.2.7-4.amzn2023.0.4.x86_64.rpm                                     4.3 MB/s | 123 kB     00:00
+(145/172): pipewire-jack-audio-connection-kit-1.2.7-4.amzn2023.0.4.x86_64.rpm           770 kB/s |  15 kB     00:00
+(146/172): pipewire-jack-audio-connection-kit-libs-1.2.7-4.amzn2023.0.4.x86_64.rpm      5.6 MB/s | 143 kB     00:00
+(147/172): pipewire-libs-1.2.7-4.amzn2023.0.4.x86_64.rpm                                 52 MB/s | 1.9 MB     00:00
+(148/172): pipewire-pulseaudio-1.2.7-4.amzn2023.0.4.x86_64.rpm                          6.5 MB/s | 198 kB     00:00
+(149/172): pixman-0.43.4-1.amzn2023.0.4.x86_64.rpm                                       14 MB/s | 296 kB     00:00
+(150/172): polkit-libs-125-1.amzn2023.0.2.x86_64.rpm                                    3.4 MB/s |  69 kB     00:00
+(151/172): polkit-pkla-compat-0.1-19.amzn2023.0.2.x86_64.rpm                            2.2 MB/s |  45 kB     00:00
+(152/172): polkit-125-1.amzn2023.0.2.x86_64.rpm                                         4.5 MB/s | 153 kB     00:00
+(153/172): poppler-glib-24.08.0-1.amzn2023.x86_64.rpm                                   9.2 MB/s | 182 kB     00:00
+(154/172): poppler-24.08.0-1.amzn2023.x86_64.rpm                                         31 MB/s | 1.2 MB     00:00
+(155/172): poppler-data-0.4.9-7.amzn2023.0.2.noarch.rpm                                  40 MB/s | 1.8 MB     00:00
+(156/172): pulseaudio-libs-15.0-5.amzn2023.0.4.x86_64.rpm                                22 MB/s | 668 kB     00:00
+(157/172): rsvg-pixbuf-loader-2.59.2-317.amzn2023.x86_64.rpm                            5.8 MB/s | 166 kB     00:00
+(158/172): rtkit-0.11-26.amzn2023.0.2.x86_64.rpm                                        2.0 MB/s |  56 kB     00:00
+(159/172): shared-mime-info-2.2-2.amzn2023.0.1.x86_64.rpm                                10 MB/s | 382 kB     00:00
+(160/172): sound-theme-freedesktop-0.8-22.amzn2023.noarch.rpm                            11 MB/s | 378 kB     00:00
+(161/172): tracker-3.7.3-3.amzn2023.0.1.x86_64.rpm                                       19 MB/s | 632 kB     00:00
+(162/172): upower-1.90.6-139.amzn2023.x86_64.rpm                                        5.3 MB/s | 134 kB     00:00
+(163/172): tracker-miners-3.7.4-2.amzn2023.0.1.x86_64.rpm                                24 MB/s | 884 kB     00:00
+(164/172): upower-libs-1.90.6-139.amzn2023.x86_64.rpm                                   2.3 MB/s |  61 kB     00:00
+(165/172): webrtc-audio-processing-0.3.1-6.amzn2023.0.2.x86_64.rpm                       12 MB/s | 332 kB     00:00
+(166/172): wireplumber-0.5.7-1.amzn2023.0.1.x86_64.rpm                                  1.9 MB/s | 100 kB     00:00
+(167/172): wireplumber-libs-0.5.7-1.amzn2023.0.1.x86_64.rpm                             7.0 MB/s | 389 kB     00:00
+(168/172): xdg-desktop-portal-gtk-1.15.1-61.amzn2023.x86_64.rpm                         5.4 MB/s | 140 kB     00:00
+(169/172): xdg-desktop-portal-1.18.4-105.amzn2023.x86_64.rpm                            7.4 MB/s | 469 kB     00:00
+(170/172): xkeyboard-config-2.41-1.amzn2023.0.1.noarch.rpm                               23 MB/s | 922 kB     00:00
+(171/172): xml-common-0.6.3-56.amzn2023.0.2.noarch.rpm                                  1.4 MB/s |  32 kB     00:00
+(172/172): xprop-1.2.7-1.amzn2023.x86_64.rpm                                            1.9 MB/s |  36 kB     00:00
+------------------------------------------------------------------------------------------------------------------------
+Total                                                                                    61 MB/s | 156 MB     00:02
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                1/1
+  Installing       : libpng-2:1.6.37-10.amzn2023.0.6.x86_64                                                       1/172
+  Installing       : fonts-filesystem-1:2.0.5-12.amzn2023.0.2.noarch                                              2/172
+  Installing       : avahi-libs-0.8-14.amzn2023.0.14.x86_64                                                       3/172
+  Installing       : libjpeg-turbo-2.1.4-2.amzn2023.0.5.x86_64                                                    4/172
+  Installing       : libogg-2:1.3.4-4.amzn2023.0.2.x86_64                                                         5/172
+  Installing       : json-glib-1.10.0-1.amzn2023.0.2.x86_64                                                       6/172
+  Installing       : alsa-lib-1.2.7.2-1.amzn2023.0.2.x86_64                                                       7/172
+  Installing       : libvorbis-1:1.3.7-3.amzn2023.0.2.x86_64                                                      8/172
+  Installing       : libwayland-client-1.23.0-2.amzn2023.0.2.x86_64                                               9/172
+  Installing       : libbrotli-1.0.9-4.amzn2023.0.2.x86_64                                                       10/172
+  Installing       : libX11-xcb-1.8.10-2.amzn2023.0.1.x86_64                                                     11/172
+  Installing       : avahi-glib-0.8-14.amzn2023.0.14.x86_64                                                      12/172
+  Installing       : polkit-libs-125-1.amzn2023.0.2.x86_64                                                       13/172
+  Installing       : opus-1.3.1-8.amzn2023.0.3.x86_64                                                            14/172
+  Installing       : libxshmfence-1.3.2-3.amzn2023.0.1.x86_64                                                    15/172
+  Installing       : giflib-5.2.1-9.amzn2023.0.2.x86_64                                                          16/172
+  Installing       : libwayland-cursor-1.23.0-2.amzn2023.0.2.x86_64                                              17/172
+  Installing       : dejavu-sans-mono-fonts-2.37-16.amzn2023.0.2.noarch                                          18/172
+  Installing       : dejavu-sans-fonts-2.37-16.amzn2023.0.2.noarch                                               19/172
+  Running scriptlet: xml-common-0.6.3-56.amzn2023.0.2.noarch                                                     20/172
+  Installing       : xml-common-0.6.3-56.amzn2023.0.2.noarch                                                     20/172
+  Installing       : shared-mime-info-2.2-2.amzn2023.0.1.x86_64                                                  21/172
+  Running scriptlet: shared-mime-info-2.2-2.amzn2023.0.1.x86_64                                                  21/172
+  Installing       : gdk-pixbuf2-2.42.12-180.amzn2023.x86_64                                                     22/172
+  Installing       : mesa-filesystem-24.2.6-1267.amzn2023.0.1.x86_64                                             23/172
+  Installing       : libwayland-server-1.23.0-2.amzn2023.0.2.x86_64                                              24/172
+  Installing       : libwayland-egl-1.23.0-2.amzn2023.0.2.x86_64                                                 25/172
+  Installing       : libusbx-1.0.24-2.amzn2023.0.2.x86_64                                                        26/172
+  Installing       : libtool-ltdl-2.4.7-1.amzn2023.0.3.x86_64                                                    27/172
+  Installing       : libicu-67.1-7.amzn2023.0.4.x86_64                                                           28/172
+  Installing       : libgudev-238-5.amzn2023.0.1.x86_64                                                          29/172
+  Installing       : libglvnd-1:1.7.0-4.amzn2023.0.2.x86_64                                                      30/172
+  Installing       : lcms2-2.16-73.amzn2023.x86_64                                                               31/172
+  Installing       : fuse3-libs-3.10.4-1.amzn2023.0.2.x86_64                                                     32/172
+  Installing       : fribidi-1.0.11-3.amzn2023.0.2.x86_64                                                        33/172
+  Installing       : duktape-2.7.0-21.amzn2023.x86_64                                                            34/172
+  Running scriptlet: polkit-125-1.amzn2023.0.2.x86_64                                                            35/172
+  Installing       : polkit-125-1.amzn2023.0.2.x86_64                                                            35/172
+  Running scriptlet: polkit-125-1.amzn2023.0.2.x86_64                                                            35/172
+  Installing       : polkit-pkla-compat-0.1-19.amzn2023.0.2.x86_64                                               36/172
+  Running scriptlet: rtkit-0.11-26.amzn2023.0.2.x86_64                                                           37/172
+  Installing       : rtkit-0.11-26.amzn2023.0.2.x86_64                                                           37/172
+  Running scriptlet: rtkit-0.11-26.amzn2023.0.2.x86_64                                                           37/172
+Created symlink /etc/systemd/system/graphical.target.wants/rtkit-daemon.service → /usr/lib/systemd/system/rtkit-daemon.service.
+
+  Installing       : libproxy-0.5.7-3.amzn2023.0.1.x86_64                                                        38/172
+  Installing       : libgusb-0.3.8-1.amzn2023.0.2.x86_64                                                         39/172
+  Installing       : colord-libs-1.4.5-2.amzn2023.0.2.x86_64                                                     40/172
+  Installing       : mesa-va-drivers-24.2.6-1267.amzn2023.0.1.x86_64                                             41/172
+  Installing       : gtk-update-icon-cache-3.24.43-1.amzn2023.0.1.x86_64                                         42/172
+  Installing       : libnotify-0.8.3-4.amzn2023.0.1.x86_64                                                       43/172
+  Installing       : iso-codes-4.6.0-1.amzn2023.0.3.noarch                                                       44/172
+  Installing       : flac-libs-1.3.4-1.amzn2023.0.2.x86_64                                                       45/172
+  Installing       : libtheora-1:1.1.1-29.amzn2023.0.3.x86_64                                                    46/172
+  Installing       : abattis-cantarell-fonts-0.301-2.amzn2023.0.1.noarch                                         47/172
+  Installing       : adobe-source-code-pro-fonts-2.030.1.050-10.amzn2023.0.2.noarch                              48/172
+  Installing       : gsettings-desktop-schemas-47.1-206.amzn2023.x86_64                                          49/172
+  Installing       : glib-networking-2.80.0-186.amzn2023.0.1.x86_64                                              50/172
+  Installing       : libsoup3-3.6.5-52.amzn2023.x86_64                                                           51/172
+  Running scriptlet: geoclue2-2.7.0-6.amzn2023.0.2.x86_64                                                        52/172
+  Installing       : geoclue2-2.7.0-6.amzn2023.0.2.x86_64                                                        52/172
+  Running scriptlet: geoclue2-2.7.0-6.amzn2023.0.2.x86_64                                                        52/172
+  Installing       : osinfo-db-tools-1.12.0-1.amzn2023.0.1.x86_64                                                53/172
+  Installing       : dejavu-serif-fonts-2.37-16.amzn2023.0.2.noarch                                              54/172
+  Installing       : xkeyboard-config-2.41-1.amzn2023.0.1.noarch                                                 55/172
+  Installing       : libxkbcommon-1.6.0-2.amzn2023.0.1.x86_64                                                    56/172
+  Installing       : webrtc-audio-processing-0.3.1-6.amzn2023.0.2.x86_64                                         57/172
+  Installing       : sound-theme-freedesktop-0.8-22.amzn2023.noarch                                              58/172
+  Running scriptlet: sound-theme-freedesktop-0.8-22.amzn2023.noarch                                              58/172
+  Installing       : poppler-data-0.4.9-7.amzn2023.0.2.noarch                                                    59/172
+  Installing       : pixman-0.43.4-1.amzn2023.0.4.x86_64                                                         60/172
+  Installing       : osinfo-db-20240701-1.amzn2023.0.1.noarch                                                    61/172
+  Installing       : orc-0.4.31-4.amzn2023.0.4.x86_64                                                            62/172
+  Installing       : openjpeg2-2.5.2-5.amzn2023.0.1.x86_64                                                       63/172
+  Installing       : low-memory-monitor-2.1-2.amzn2023.0.3.x86_64                                                64/172
+  Running scriptlet: low-memory-monitor-2.1-2.amzn2023.0.3.x86_64                                                64/172
+  Installing       : llvm-libs-15.0.7-3.amzn2023.0.1.x86_64                                                      65/172
+  Installing       : libxslt-1.1.43-1.amzn2023.0.3.x86_64                                                        66/172
+  Installing       : libosinfo-1.12.0-1.amzn2023.0.1.x86_64                                                      67/172
+  Installing       : libwebp-1.2.4-1.amzn2023.0.6.x86_64                                                         68/172
+  Installing       : libunwind-1.4.0-5.amzn2023.0.3.x86_64                                                       69/172
+  Installing       : gstreamer1-1.24.10-1.amzn2023.0.1.x86_64                                                    70/172
+  Installing       : libstemmer-0-16.585svn.amzn2023.0.2.x86_64                                                  71/172
+  Installing       : libsbc-1.4-7.amzn2023.0.2.x86_64                                                            72/172
+  Installing       : libpciaccess-0.16-4.amzn2023.0.2.x86_64                                                     73/172
+  Installing       : libdrm-2.4.123-1.amzn2023.0.1.x86_64                                                        74/172
+  Installing       : libexif-0.6.22-4.amzn2023.0.2.x86_64                                                        75/172
+  Installing       : libepoxy-1.5.9-1.amzn2023.0.2.x86_64                                                        76/172
+  Installing       : libdatrie-0.2.13-1.amzn2023.0.2.x86_64                                                      77/172
+  Installing       : libthai-0.1.28-6.amzn2023.0.2.x86_64                                                        78/172
+  Installing       : libcloudproviders-0.3.1-3.amzn2023.0.2.x86_64                                               79/172
+  Installing       : libasyncns-0.8-20.amzn2023.0.2.x86_64                                                       80/172
+  Installing       : libXau-1.0.11-6.amzn2023.0.1.x86_64                                                         81/172
+  Installing       : libxcb-1.17.0-1.amzn2023.0.1.x86_64                                                         82/172
+  Installing       : mesa-libgbm-24.2.6-1267.amzn2023.0.1.x86_64                                                 83/172
+  Installing       : mesa-libglapi-24.2.6-1267.amzn2023.0.1.x86_64                                               84/172
+  Installing       : mesa-dri-drivers-24.2.6-1267.amzn2023.0.1.x86_64                                            85/172
+  Installing       : libglvnd-egl-1:1.7.0-4.amzn2023.0.2.x86_64                                                  86/172
+  Installing       : mesa-libEGL-24.2.6-1267.amzn2023.0.1.x86_64                                                 87/172
+  Installing       : libX11-common-1.8.10-2.amzn2023.0.1.noarch                                                  88/172
+  Installing       : libX11-1.8.10-2.amzn2023.0.1.x86_64                                                         89/172
+  Installing       : libXext-1.3.6-1.amzn2023.0.1.x86_64                                                         90/172
+  Installing       : libXrender-0.9.11-6.amzn2023.0.1.x86_64                                                     91/172
+  Installing       : libXi-1.8.2-1.amzn2023.0.1.x86_64                                                           92/172
+  Installing       : libXfixes-6.0.1-3.amzn2023.0.1.x86_64                                                       93/172
+  Installing       : libXtst-1.2.5-1.amzn2023.0.1.x86_64                                                         94/172
+  Installing       : libXxf86vm-1.1.5-6.amzn2023.0.1.x86_64                                                      95/172
+  Installing       : libglvnd-glx-1:1.7.0-4.amzn2023.0.2.x86_64                                                  96/172
+  Installing       : mesa-libGL-24.2.6-1267.amzn2023.0.1.x86_64                                                  97/172
+  Installing       : libXcursor-1.2.1-7.amzn2023.0.1.x86_64                                                      98/172
+  Installing       : libXdamage-1.1.6-3.amzn2023.0.1.x86_64                                                      99/172
+  Installing       : libXrandr-1.5.4-3.amzn2023.0.1.x86_64                                                      100/172
+  Installing       : libXinerama-1.1.5-6.amzn2023.0.1.x86_64                                                    101/172
+  Installing       : libXv-1.0.12-3.amzn2023.0.1.x86_64                                                         102/172
+  Installing       : libXcomposite-0.4.6-3.amzn2023.0.1.x86_64                                                  103/172
+  Installing       : xprop-1.2.7-1.amzn2023.x86_64                                                              104/172
+  Installing       : at-spi2-core-2.54.0-1.amzn2023.0.1.x86_64                                                  105/172
+  Installing       : atk-2.54.0-1.amzn2023.0.1.x86_64                                                           106/172
+  Installing       : at-spi2-atk-2.54.0-1.amzn2023.0.1.x86_64                                                   107/172
+  Installing       : jbigkit-libs-2.1-21.amzn2023.0.2.x86_64                                                    108/172
+  Installing       : libtiff-4.4.0-4.amzn2023.0.24.x86_64                                                       109/172
+  Installing       : javapackages-filesystem-6.0.0-7.amzn2023.0.6.noarch                                        110/172
+  Installing       : inih-cpp-58-2.amzn2023.0.1.x86_64                                                          111/172
+  Installing       : exiv2-libs-0.28.5-128.amzn2023.x86_64                                                      112/172
+  Installing       : exiv2-0.28.5-128.amzn2023.x86_64                                                           113/172
+  Installing       : libgexiv2-0.14.3-2.amzn2023.x86_64                                                         114/172
+  Installing       : imath-3.1.5-1.amzn2023.0.3.x86_64                                                          115/172
+  Installing       : openexr-libs-3.1.5-1.amzn2023.0.5.x86_64                                                   116/172
+  Installing       : highway-1.2.0-30.amzn2023.0.1.x86_64                                                       117/172
+  Installing       : libjxl-1:0.10.3-54.amzn2023.x86_64                                                         118/172
+  Installing       : jxl-pixbuf-loader-1:0.10.3-54.amzn2023.x86_64                                              119/172
+  Installing       : hicolor-icon-theme-0.17-10.amzn2023.0.3.noarch                                             120/172
+  Installing       : gsm-1.0.19-5.amzn2023.0.3.x86_64                                                           121/172
+  Installing       : libsndfile-1.2.2-3.amzn2023.0.3.x86_64                                                     122/172
+  Installing       : pulseaudio-libs-15.0-5.amzn2023.0.4.x86_64                                                 123/172
+  Installing       : libcanberra-0.30-35.amzn2023.x86_64                                                        124/172
+  Running scriptlet: libcanberra-0.30-35.amzn2023.x86_64                                                        124/172
+  Installing       : graphite2-1.3.14-7.amzn2023.0.2.x86_64                                                     125/172
+  Installing       : graphene-1.10.6-9.amzn2023.0.1.x86_64                                                      126/172
+  Installing       : gpgmepp-1.23.2-182.amzn2023.0.1.x86_64                                                     127/172
+  Installing       : google-noto-fonts-common-20240401-1.amzn2023.0.2.noarch                                    128/172
+  Installing       : google-noto-sans-vf-fonts-20240401-1.amzn2023.0.2.noarch                                   129/172
+  Installing       : langpacks-core-font-en-3.0-21.amzn2023.0.4.noarch                                          130/172
+  Installing       : cairo-1.18.0-4.amzn2023.0.3.x86_64                                                         131/172
+  Installing       : harfbuzz-7.0.0-2.amzn2023.0.2.x86_64                                                       132/172
+  Installing       : freetype-2.13.2-5.amzn2023.0.1.x86_64                                                      133/172
+  Installing       : fontconfig-2.13.94-2.amzn2023.0.2.x86_64                                                   134/172
+  Running scriptlet: fontconfig-2.13.94-2.amzn2023.0.2.x86_64                                                   134/172
+  Installing       : cairo-gobject-1.18.0-4.amzn2023.0.3.x86_64                                                 135/172
+  Installing       : libXft-2.3.8-6.amzn2023.0.1.x86_64                                                         136/172
+  Installing       : pango-1.54.0-2.amzn2023.0.4.x86_64                                                         137/172
+  Installing       : gstreamer1-plugins-base-1.24.10-1.amzn2023.0.2.x86_64                                      138/172
+  Installing       : rsvg-pixbuf-loader-2.59.2-317.amzn2023.x86_64                                              139/172
+  Installing       : librsvg2-2.59.2-317.amzn2023.x86_64                                                        140/172
+  Installing       : gdk-pixbuf2-modules-2.42.12-180.amzn2023.x86_64                                            141/172
+  Installing       : poppler-24.08.0-1.amzn2023.x86_64                                                          142/172
+  Installing       : poppler-glib-24.08.0-1.amzn2023.x86_64                                                     143/172
+  Installing       : gobject-introspection-1.82.0-1.amzn2023.x86_64                                             144/172
+  Installing       : upower-1.90.6-139.amzn2023.x86_64                                                          145/172
+  Running scriptlet: upower-1.90.6-139.amzn2023.x86_64                                                          145/172
+Created symlink /etc/systemd/system/graphical.target.wants/upower.service → /usr/lib/systemd/system/upower.service.
+
+  Installing       : upower-libs-1.90.6-139.amzn2023.x86_64                                                     146/172
+  Installing       : libtracker-sparql-3.7.3-3.amzn2023.0.1.x86_64                                              147/172
+  Installing       : tracker-3.7.3-3.amzn2023.0.1.x86_64                                                        148/172
+  Running scriptlet: tracker-3.7.3-3.amzn2023.0.1.x86_64                                                        148/172
+  Installing       : tracker-miners-3.7.4-2.amzn2023.0.1.x86_64                                                 149/172
+  Running scriptlet: tracker-miners-3.7.4-2.amzn2023.0.1.x86_64                                                 149/172
+  Installing       : fuse-common-3.10.4-1.amzn2023.0.2.x86_64                                                   150/172
+  Installing       : fuse3-3.10.4-1.amzn2023.0.2.x86_64                                                         151/172
+  Installing       : fdk-aac-free-2.0.0-14.amzn2023.0.1.x86_64                                                  152/172
+  Installing       : dconf-0.40.0-3.amzn2023.0.2.x86_64                                                         153/172
+  Running scriptlet: dconf-0.40.0-3.amzn2023.0.2.x86_64                                                         153/172
+  Installing       : cups-filesystem-1:2.4.14-1.amzn2023.0.1.noarch                                             154/172
+  Installing       : cups-libs-1:2.4.14-1.amzn2023.0.1.x86_64                                                   155/172
+  Installing       : bluez-libs-5.62-2.amzn2023.0.5.x86_64                                                      156/172
+  Running scriptlet: pipewire-1.2.7-4.amzn2023.0.4.x86_64                                                       157/172
+  Installing       : pipewire-1.2.7-4.amzn2023.0.4.x86_64                                                       157/172
+  Running scriptlet: pipewire-1.2.7-4.amzn2023.0.4.x86_64                                                       157/172
+Created symlink /etc/systemd/user/sockets.target.wants/pipewire.socket → /usr/lib/systemd/user/pipewire.socket.
+
+  Installing       : pipewire-libs-1.2.7-4.amzn2023.0.4.x86_64                                                  158/172
+  Installing       : wireplumber-0.5.7-1.amzn2023.0.1.x86_64                                                    159/172
+  Installing       : wireplumber-libs-0.5.7-1.amzn2023.0.1.x86_64                                               160/172
+  Installing       : pipewire-jack-audio-connection-kit-libs-1.2.7-4.amzn2023.0.4.x86_64                        161/172
+  Installing       : xdg-desktop-portal-1.18.4-105.amzn2023.x86_64                                              162/172
+  Running scriptlet: xdg-desktop-portal-1.18.4-105.amzn2023.x86_64                                              162/172
+  Installing       : adwaita-icon-theme-legacy-46.2-2.amzn2023.noarch                                           163/172
+  Installing       : adwaita-cursor-theme-47.0-1.amzn2023.0.1.noarch                                            164/172
+  Installing       : adwaita-icon-theme-47.0-1.amzn2023.0.1.noarch                                              165/172
+  Installing       : libcanberra-gtk3-0.30-35.amzn2023.x86_64                                                   166/172
+  Installing       : gtk3-3.24.43-1.amzn2023.0.1.x86_64                                                         167/172
+  Installing       : xdg-desktop-portal-gtk-1.15.1-61.amzn2023.x86_64                                           168/172
+  Running scriptlet: xdg-desktop-portal-gtk-1.15.1-61.amzn2023.x86_64                                           168/172
+  Installing       : java-1.8.0-amazon-corretto-1:1.8.0_472.b08-1.amzn2023.x86_64                               169/172
+  Running scriptlet: java-1.8.0-amazon-corretto-1:1.8.0_472.b08-1.amzn2023.x86_64                               169/172
+  Installing       : pipewire-jack-audio-connection-kit-1.2.7-4.amzn2023.0.4.x86_64                             170/172
+  Installing       : pipewire-alsa-1.2.7-4.amzn2023.0.4.x86_64                                                  171/172
+  Installing       : pipewire-pulseaudio-1.2.7-4.amzn2023.0.4.x86_64                                            172/172
+  Running scriptlet: pipewire-pulseaudio-1.2.7-4.amzn2023.0.4.x86_64                                            172/172
+Created symlink /etc/systemd/user/sockets.target.wants/pipewire-pulse.socket → /usr/lib/systemd/user/pipewire-pulse.socket.
+
+  Running scriptlet: gsettings-desktop-schemas-47.1-206.amzn2023.x86_64                                         172/172
+  Running scriptlet: fontconfig-2.13.94-2.amzn2023.0.2.x86_64                                                   172/172
+  Running scriptlet: dconf-0.40.0-3.amzn2023.0.2.x86_64                                                         172/172
+  Running scriptlet: wireplumber-0.5.7-1.amzn2023.0.1.x86_64                                                    172/172
+Created symlink /etc/systemd/user/pipewire-session-manager.service → /usr/lib/systemd/user/wireplumber.service.
+Created symlink /etc/systemd/user/pipewire.service.wants/wireplumber.service → /usr/lib/systemd/user/wireplumber.service.
+
+  Running scriptlet: pipewire-pulseaudio-1.2.7-4.amzn2023.0.4.x86_64                                            172/172
+  Verifying        : abattis-cantarell-fonts-0.301-2.amzn2023.0.1.noarch                                          1/172
+  Verifying        : adobe-source-code-pro-fonts-2.030.1.050-10.amzn2023.0.2.noarch                               2/172
+  Verifying        : adwaita-cursor-theme-47.0-1.amzn2023.0.1.noarch                                              3/172
+  Verifying        : adwaita-icon-theme-47.0-1.amzn2023.0.1.noarch                                                4/172
+  Verifying        : adwaita-icon-theme-legacy-46.2-2.amzn2023.noarch                                             5/172
+  Verifying        : alsa-lib-1.2.7.2-1.amzn2023.0.2.x86_64                                                       6/172
+  Verifying        : at-spi2-atk-2.54.0-1.amzn2023.0.1.x86_64                                                     7/172
+  Verifying        : at-spi2-core-2.54.0-1.amzn2023.0.1.x86_64                                                    8/172
+  Verifying        : atk-2.54.0-1.amzn2023.0.1.x86_64                                                             9/172
+  Verifying        : avahi-glib-0.8-14.amzn2023.0.14.x86_64                                                      10/172
+  Verifying        : avahi-libs-0.8-14.amzn2023.0.14.x86_64                                                      11/172
+  Verifying        : bluez-libs-5.62-2.amzn2023.0.5.x86_64                                                       12/172
+  Verifying        : cairo-1.18.0-4.amzn2023.0.3.x86_64                                                          13/172
+  Verifying        : cairo-gobject-1.18.0-4.amzn2023.0.3.x86_64                                                  14/172
+  Verifying        : colord-libs-1.4.5-2.amzn2023.0.2.x86_64                                                     15/172
+  Verifying        : cups-filesystem-1:2.4.14-1.amzn2023.0.1.noarch                                              16/172
+  Verifying        : cups-libs-1:2.4.14-1.amzn2023.0.1.x86_64                                                    17/172
+  Verifying        : dconf-0.40.0-3.amzn2023.0.2.x86_64                                                          18/172
+  Verifying        : dejavu-sans-fonts-2.37-16.amzn2023.0.2.noarch                                               19/172
+  Verifying        : dejavu-sans-mono-fonts-2.37-16.amzn2023.0.2.noarch                                          20/172
+  Verifying        : dejavu-serif-fonts-2.37-16.amzn2023.0.2.noarch                                              21/172
+  Verifying        : duktape-2.7.0-21.amzn2023.x86_64                                                            22/172
+  Verifying        : exiv2-0.28.5-128.amzn2023.x86_64                                                            23/172
+  Verifying        : exiv2-libs-0.28.5-128.amzn2023.x86_64                                                       24/172
+  Verifying        : fdk-aac-free-2.0.0-14.amzn2023.0.1.x86_64                                                   25/172
+  Verifying        : flac-libs-1.3.4-1.amzn2023.0.2.x86_64                                                       26/172
+  Verifying        : fontconfig-2.13.94-2.amzn2023.0.2.x86_64                                                    27/172
+  Verifying        : fonts-filesystem-1:2.0.5-12.amzn2023.0.2.noarch                                             28/172
+  Verifying        : freetype-2.13.2-5.amzn2023.0.1.x86_64                                                       29/172
+  Verifying        : fribidi-1.0.11-3.amzn2023.0.2.x86_64                                                        30/172
+  Verifying        : fuse-common-3.10.4-1.amzn2023.0.2.x86_64                                                    31/172
+  Verifying        : fuse3-3.10.4-1.amzn2023.0.2.x86_64                                                          32/172
+  Verifying        : fuse3-libs-3.10.4-1.amzn2023.0.2.x86_64                                                     33/172
+  Verifying        : gdk-pixbuf2-2.42.12-180.amzn2023.x86_64                                                     34/172
+  Verifying        : gdk-pixbuf2-modules-2.42.12-180.amzn2023.x86_64                                             35/172
+  Verifying        : geoclue2-2.7.0-6.amzn2023.0.2.x86_64                                                        36/172
+  Verifying        : giflib-5.2.1-9.amzn2023.0.2.x86_64                                                          37/172
+  Verifying        : glib-networking-2.80.0-186.amzn2023.0.1.x86_64                                              38/172
+  Verifying        : gobject-introspection-1.82.0-1.amzn2023.x86_64                                              39/172
+  Verifying        : google-noto-fonts-common-20240401-1.amzn2023.0.2.noarch                                     40/172
+  Verifying        : google-noto-sans-vf-fonts-20240401-1.amzn2023.0.2.noarch                                    41/172
+  Verifying        : gpgmepp-1.23.2-182.amzn2023.0.1.x86_64                                                      42/172
+  Verifying        : graphene-1.10.6-9.amzn2023.0.1.x86_64                                                       43/172
+  Verifying        : graphite2-1.3.14-7.amzn2023.0.2.x86_64                                                      44/172
+  Verifying        : gsettings-desktop-schemas-47.1-206.amzn2023.x86_64                                          45/172
+  Verifying        : gsm-1.0.19-5.amzn2023.0.3.x86_64                                                            46/172
+  Verifying        : gstreamer1-1.24.10-1.amzn2023.0.1.x86_64                                                    47/172
+  Verifying        : gstreamer1-plugins-base-1.24.10-1.amzn2023.0.2.x86_64                                       48/172
+  Verifying        : gtk-update-icon-cache-3.24.43-1.amzn2023.0.1.x86_64                                         49/172
+  Verifying        : gtk3-3.24.43-1.amzn2023.0.1.x86_64                                                          50/172
+  Verifying        : harfbuzz-7.0.0-2.amzn2023.0.2.x86_64                                                        51/172
+  Verifying        : hicolor-icon-theme-0.17-10.amzn2023.0.3.noarch                                              52/172
+  Verifying        : highway-1.2.0-30.amzn2023.0.1.x86_64                                                        53/172
+  Verifying        : imath-3.1.5-1.amzn2023.0.3.x86_64                                                           54/172
+  Verifying        : inih-cpp-58-2.amzn2023.0.1.x86_64                                                           55/172
+  Verifying        : iso-codes-4.6.0-1.amzn2023.0.3.noarch                                                       56/172
+  Verifying        : java-1.8.0-amazon-corretto-1:1.8.0_472.b08-1.amzn2023.x86_64                                57/172
+  Verifying        : javapackages-filesystem-6.0.0-7.amzn2023.0.6.noarch                                         58/172
+  Verifying        : jbigkit-libs-2.1-21.amzn2023.0.2.x86_64                                                     59/172
+  Verifying        : json-glib-1.10.0-1.amzn2023.0.2.x86_64                                                      60/172
+  Verifying        : jxl-pixbuf-loader-1:0.10.3-54.amzn2023.x86_64                                               61/172
+  Verifying        : langpacks-core-font-en-3.0-21.amzn2023.0.4.noarch                                           62/172
+  Verifying        : lcms2-2.16-73.amzn2023.x86_64                                                               63/172
+  Verifying        : libX11-1.8.10-2.amzn2023.0.1.x86_64                                                         64/172
+  Verifying        : libX11-common-1.8.10-2.amzn2023.0.1.noarch                                                  65/172
+  Verifying        : libX11-xcb-1.8.10-2.amzn2023.0.1.x86_64                                                     66/172
+  Verifying        : libXau-1.0.11-6.amzn2023.0.1.x86_64                                                         67/172
+  Verifying        : libXcomposite-0.4.6-3.amzn2023.0.1.x86_64                                                   68/172
+  Verifying        : libXcursor-1.2.1-7.amzn2023.0.1.x86_64                                                      69/172
+  Verifying        : libXdamage-1.1.6-3.amzn2023.0.1.x86_64                                                      70/172
+  Verifying        : libXext-1.3.6-1.amzn2023.0.1.x86_64                                                         71/172
+  Verifying        : libXfixes-6.0.1-3.amzn2023.0.1.x86_64                                                       72/172
+  Verifying        : libXft-2.3.8-6.amzn2023.0.1.x86_64                                                          73/172
+  Verifying        : libXi-1.8.2-1.amzn2023.0.1.x86_64                                                           74/172
+  Verifying        : libXinerama-1.1.5-6.amzn2023.0.1.x86_64                                                     75/172
+  Verifying        : libXrandr-1.5.4-3.amzn2023.0.1.x86_64                                                       76/172
+  Verifying        : libXrender-0.9.11-6.amzn2023.0.1.x86_64                                                     77/172
+  Verifying        : libXtst-1.2.5-1.amzn2023.0.1.x86_64                                                         78/172
+  Verifying        : libXv-1.0.12-3.amzn2023.0.1.x86_64                                                          79/172
+  Verifying        : libXxf86vm-1.1.5-6.amzn2023.0.1.x86_64                                                      80/172
+  Verifying        : libasyncns-0.8-20.amzn2023.0.2.x86_64                                                       81/172
+  Verifying        : libbrotli-1.0.9-4.amzn2023.0.2.x86_64                                                       82/172
+  Verifying        : libcanberra-0.30-35.amzn2023.x86_64                                                         83/172
+  Verifying        : libcanberra-gtk3-0.30-35.amzn2023.x86_64                                                    84/172
+  Verifying        : libcloudproviders-0.3.1-3.amzn2023.0.2.x86_64                                               85/172
+  Verifying        : libdatrie-0.2.13-1.amzn2023.0.2.x86_64                                                      86/172
+  Verifying        : libdrm-2.4.123-1.amzn2023.0.1.x86_64                                                        87/172
+  Verifying        : libepoxy-1.5.9-1.amzn2023.0.2.x86_64                                                        88/172
+  Verifying        : libexif-0.6.22-4.amzn2023.0.2.x86_64                                                        89/172
+  Verifying        : libgexiv2-0.14.3-2.amzn2023.x86_64                                                          90/172
+  Verifying        : libglvnd-1:1.7.0-4.amzn2023.0.2.x86_64                                                      91/172
+  Verifying        : libglvnd-egl-1:1.7.0-4.amzn2023.0.2.x86_64                                                  92/172
+  Verifying        : libglvnd-glx-1:1.7.0-4.amzn2023.0.2.x86_64                                                  93/172
+  Verifying        : libgudev-238-5.amzn2023.0.1.x86_64                                                          94/172
+  Verifying        : libgusb-0.3.8-1.amzn2023.0.2.x86_64                                                         95/172
+  Verifying        : libicu-67.1-7.amzn2023.0.4.x86_64                                                           96/172
+  Verifying        : libjpeg-turbo-2.1.4-2.amzn2023.0.5.x86_64                                                   97/172
+  Verifying        : libjxl-1:0.10.3-54.amzn2023.x86_64                                                          98/172
+  Verifying        : libnotify-0.8.3-4.amzn2023.0.1.x86_64                                                       99/172
+  Verifying        : libogg-2:1.3.4-4.amzn2023.0.2.x86_64                                                       100/172
+  Verifying        : libosinfo-1.12.0-1.amzn2023.0.1.x86_64                                                     101/172
+  Verifying        : libpciaccess-0.16-4.amzn2023.0.2.x86_64                                                    102/172
+  Verifying        : libpng-2:1.6.37-10.amzn2023.0.6.x86_64                                                     103/172
+  Verifying        : libproxy-0.5.7-3.amzn2023.0.1.x86_64                                                       104/172
+  Verifying        : librsvg2-2.59.2-317.amzn2023.x86_64                                                        105/172
+  Verifying        : libsbc-1.4-7.amzn2023.0.2.x86_64                                                           106/172
+  Verifying        : libsndfile-1.2.2-3.amzn2023.0.3.x86_64                                                     107/172
+  Verifying        : libsoup3-3.6.5-52.amzn2023.x86_64                                                          108/172
+  Verifying        : libstemmer-0-16.585svn.amzn2023.0.2.x86_64                                                 109/172
+  Verifying        : libthai-0.1.28-6.amzn2023.0.2.x86_64                                                       110/172
+  Verifying        : libtheora-1:1.1.1-29.amzn2023.0.3.x86_64                                                   111/172
+  Verifying        : libtiff-4.4.0-4.amzn2023.0.24.x86_64                                                       112/172
+  Verifying        : libtool-ltdl-2.4.7-1.amzn2023.0.3.x86_64                                                   113/172
+  Verifying        : libtracker-sparql-3.7.3-3.amzn2023.0.1.x86_64                                              114/172
+  Verifying        : libunwind-1.4.0-5.amzn2023.0.3.x86_64                                                      115/172
+  Verifying        : libusbx-1.0.24-2.amzn2023.0.2.x86_64                                                       116/172
+  Verifying        : libvorbis-1:1.3.7-3.amzn2023.0.2.x86_64                                                    117/172
+  Verifying        : libwayland-client-1.23.0-2.amzn2023.0.2.x86_64                                             118/172
+  Verifying        : libwayland-cursor-1.23.0-2.amzn2023.0.2.x86_64                                             119/172
+  Verifying        : libwayland-egl-1.23.0-2.amzn2023.0.2.x86_64                                                120/172
+  Verifying        : libwayland-server-1.23.0-2.amzn2023.0.2.x86_64                                             121/172
+  Verifying        : libwebp-1.2.4-1.amzn2023.0.6.x86_64                                                        122/172
+  Verifying        : libxcb-1.17.0-1.amzn2023.0.1.x86_64                                                        123/172
+  Verifying        : libxkbcommon-1.6.0-2.amzn2023.0.1.x86_64                                                   124/172
+  Verifying        : libxshmfence-1.3.2-3.amzn2023.0.1.x86_64                                                   125/172
+  Verifying        : libxslt-1.1.43-1.amzn2023.0.3.x86_64                                                       126/172
+  Verifying        : llvm-libs-15.0.7-3.amzn2023.0.1.x86_64                                                     127/172
+  Verifying        : low-memory-monitor-2.1-2.amzn2023.0.3.x86_64                                               128/172
+  Verifying        : mesa-dri-drivers-24.2.6-1267.amzn2023.0.1.x86_64                                           129/172
+  Verifying        : mesa-filesystem-24.2.6-1267.amzn2023.0.1.x86_64                                            130/172
+  Verifying        : mesa-libEGL-24.2.6-1267.amzn2023.0.1.x86_64                                                131/172
+  Verifying        : mesa-libGL-24.2.6-1267.amzn2023.0.1.x86_64                                                 132/172
+  Verifying        : mesa-libgbm-24.2.6-1267.amzn2023.0.1.x86_64                                                133/172
+  Verifying        : mesa-libglapi-24.2.6-1267.amzn2023.0.1.x86_64                                              134/172
+  Verifying        : mesa-va-drivers-24.2.6-1267.amzn2023.0.1.x86_64                                            135/172
+  Verifying        : openexr-libs-3.1.5-1.amzn2023.0.5.x86_64                                                   136/172
+  Verifying        : openjpeg2-2.5.2-5.amzn2023.0.1.x86_64                                                      137/172
+  Verifying        : opus-1.3.1-8.amzn2023.0.3.x86_64                                                           138/172
+  Verifying        : orc-0.4.31-4.amzn2023.0.4.x86_64                                                           139/172
+  Verifying        : osinfo-db-20240701-1.amzn2023.0.1.noarch                                                   140/172
+  Verifying        : osinfo-db-tools-1.12.0-1.amzn2023.0.1.x86_64                                               141/172
+  Verifying        : pango-1.54.0-2.amzn2023.0.4.x86_64                                                         142/172
+  Verifying        : pipewire-1.2.7-4.amzn2023.0.4.x86_64                                                       143/172
+  Verifying        : pipewire-alsa-1.2.7-4.amzn2023.0.4.x86_64                                                  144/172
+  Verifying        : pipewire-jack-audio-connection-kit-1.2.7-4.amzn2023.0.4.x86_64                             145/172
+  Verifying        : pipewire-jack-audio-connection-kit-libs-1.2.7-4.amzn2023.0.4.x86_64                        146/172
+  Verifying        : pipewire-libs-1.2.7-4.amzn2023.0.4.x86_64                                                  147/172
+  Verifying        : pipewire-pulseaudio-1.2.7-4.amzn2023.0.4.x86_64                                            148/172
+  Verifying        : pixman-0.43.4-1.amzn2023.0.4.x86_64                                                        149/172
+  Verifying        : polkit-125-1.amzn2023.0.2.x86_64                                                           150/172
+  Verifying        : polkit-libs-125-1.amzn2023.0.2.x86_64                                                      151/172
+  Verifying        : polkit-pkla-compat-0.1-19.amzn2023.0.2.x86_64                                              152/172
+  Verifying        : poppler-24.08.0-1.amzn2023.x86_64                                                          153/172
+  Verifying        : poppler-data-0.4.9-7.amzn2023.0.2.noarch                                                   154/172
+  Verifying        : poppler-glib-24.08.0-1.amzn2023.x86_64                                                     155/172
+  Verifying        : pulseaudio-libs-15.0-5.amzn2023.0.4.x86_64                                                 156/172
+  Verifying        : rsvg-pixbuf-loader-2.59.2-317.amzn2023.x86_64                                              157/172
+  Verifying        : rtkit-0.11-26.amzn2023.0.2.x86_64                                                          158/172
+  Verifying        : shared-mime-info-2.2-2.amzn2023.0.1.x86_64                                                 159/172
+  Verifying        : sound-theme-freedesktop-0.8-22.amzn2023.noarch                                             160/172
+  Verifying        : tracker-3.7.3-3.amzn2023.0.1.x86_64                                                        161/172
+  Verifying        : tracker-miners-3.7.4-2.amzn2023.0.1.x86_64                                                 162/172
+  Verifying        : upower-1.90.6-139.amzn2023.x86_64                                                          163/172
+  Verifying        : upower-libs-1.90.6-139.amzn2023.x86_64                                                     164/172
+  Verifying        : webrtc-audio-processing-0.3.1-6.amzn2023.0.2.x86_64                                        165/172
+  Verifying        : wireplumber-0.5.7-1.amzn2023.0.1.x86_64                                                    166/172
+  Verifying        : wireplumber-libs-0.5.7-1.amzn2023.0.1.x86_64                                               167/172
+  Verifying        : xdg-desktop-portal-1.18.4-105.amzn2023.x86_64                                              168/172
+  Verifying        : xdg-desktop-portal-gtk-1.15.1-61.amzn2023.x86_64                                           169/172
+  Verifying        : xkeyboard-config-2.41-1.amzn2023.0.1.noarch                                                170/172
+  Verifying        : xml-common-0.6.3-56.amzn2023.0.2.noarch                                                    171/172
+  Verifying        : xprop-1.2.7-1.amzn2023.x86_64                                                              172/172
+
+Installed:
+  abattis-cantarell-fonts-0.301-2.amzn2023.0.1.noarch
+  adobe-source-code-pro-fonts-2.030.1.050-10.amzn2023.0.2.noarch
+  adwaita-cursor-theme-47.0-1.amzn2023.0.1.noarch
+  adwaita-icon-theme-47.0-1.amzn2023.0.1.noarch
+  adwaita-icon-theme-legacy-46.2-2.amzn2023.noarch
+  alsa-lib-1.2.7.2-1.amzn2023.0.2.x86_64
+  at-spi2-atk-2.54.0-1.amzn2023.0.1.x86_64
+  at-spi2-core-2.54.0-1.amzn2023.0.1.x86_64
+  atk-2.54.0-1.amzn2023.0.1.x86_64
+  avahi-glib-0.8-14.amzn2023.0.14.x86_64
+  avahi-libs-0.8-14.amzn2023.0.14.x86_64
+  bluez-libs-5.62-2.amzn2023.0.5.x86_64
+  cairo-1.18.0-4.amzn2023.0.3.x86_64
+  cairo-gobject-1.18.0-4.amzn2023.0.3.x86_64
+  colord-libs-1.4.5-2.amzn2023.0.2.x86_64
+  cups-filesystem-1:2.4.14-1.amzn2023.0.1.noarch
+  cups-libs-1:2.4.14-1.amzn2023.0.1.x86_64
+  dconf-0.40.0-3.amzn2023.0.2.x86_64
+  dejavu-sans-fonts-2.37-16.amzn2023.0.2.noarch
+  dejavu-sans-mono-fonts-2.37-16.amzn2023.0.2.noarch
+  dejavu-serif-fonts-2.37-16.amzn2023.0.2.noarch
+  duktape-2.7.0-21.amzn2023.x86_64
+  exiv2-0.28.5-128.amzn2023.x86_64
+  exiv2-libs-0.28.5-128.amzn2023.x86_64
+  fdk-aac-free-2.0.0-14.amzn2023.0.1.x86_64
+  flac-libs-1.3.4-1.amzn2023.0.2.x86_64
+  fontconfig-2.13.94-2.amzn2023.0.2.x86_64
+  fonts-filesystem-1:2.0.5-12.amzn2023.0.2.noarch
+  freetype-2.13.2-5.amzn2023.0.1.x86_64
+  fribidi-1.0.11-3.amzn2023.0.2.x86_64
+  fuse-common-3.10.4-1.amzn2023.0.2.x86_64
+  fuse3-3.10.4-1.amzn2023.0.2.x86_64
+  fuse3-libs-3.10.4-1.amzn2023.0.2.x86_64
+  gdk-pixbuf2-2.42.12-180.amzn2023.x86_64
+  gdk-pixbuf2-modules-2.42.12-180.amzn2023.x86_64
+  geoclue2-2.7.0-6.amzn2023.0.2.x86_64
+  giflib-5.2.1-9.amzn2023.0.2.x86_64
+  glib-networking-2.80.0-186.amzn2023.0.1.x86_64
+  gobject-introspection-1.82.0-1.amzn2023.x86_64
+  google-noto-fonts-common-20240401-1.amzn2023.0.2.noarch
+  google-noto-sans-vf-fonts-20240401-1.amzn2023.0.2.noarch
+  gpgmepp-1.23.2-182.amzn2023.0.1.x86_64
+  graphene-1.10.6-9.amzn2023.0.1.x86_64
+  graphite2-1.3.14-7.amzn2023.0.2.x86_64
+  gsettings-desktop-schemas-47.1-206.amzn2023.x86_64
+  gsm-1.0.19-5.amzn2023.0.3.x86_64
+  gstreamer1-1.24.10-1.amzn2023.0.1.x86_64
+  gstreamer1-plugins-base-1.24.10-1.amzn2023.0.2.x86_64
+  gtk-update-icon-cache-3.24.43-1.amzn2023.0.1.x86_64
+  gtk3-3.24.43-1.amzn2023.0.1.x86_64
+  harfbuzz-7.0.0-2.amzn2023.0.2.x86_64
+  hicolor-icon-theme-0.17-10.amzn2023.0.3.noarch
+  highway-1.2.0-30.amzn2023.0.1.x86_64
+  imath-3.1.5-1.amzn2023.0.3.x86_64
+  inih-cpp-58-2.amzn2023.0.1.x86_64
+  iso-codes-4.6.0-1.amzn2023.0.3.noarch
+  java-1.8.0-amazon-corretto-1:1.8.0_472.b08-1.amzn2023.x86_64
+  javapackages-filesystem-6.0.0-7.amzn2023.0.6.noarch
+  jbigkit-libs-2.1-21.amzn2023.0.2.x86_64
+  json-glib-1.10.0-1.amzn2023.0.2.x86_64
+  jxl-pixbuf-loader-1:0.10.3-54.amzn2023.x86_64
+  langpacks-core-font-en-3.0-21.amzn2023.0.4.noarch
+  lcms2-2.16-73.amzn2023.x86_64
+  libX11-1.8.10-2.amzn2023.0.1.x86_64
+  libX11-common-1.8.10-2.amzn2023.0.1.noarch
+  libX11-xcb-1.8.10-2.amzn2023.0.1.x86_64
+  libXau-1.0.11-6.amzn2023.0.1.x86_64
+  libXcomposite-0.4.6-3.amzn2023.0.1.x86_64
+  libXcursor-1.2.1-7.amzn2023.0.1.x86_64
+  libXdamage-1.1.6-3.amzn2023.0.1.x86_64
+  libXext-1.3.6-1.amzn2023.0.1.x86_64
+  libXfixes-6.0.1-3.amzn2023.0.1.x86_64
+  libXft-2.3.8-6.amzn2023.0.1.x86_64
+  libXi-1.8.2-1.amzn2023.0.1.x86_64
+  libXinerama-1.1.5-6.amzn2023.0.1.x86_64
+  libXrandr-1.5.4-3.amzn2023.0.1.x86_64
+  libXrender-0.9.11-6.amzn2023.0.1.x86_64
+  libXtst-1.2.5-1.amzn2023.0.1.x86_64
+  libXv-1.0.12-3.amzn2023.0.1.x86_64
+  libXxf86vm-1.1.5-6.amzn2023.0.1.x86_64
+  libasyncns-0.8-20.amzn2023.0.2.x86_64
+  libbrotli-1.0.9-4.amzn2023.0.2.x86_64
+  libcanberra-0.30-35.amzn2023.x86_64
+  libcanberra-gtk3-0.30-35.amzn2023.x86_64
+  libcloudproviders-0.3.1-3.amzn2023.0.2.x86_64
+  libdatrie-0.2.13-1.amzn2023.0.2.x86_64
+  libdrm-2.4.123-1.amzn2023.0.1.x86_64
+  libepoxy-1.5.9-1.amzn2023.0.2.x86_64
+  libexif-0.6.22-4.amzn2023.0.2.x86_64
+  libgexiv2-0.14.3-2.amzn2023.x86_64
+  libglvnd-1:1.7.0-4.amzn2023.0.2.x86_64
+  libglvnd-egl-1:1.7.0-4.amzn2023.0.2.x86_64
+  libglvnd-glx-1:1.7.0-4.amzn2023.0.2.x86_64
+  libgudev-238-5.amzn2023.0.1.x86_64
+  libgusb-0.3.8-1.amzn2023.0.2.x86_64
+  libicu-67.1-7.amzn2023.0.4.x86_64
+  libjpeg-turbo-2.1.4-2.amzn2023.0.5.x86_64
+  libjxl-1:0.10.3-54.amzn2023.x86_64
+  libnotify-0.8.3-4.amzn2023.0.1.x86_64
+  libogg-2:1.3.4-4.amzn2023.0.2.x86_64
+  libosinfo-1.12.0-1.amzn2023.0.1.x86_64
+  libpciaccess-0.16-4.amzn2023.0.2.x86_64
+  libpng-2:1.6.37-10.amzn2023.0.6.x86_64
+  libproxy-0.5.7-3.amzn2023.0.1.x86_64
+  librsvg2-2.59.2-317.amzn2023.x86_64
+  libsbc-1.4-7.amzn2023.0.2.x86_64
+  libsndfile-1.2.2-3.amzn2023.0.3.x86_64
+  libsoup3-3.6.5-52.amzn2023.x86_64
+  libstemmer-0-16.585svn.amzn2023.0.2.x86_64
+  libthai-0.1.28-6.amzn2023.0.2.x86_64
+  libtheora-1:1.1.1-29.amzn2023.0.3.x86_64
+  libtiff-4.4.0-4.amzn2023.0.24.x86_64
+  libtool-ltdl-2.4.7-1.amzn2023.0.3.x86_64
+  libtracker-sparql-3.7.3-3.amzn2023.0.1.x86_64
+  libunwind-1.4.0-5.amzn2023.0.3.x86_64
+  libusbx-1.0.24-2.amzn2023.0.2.x86_64
+  libvorbis-1:1.3.7-3.amzn2023.0.2.x86_64
+  libwayland-client-1.23.0-2.amzn2023.0.2.x86_64
+  libwayland-cursor-1.23.0-2.amzn2023.0.2.x86_64
+  libwayland-egl-1.23.0-2.amzn2023.0.2.x86_64
+  libwayland-server-1.23.0-2.amzn2023.0.2.x86_64
+  libwebp-1.2.4-1.amzn2023.0.6.x86_64
+  libxcb-1.17.0-1.amzn2023.0.1.x86_64
+  libxkbcommon-1.6.0-2.amzn2023.0.1.x86_64
+  libxshmfence-1.3.2-3.amzn2023.0.1.x86_64
+  libxslt-1.1.43-1.amzn2023.0.3.x86_64
+  llvm-libs-15.0.7-3.amzn2023.0.1.x86_64
+  low-memory-monitor-2.1-2.amzn2023.0.3.x86_64
+  mesa-dri-drivers-24.2.6-1267.amzn2023.0.1.x86_64
+  mesa-filesystem-24.2.6-1267.amzn2023.0.1.x86_64
+  mesa-libEGL-24.2.6-1267.amzn2023.0.1.x86_64
+  mesa-libGL-24.2.6-1267.amzn2023.0.1.x86_64
+  mesa-libgbm-24.2.6-1267.amzn2023.0.1.x86_64
+  mesa-libglapi-24.2.6-1267.amzn2023.0.1.x86_64
+  mesa-va-drivers-24.2.6-1267.amzn2023.0.1.x86_64
+  openexr-libs-3.1.5-1.amzn2023.0.5.x86_64
+  openjpeg2-2.5.2-5.amzn2023.0.1.x86_64
+  opus-1.3.1-8.amzn2023.0.3.x86_64
+  orc-0.4.31-4.amzn2023.0.4.x86_64
+  osinfo-db-20240701-1.amzn2023.0.1.noarch
+  osinfo-db-tools-1.12.0-1.amzn2023.0.1.x86_64
+  pango-1.54.0-2.amzn2023.0.4.x86_64
+  pipewire-1.2.7-4.amzn2023.0.4.x86_64
+  pipewire-alsa-1.2.7-4.amzn2023.0.4.x86_64
+  pipewire-jack-audio-connection-kit-1.2.7-4.amzn2023.0.4.x86_64
+  pipewire-jack-audio-connection-kit-libs-1.2.7-4.amzn2023.0.4.x86_64
+  pipewire-libs-1.2.7-4.amzn2023.0.4.x86_64
+  pipewire-pulseaudio-1.2.7-4.amzn2023.0.4.x86_64
+  pixman-0.43.4-1.amzn2023.0.4.x86_64
+  polkit-125-1.amzn2023.0.2.x86_64
+  polkit-libs-125-1.amzn2023.0.2.x86_64
+  polkit-pkla-compat-0.1-19.amzn2023.0.2.x86_64
+  poppler-24.08.0-1.amzn2023.x86_64
+  poppler-data-0.4.9-7.amzn2023.0.2.noarch
+  poppler-glib-24.08.0-1.amzn2023.x86_64
+  pulseaudio-libs-15.0-5.amzn2023.0.4.x86_64
+  rsvg-pixbuf-loader-2.59.2-317.amzn2023.x86_64
+  rtkit-0.11-26.amzn2023.0.2.x86_64
+  shared-mime-info-2.2-2.amzn2023.0.1.x86_64
+  sound-theme-freedesktop-0.8-22.amzn2023.noarch
+  tracker-3.7.3-3.amzn2023.0.1.x86_64
+  tracker-miners-3.7.4-2.amzn2023.0.1.x86_64
+  upower-1.90.6-139.amzn2023.x86_64
+  upower-libs-1.90.6-139.amzn2023.x86_64
+  webrtc-audio-processing-0.3.1-6.amzn2023.0.2.x86_64
+  wireplumber-0.5.7-1.amzn2023.0.1.x86_64
+  wireplumber-libs-0.5.7-1.amzn2023.0.1.x86_64
+  xdg-desktop-portal-1.18.4-105.amzn2023.x86_64
+  xdg-desktop-portal-gtk-1.15.1-61.amzn2023.x86_64
+  xkeyboard-config-2.41-1.amzn2023.0.1.noarch
+  xml-common-0.6.3-56.amzn2023.0.2.noarch
+  xprop-1.2.7-1.amzn2023.x86_64
+
+Complete!
+[ec2-user@ip-172-31-65-2 ~]$ sudo yum install -y awscli
+Last metadata expiration check: 0:02:34 ago on Mon Nov 24 00:09:19 2025.
+Package awscli-2-2.30.4-1.amzn2023.0.1.noarch is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+[ec2-user@ip-172-31-65-2 ~]$ pip3 install pyspark
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pyspark
+  Downloading pyspark-4.0.1.tar.gz (434.2 MB)
+     |████████████████████████        | 326.3 MB 603 bytes/s eta 2 days, 1:41:43^C[B^[[C
+ERROR: Operation cancelled by user
+^[[A^[[B^[[C^C^C^C^A
