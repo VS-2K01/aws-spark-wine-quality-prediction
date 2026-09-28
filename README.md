@@ -2,6 +2,7 @@
 
 A parallel-trained machine learning pipeline on AWS: an ensemble of Spark MLlib RandomForest classifiers trained across a 4-node EMR cluster, served by a PySpark prediction application that runs identically bare-metal on EC2 or inside a Docker container.
 
+![Lint](https://github.com/VS-2K01/aws-spark-wine-quality-prediction/actions/workflows/lint.yml/badge.svg)
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![Spark](https://img.shields.io/badge/Apache%20Spark-3.5.0-E25A1C)
 ![Docker](https://img.shields.io/badge/Container-Docker-2496ED)
@@ -183,5 +184,3 @@ This was an **individual assignment** — I designed and implemented the full pi
 ## License
 
 [MIT](LICENSE) — feel free to reuse or adapt for learning purposes.
-
-**Contact:** [github.com/VS-2K01](https://github.com/VS-2K01) — [TODO: add your preferred public contact, e.g. LinkedIn or a portfolio site]
